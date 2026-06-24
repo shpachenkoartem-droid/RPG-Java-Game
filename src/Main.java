@@ -10,17 +10,23 @@ public class Main {
         GoldSword sword2 = new GoldSword();
         IronChest iron_chest = new IronChest();
         HealPotion healPotion = new HealPotion();
+        Poison poison = new Poison();
 
 
         hero.equipSword(sword1);
         hero.equipSword(sword2);
         hero.equipArmor(iron_chest);
         hero.drinkPotion(healPotion);
+        hero.drinkPotion(poison);
+        System.out.println(poison.getCount());
 
         // Сражение
         Battle battle1 = new Battle(); // Создаю новое сражение
         battle1.battle(hero, ogre);
 
+        System.out.println(hero.getMoney());
+        hero.buyPotion(healPotion);
+        System.out.println(hero.getMoney());
     }
 }
 
@@ -31,7 +37,8 @@ abstract class Fighter {
     private int dmg;
     private String name;
     private int money;
-    private int heal = 2;
+    // Чтобы не нарушать принцип подстановки Барбары Лисков (LSP) надо сделать класс наследника, который может реализовывать лечение (герой, враг-жрец и тп)
+    // Потому что не каждый боец может лечить
     private int reduce_damage;
     private Equipment sword;
     private Equipment armor;
@@ -40,26 +47,25 @@ abstract class Fighter {
         target.decHp(getDmg() - target.getReduce_damage());
     }
 
-// Если мы используем getHp(), то вернётся хп лечащего, поэтому надо target.getHp
-// С добавлением incHp упростил строку с target.setHp(target.getHp() + getHealAmount()) до target.incHp(getHealAmount())
-
-    public void heal(Fighter target) {
-        System.out.println("Лечение!");
-        target.incHp(getHeal());
-    }
 
     public void equipSword(Equipment equipment) {
-        this.sword = equipment;
+        if (equipment.isPurchased()) {
+            this.sword = equipment;
+            setDmg(equipment.getDmg());
+        } else { System.out.println("У вас нет такого меча"); }
         // Как работает экипировка мечей
         // С помощью конструкторов мы создаём каждый меч
         // Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов Equipment, а значит и в частности наш меч
         // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
 
-        setDmg(equipment.getDmg());
+
     }
     public void equipArmor(Equipment equipment) {
-        this.armor = equipment;
-        setReduce_damage(equipment.getArmor());
+        if (equipment.isPurchased()) {
+            this.armor = equipment;
+            setReduce_damage(equipment.getArmor());
+        } else { System.out.println("У вас нет такой брони"); }
+
     }
 
     public void drinkPotion(Potion potion) {
@@ -91,7 +97,7 @@ abstract class Fighter {
 
     public void incHp(int hp) {
         setHp(this.getHp() + hp);
-        // Защита от превышение максимального здоровья
+        // Защита от превышения максимального здоровья
         if (getHp() > getMax_hp()) {
             setHp(getMax_hp());
         }
@@ -122,6 +128,15 @@ abstract class Fighter {
         else { this.dmg = dmg; }
     }
 
+    /*
+    // Если мы используем getHp(), то вернётся хп лечащего, поэтому надо target.getHp
+    // С добавлением incHp упростил строку с target.setHp(target.getHp() + getHealAmount()) до target.incHp(getHealAmount())
+
+    public void heal(Fighter target) {
+        System.out.println("Лечение!");
+        target.incHp(getHeal());
+    }
+
     public int getHeal() {
         return heal;
     }
@@ -130,6 +145,7 @@ abstract class Fighter {
         if (heal <= 0) { System.out.print("Лечение должно быть больше 0"); }
         else { this.heal = heal; }
     }
+     */
 
     public String getName() {
         return name;
@@ -186,6 +202,29 @@ abstract class Fighter {
     }
 }
 
+// Healer гораздо более гибкий чем BaseHealer
+// BaseHealer может лечить, но! это прежде всего боец, так как наследовал всё от Fighter
+// Если создавать лечащий артефакт, то он будет наследоваться от интерфейса Healer
+interface Healer {
+    void heal (Fighter target);
+}
+
+abstract class BaseHealer extends Fighter implements Healer {
+    private int heal;
+    @Override
+    public void heal(Fighter target) {
+        target.incHp(getHeal());
+    }
+    public int getHeal() {
+        return heal;
+    }
+
+    public void setHeal(int heal) {
+        if (heal <= 0) { System.out.print("Лечение должно быть больше 0"); }
+        else { this.heal = heal; }
+    }
+}
+
 // Дочерний класс от бойца
 class Goblin extends Fighter {
     public Goblin() {
@@ -207,16 +246,40 @@ class Ogre extends Fighter {
         setHp(10);
         setDmg(4);
         setName("Огр");
-        setMoney(30);
+        setMoney(70);
     }
 }
-class Hero extends Fighter {
+
+class Hero extends BaseHealer implements Healer{
     public Hero() {
         setMax_hp(50);
         setHp(50);
         setDmg(3);
         setName("Герой");
         setMoney(0);
+        setHeal(2);
+    }
+
+    public void buyPotion(Potion potion) {
+        if (getMoney() > potion.getCost()) {
+            potion.incCount();
+            decMoney(potion.getCost());
+        } else { System.out.println("Не хватает денег на зелье!"); }
+    }
+    public void buyEquipment(Equipment equipment) {
+        if (getMoney() > equipment.getCost()) {
+            equipment.setPurchased(true);
+            decMoney(equipment.getCost());
+        } else { System.out.println("Не хватает денег на снаряжение!"); }
+    }
+}
+class Paladin extends BaseHealer {
+    public Paladin() {
+        setMax_hp(55);
+        setHp(55);
+        setDmg(2);
+        setName("Паладин");
+        setMoney(10);
         setHeal(4);
     }
 }
@@ -237,19 +300,20 @@ class Battle {
         if (fighter1.getHp() == 0) { System.out.println(fighter1.getName() + " побеждён!");}
 
         // Получение денег
-        if (fighter2.getName() == "Гоблин") { fighter1.incMoney(10); }
-        if (fighter2.getName() == "Огр") { fighter1.incMoney(30); }
-
-        // Лечение
-        fighter1.heal(fighter1);
-        System.out.println(fighter1.getHp());
+        fighter1.incMoney(fighter2.getMoney());
+    }
+    public void treatAll (Healer healer, Fighter minion) {
+        healer.heal(minion);
     }
 }
+
+// Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
 abstract class Equipment {
     private String name;
     private int dmg;
     private int cost;
     private int armor;
+    private boolean purchased;
 
     public String getName() {
         return name;
@@ -282,6 +346,14 @@ abstract class Equipment {
     public void setArmor(int armor) {
         this.armor = armor;
     }
+
+    public boolean isPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        this.purchased = purchased;
+    }
 }
 
 class IronSword extends Equipment {
@@ -289,6 +361,7 @@ class IronSword extends Equipment {
         setName("Iron sword");
         setDmg(4);
         setCost(50);
+        setPurchased(false);
     }
 }
 class GoldSword extends Equipment {
@@ -296,6 +369,7 @@ class GoldSword extends Equipment {
         setName("Gold sword");
         setDmg(5);
         setCost(120);
+        setPurchased(false);
     }
 }
 class IronChest extends Equipment {
@@ -303,6 +377,7 @@ class IronChest extends Equipment {
         setName("IronChest");
         setCost(200);
         setArmor(1);
+        setPurchased(false);
     }
 }
 abstract class Potion {
@@ -311,7 +386,7 @@ abstract class Potion {
     public abstract void apply (Fighter target);
     private String name;
     private int count;
-    private int healAmount = 0;
+    private int cost;
 
     public String getName() {
         return name;
@@ -328,6 +403,33 @@ abstract class Potion {
     public void setCount(int count) {
         this.count = count;
     }
+
+    public void incCount() {
+        setCount(getCount() + 1);
+    }
+
+    public boolean drink() {
+        if (getCount() > 0) {
+            setCount(getCount() - 1);
+            return true;
+        } else {
+            System.out.println("Зелий нет!");
+            return false;
+        }
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+
+}
+class HealPotion extends Potion {
+    private int healAmount = 0;
     public int getHealAmount() {
         return healAmount;
     }
@@ -335,19 +437,56 @@ abstract class Potion {
     public void setHealAmount(int healAmount) {
         this.healAmount = healAmount;
     }
-}
-class HealPotion extends Potion {
     // Что за зелье и что оно делает
     public HealPotion() {
         setName("Heal potion");
         setHealAmount(8);
+        setCost(30);
     }
+
     // Его непосредственное применение
     @Override
-    public void apply (Fighter target) {
-        target.incHp(getHealAmount());
+    public void apply(Fighter target) {
+        // Если уменьшили количество
+        if (drink()) {
+            // Реализация того что делает зелье
+            target.incHp(getHealAmount());
+        }
     }
 }
+
+class Poison extends Potion {
+    private int dmgAmount = 0;
+    public int getDmgAmount() {
+        return dmgAmount;
+    }
+
+    public void setDmgAmount(int dmgAmount) {
+        this.dmgAmount = dmgAmount;
+    }
+    public Poison() {
+        setName("Poison");
+        setDmgAmount(5);
+        setCost(40);
+    }
+    public void apply (Fighter target) {
+        // Если 0, то выводится сообщение что нет зелий, сделать это в отдельном методе
+        if (drink()) {
+            target.decHp(getDmgAmount());
+        }
+    }
+}
+
+class Shop {
+    IronSword sword1 = new IronSword();
+    GoldSword sword2 = new GoldSword();
+    IronChest iron_chest = new IronChest();
+    HealPotion healPotion = new HealPotion();
+    Poison poison = new Poison();
+
+}
+
+
 // Цели - сделать битву против врага по выбору. мол инициализировать битву и указать только тех, кто сражается. после этого сделать торговца и дальнейший сюжет
 
 // Задача на потом - сделать так что можно будет получать деньги не с помощью if (fighter2.getName() == "Гоблин") { fighter1.incMoney(10); }
