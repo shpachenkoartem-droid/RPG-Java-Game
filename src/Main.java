@@ -21,12 +21,22 @@ public class Main {
         System.out.println(poison.getCount());
 
         // Сражение
+        hero.goForest();
         Battle battle1 = new Battle(); // Создаю новое сражение
         battle1.battle(hero, ogre);
 
+        hero.heal(hero);
+        Shop shop = new Shop();
+
+        // Фигня полная, надо что-то сделать с тем откуда берутся зелья
+        // И реализовать интерфейс для зелий и снаряжения
+        // Но логика с покупкой зелий сработала!
+        shop.buyPotion(hero, healPotion);
+
         System.out.println(hero.getMoney());
-        hero.buyPotion(healPotion);
-        System.out.println(hero.getMoney());
+
+        System.out.println(hero.getLocation());
+
     }
 }
 
@@ -57,9 +67,9 @@ abstract class Fighter {
         // С помощью конструкторов мы создаём каждый меч
         // Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов Equipment, а значит и в частности наш меч
         // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
-
-
     }
+
+
     public void equipArmor(Equipment equipment) {
         if (equipment.isPurchased()) {
             this.armor = equipment;
@@ -128,25 +138,6 @@ abstract class Fighter {
         else { this.dmg = dmg; }
     }
 
-    /*
-    // Если мы используем getHp(), то вернётся хп лечащего, поэтому надо target.getHp
-    // С добавлением incHp упростил строку с target.setHp(target.getHp() + getHealAmount()) до target.incHp(getHealAmount())
-
-    public void heal(Fighter target) {
-        System.out.println("Лечение!");
-        target.incHp(getHeal());
-    }
-
-    public int getHeal() {
-        return heal;
-    }
-
-    public void setHeal(int heal) {
-        if (heal <= 0) { System.out.print("Лечение должно быть больше 0"); }
-        else { this.heal = heal; }
-    }
-     */
-
     public String getName() {
         return name;
     }
@@ -202,19 +193,58 @@ abstract class Fighter {
     }
 }
 
-// Healer гораздо более гибкий чем BaseHealer
-// BaseHealer может лечить, но! это прежде всего боец, так как наследовал всё от Fighter
+// Healer гораздо более гибкий чем PlayableHeroes
+// PlayableHeroes может лечить, но! это прежде всего боец, так как наследовал всё от Fighter
 // Если создавать лечащий артефакт, то он будет наследоваться от интерфейса Healer
 interface Healer {
     void heal (Fighter target);
 }
 
-abstract class BaseHealer extends Fighter implements Healer {
+enum Locations {
+    FOREST,
+    SHOP
+}
+
+// Дал возможность героям ходить в локации. Долго думал как сделать, но по итогу вышло достаточно просто. Надо на бумаге рисовать примерные схемки.
+abstract class PlayableHeroes extends Fighter implements Healer {
     private int heal;
+    private Locations location = Locations.FOREST;
+
+    public Locations getLocation() {
+        return location;
+    }
+
+    public boolean isForest() {
+        if (getLocation().equals(Locations.FOREST)) {
+            return true;
+        } else {
+            System.out.println("Вы должны быть в лесу чтобы начать битву");
+            return false;
+        }
+    }
+    public boolean isShop() {
+        if (getLocation().equals(Locations.SHOP)) {
+            return true;
+        } else {
+            System.out.println("Вы должны быть в магазине чтобы торговать");
+            return false;
+        }
+    }
+    public void goForest() {
+        location = Locations.FOREST;
+        System.out.println("Вы в лесу!");
+    }
+
+    public void goShop() {
+        location = Locations.SHOP;
+        System.out.println("Вы в магазине!");
+    }
+
     @Override
     public void heal(Fighter target) {
         target.incHp(getHeal());
     }
+
     public int getHeal() {
         return heal;
     }
@@ -250,7 +280,7 @@ class Ogre extends Fighter {
     }
 }
 
-class Hero extends BaseHealer implements Healer{
+class Hero extends PlayableHeroes {
     public Hero() {
         setMax_hp(50);
         setHp(50);
@@ -259,21 +289,9 @@ class Hero extends BaseHealer implements Healer{
         setMoney(0);
         setHeal(2);
     }
-
-    public void buyPotion(Potion potion) {
-        if (getMoney() > potion.getCost()) {
-            potion.incCount();
-            decMoney(potion.getCost());
-        } else { System.out.println("Не хватает денег на зелье!"); }
-    }
-    public void buyEquipment(Equipment equipment) {
-        if (getMoney() > equipment.getCost()) {
-            equipment.setPurchased(true);
-            decMoney(equipment.getCost());
-        } else { System.out.println("Не хватает денег на снаряжение!"); }
-    }
 }
-class Paladin extends BaseHealer {
+
+class Paladin extends PlayableHeroes {
     public Paladin() {
         setMax_hp(55);
         setHp(55);
@@ -286,34 +304,31 @@ class Paladin extends BaseHealer {
 
 
 class Battle {
-    public void battle(Fighter fighter1, Fighter fighter2) {
-        System.out.print("Изначальное здоровье " + fighter1.getName() + ": " + fighter1.getHp() + "\n");
-        System.out.println("Изначальное здоровье " + fighter2.getName() + ": " + fighter2.getHp() + "\n");
-        while (fighter1.getHp()>0 && fighter2.getHp()>0) {
-            fighter1.attack(fighter2);
-            fighter2.attack(fighter1);
-            System.out.println("Обменялись ударами!" + "\n" +"Здоровье " + fighter1.getName() + ": " + fighter1.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
+    public void battle(PlayableHeroes hero, Fighter fighter2) {
+        if (hero.isForest()) {
+            System.out.print("Изначальное здоровье " + hero.getName() + ": " + hero.getHp() + "\n");
+            System.out.println("Изначальное здоровье " + fighter2.getName() + ": " + fighter2.getHp() + "\n");
+            while (hero.getHp()>0 && fighter2.getHp()>0) {
+                hero.attack(fighter2);
+                fighter2.attack(hero);
+                System.out.println("Обменялись ударами!" + "\n" +"Здоровье " + hero.getName() + ": " + hero.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
+            }
+
+            // Результаты битвы
+            if (fighter2.getHp() == 0) { System.out.println(fighter2.getName() + " побеждён!");}
+            if (hero.getHp() == 0) { System.out.println(hero.getName() + " побеждён!");}
+
+            // Получение денег
+            hero.incMoney(fighter2.getMoney());
         }
-
-        // Результаты битвы
-        if (fighter2.getHp() == 0) { System.out.println(fighter2.getName() + " побеждён!");}
-        if (fighter1.getHp() == 0) { System.out.println(fighter1.getName() + " побеждён!");}
-
-        // Получение денег
-        fighter1.incMoney(fighter2.getMoney());
-    }
-    public void treatAll (Healer healer, Fighter minion) {
-        healer.heal(minion);
     }
 }
 
-// Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
-abstract class Equipment {
+// Абстрактный метод для всех предметов вообще
+abstract class Goods {
     private String name;
-    private int dmg;
     private int cost;
-    private int armor;
-    private boolean purchased;
+    private int count;
 
     public String getName() {
         return name;
@@ -323,12 +338,16 @@ abstract class Equipment {
         this.name = name;
     }
 
-    public int getDmg() {
-        return dmg;
+    public int getCount() {
+        return count;
     }
 
-    public void setDmg(int dmg) {
-        this.dmg = dmg;
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void incCount() {
+        setCount(getCount() + 1);
     }
 
     public int getCost() {
@@ -337,6 +356,21 @@ abstract class Equipment {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+}
+
+// Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
+abstract class Equipment extends Goods {
+    private int dmg;
+    private int armor;
+    private boolean purchased;
+
+    public int getDmg() {
+        return dmg;
+    }
+
+    public void setDmg(int dmg) {
+        this.dmg = dmg;
     }
 
     public int getArmor() {
@@ -380,33 +414,12 @@ class IronChest extends Equipment {
         setPurchased(false);
     }
 }
-abstract class Potion {
+
+
+abstract class Potion extends Goods {
     // Абстрактный метод - каждое зелье реализуется по-своему
     // Эта реализация должна быть у каждого. Неплохая вещь чтобы избежать дублирования кода
     public abstract void apply (Fighter target);
-    private String name;
-    private int count;
-    private int cost;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public void incCount() {
-        setCount(getCount() + 1);
-    }
 
     public boolean drink() {
         if (getCount() > 0) {
@@ -418,16 +431,9 @@ abstract class Potion {
         }
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-
 }
+
+// В целом можно было бы сделать зелью зависимось от интерфейса Healer, но у него уже есть асбтрактный метод apply
 class HealPotion extends Potion {
     private int healAmount = 0;
     public int getHealAmount() {
@@ -443,7 +449,6 @@ class HealPotion extends Potion {
         setHealAmount(8);
         setCost(30);
     }
-
     // Его непосредственное применение
     @Override
     public void apply(Fighter target) {
@@ -469,6 +474,7 @@ class Poison extends Potion {
         setDmgAmount(5);
         setCost(40);
     }
+    @Override
     public void apply (Fighter target) {
         // Если 0, то выводится сообщение что нет зелий, сделать это в отдельном методе
         if (drink()) {
@@ -478,14 +484,50 @@ class Poison extends Potion {
 }
 
 class Shop {
+
+    // Наполняем магазин товарами
     IronSword sword1 = new IronSword();
     GoldSword sword2 = new GoldSword();
     IronChest iron_chest = new IronChest();
     HealPotion healPotion = new HealPotion();
     Poison poison = new Poison();
 
+    public void buyPotion(PlayableHeroes hero, Potion potion) {
+        // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
+        if (hero.isShop()) {
+            if (hero.getMoney() > potion.getCost()) {
+                potion.incCount();
+                hero.decMoney(potion.getCost());
+            } else { System.out.println("Не хватает денег на зелье!"); }
+        }
+    }
+
+
+    public void buyEquipment(PlayableHeroes hero, Equipment equipment) {
+        if (hero.isShop()) {
+            if (hero.getMoney() > equipment.getCost()) {
+                equipment.setPurchased(true);
+                hero.decMoney(equipment.getCost());
+            } else { System.out.println("Не хватает денег на снаряжение!"); }
+        }
+    }
 }
 
+
+// Попробовать использовать enum для локаций
+
+// Изучить дальше:
+// Коллекции - ArrayList, HashMap для инвентаря
+//
+//Исключения - вместо System.out.println выбрасывать исключения
+//
+//Композиция - вместо наследования для инвентаря
+//
+//Паттерны - Factory для создания врагов, Singleton для магазина
+//
+//Принципы SOLID - у вас уже есть зачатки, но можно углубиться
+
+// Узнать можно ли сделать проверку isShop проще, а заодно посмотреть как вообще сделать все такие проверки проще и возможно ли это
 
 // Цели - сделать битву против врага по выбору. мол инициализировать битву и указать только тех, кто сражается. после этого сделать торговца и дальнейший сюжет
 
@@ -494,4 +536,4 @@ class Shop {
 // Это принцип подстановки Барбары Лисков (LSP)
 
 // Вместе с торговцем сделать отдельные панельки для зелий и заклинаний с их стоимостью и эффектом
-// дать возможность использовать зелья герою между ходами
+// Дать возможность использовать зелья герою между ходами
