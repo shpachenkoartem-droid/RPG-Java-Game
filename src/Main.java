@@ -1,10 +1,81 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 public class Main {
     static void main (String[] args) {
 
-        Hero hero = new Hero(); // Создаю героя
+        // Реализация интерфейса с пользователем
+        Scanner scanner = new Scanner(System.in);
+        Shop shop = new Shop();
+        shop.initializeShop();
+        Hero hero = new Hero();
+        // Создаю новое сражение
+        Battle battle1 = new Battle();
+        while (true) {
+            System.out.println("Выберите действие: ");
+            System.out.println("1. Создать битву");
+            System.out.println("2. Сменить локацию");
+            System.out.println("3. Закупиться в магазине");
+            System.out.println("0. Выйти");
+            int choise = scanner.nextInt();
+            if (choise == 0) { break;}
+
+            switch (choise) {
+                case 1 -> {
+                    System.out.println("Выберите с кем создать битву");
+                    System.out.println("1. Огр");
+                    System.out.println("2. Гоблин");
+
+                    int choise2 = scanner.nextInt();
+                    switch (choise2) {
+                        case 1 -> {
+                            Ogre ogre = new Ogre();
+                            battle1.battle(hero, ogre);
+                        }
+                        case 2 -> {
+                            //shop.buyGoods(hero, );
+                            //hero.hero_inventory.addItem(shop.buyGoods(hero, ));
+                            System.out.println(hero.hero_inventory.getItems());
+                            Goblin goblin = new Goblin();
+                            battle1.battle(hero, goblin);
+                        }
+                    }
+                }
+                case 2-> {
+                    System.out.println("1. Магазин");
+                    System.out.println("2. Лес");
+
+                    int choise3 = scanner.nextInt();
+                    switch (choise3) {
+                        case 1 -> hero.goShop();
+                        case 2 -> hero.goForest();
+                    }
+                }
+                case 3 -> {
+                    if (hero.isShop()) {
+                        for (int i = 0; i < shop.getShopSize(); i++) {
+                            // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
+                            System.out.println(i + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
+                        }
+                    } else {
+                        System.out.println("Сначала зайдите в магазин");
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+        /*
+         // Создаю героя
         Goblin goblin1 = new Goblin(); // Создаю нового гоблина
         Goblin goblin2 = new Goblin();
-        Ogre ogre = new Ogre();
+
 
         IronSword sword1 = new IronSword();
         GoldSword sword2 = new GoldSword();
@@ -13,17 +84,11 @@ public class Main {
         Poison poison = new Poison();
 
 
-        hero.equipSword(sword1);
-        hero.equipSword(sword2);
-        hero.equipArmor(iron_chest);
-        hero.drinkPotion(healPotion);
-        hero.drinkPotion(poison);
         System.out.println(poison.getCount());
 
         // Сражение
         hero.goForest();
-        Battle battle1 = new Battle(); // Создаю новое сражение
-        battle1.battle(hero, ogre);
+
 
         hero.heal(hero);
         Shop shop = new Shop();
@@ -31,11 +96,30 @@ public class Main {
         // Фигня полная, надо что-то сделать с тем откуда берутся зелья
         // И реализовать интерфейс для зелий и снаряжения
         // Но логика с покупкой зелий сработала!
-        shop.buyPotion(hero, healPotion);
 
+        // Полная проверка работоспособности магазина
+        // Вроде всё работает
+        System.out.println("Начало теста магазина!!!!");
         System.out.println(hero.getMoney());
+        shop.buyGoods(hero, healPotion);
+        hero.goShop();
+        shop.buyGoods(hero, healPotion);
+        hero.drinkPotion(healPotion);
+        System.out.println(hero.getHp());
+        System.out.println("Пытаюсь выпить когда зелий нет!");
+        hero.drinkPotion(healPotion);
+        System.out.println(hero.getHp());
+        System.out.println("Пытаюсь надеть броню!");
+        shop.buyGoods(hero, iron_chest);
+        System.out.println("Вычет урона до надетой брони " + hero.getReduce_damage());
+        hero.equipArmor(iron_chest);
+        System.out.println("Вычет урона после надетой брони " + hero.getReduce_damage());
+
+        System.out.println(healPotion.getCount());
 
         System.out.println(hero.getLocation());
+
+         */
 
     }
 }
@@ -59,7 +143,7 @@ abstract class Fighter {
 
 
     public void equipSword(Equipment equipment) {
-        if (equipment.isPurchased()) {
+        if (equipment.isNotNull()) {
             this.sword = equipment;
             setDmg(equipment.getDmg());
         } else { System.out.println("У вас нет такого меча"); }
@@ -71,7 +155,7 @@ abstract class Fighter {
 
 
     public void equipArmor(Equipment equipment) {
-        if (equipment.isPurchased()) {
+        if (equipment.isNotNull()) {
             this.armor = equipment;
             setReduce_damage(equipment.getArmor());
         } else { System.out.println("У вас нет такой брони"); }
@@ -209,6 +293,15 @@ enum Locations {
 abstract class PlayableHeroes extends Fighter implements Healer {
     private int heal;
     private Locations location = Locations.FOREST;
+    private Inventory inventory;
+
+    public void puckUp(Item item) {
+        inventory.addItem(item);
+    }
+
+    public void drop(Item item) {
+        inventory.removeItem(item);
+    }
 
     public Locations getLocation() {
         return location;
@@ -276,11 +369,14 @@ class Ogre extends Fighter {
         setHp(10);
         setDmg(4);
         setName("Огр");
-        setMoney(70);
+        setMoney(270);
     }
 }
 
 class Hero extends PlayableHeroes {
+    // Создаём инвентарь только для одного героя
+    // Все методы для воздействия реализуем в PlayableHeroes
+    Inventory hero_inventory = new Inventory();
     public Hero() {
         setMax_hp(50);
         setHp(50);
@@ -301,7 +397,19 @@ class Paladin extends PlayableHeroes {
         setHeal(4);
     }
 }
-
+class Inventory {
+    private List<Item> items = new ArrayList<>();
+    private int max_size = 20;
+    public void addItem(Item item) {
+        items.add(item);
+    }
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+    public List<Item> getItems() {
+        return items;
+    }
+}
 
 class Battle {
     public void battle(PlayableHeroes hero, Fighter fighter2) {
@@ -309,10 +417,20 @@ class Battle {
             System.out.print("Изначальное здоровье " + hero.getName() + ": " + hero.getHp() + "\n");
             System.out.println("Изначальное здоровье " + fighter2.getName() + ": " + fighter2.getHp() + "\n");
             while (hero.getHp()>0 && fighter2.getHp()>0) {
-                hero.attack(fighter2);
-                fighter2.attack(hero);
-                System.out.println("Обменялись ударами!" + "\n" +"Здоровье " + hero.getName() + ": " + hero.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
-            }
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Выберите действие");
+                System.out.println("1. Атаковать");
+                System.out.println("2. Выпить зелье");
+                int move = scanner.nextInt();
+                switch (move) {
+                    case 1:
+                        hero.attack(fighter2);
+                        fighter2.attack(hero);
+                        System.out.println("Обменялись ударами!" + "\n" + "Здоровье " + hero.getName() + ": " + hero.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
+                    case 2:
+                }
+                }
+
 
             // Результаты битвы
             if (fighter2.getHp() == 0) { System.out.println(fighter2.getName() + " побеждён!");}
@@ -325,7 +443,7 @@ class Battle {
 }
 
 // Абстрактный метод для всех предметов вообще
-abstract class Goods {
+abstract class Item {
     private String name;
     private int cost;
     private int count;
@@ -357,13 +475,17 @@ abstract class Goods {
     public void setCost(int cost) {
         this.cost = cost;
     }
+    public boolean isNotNull() {
+        if (getCount() > 0) {
+            return true;
+        } else { return false; }
+    }
 }
 
 // Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
-abstract class Equipment extends Goods {
+abstract class Equipment extends Item {
     private int dmg;
     private int armor;
-    private boolean purchased;
 
     public int getDmg() {
         return dmg;
@@ -380,14 +502,6 @@ abstract class Equipment extends Goods {
     public void setArmor(int armor) {
         this.armor = armor;
     }
-
-    public boolean isPurchased() {
-        return purchased;
-    }
-
-    public void setPurchased(boolean purchased) {
-        this.purchased = purchased;
-    }
 }
 
 class IronSword extends Equipment {
@@ -395,7 +509,6 @@ class IronSword extends Equipment {
         setName("Iron sword");
         setDmg(4);
         setCost(50);
-        setPurchased(false);
     }
 }
 class GoldSword extends Equipment {
@@ -403,7 +516,6 @@ class GoldSword extends Equipment {
         setName("Gold sword");
         setDmg(5);
         setCost(120);
-        setPurchased(false);
     }
 }
 class IronChest extends Equipment {
@@ -411,18 +523,18 @@ class IronChest extends Equipment {
         setName("IronChest");
         setCost(200);
         setArmor(1);
-        setPurchased(false);
     }
 }
 
 
-abstract class Potion extends Goods {
+abstract class Potion extends Item {
     // Абстрактный метод - каждое зелье реализуется по-своему
     // Эта реализация должна быть у каждого. Неплохая вещь чтобы избежать дублирования кода
     public abstract void apply (Fighter target);
 
+    // Здесь drink это внутренняя функция, если захотим чтобы существо пило зелье, то оно будет hero.drinkPotion
     public boolean drink() {
-        if (getCount() > 0) {
+        if (isNotNull()) {
             setCount(getCount() - 1);
             return true;
         } else {
@@ -485,33 +597,48 @@ class Poison extends Potion {
 
 class Shop {
 
-    // Наполняем магазин товарами
-    IronSword sword1 = new IronSword();
-    GoldSword sword2 = new GoldSword();
-    IronChest iron_chest = new IronChest();
-    HealPotion healPotion = new HealPotion();
-    Poison poison = new Poison();
-
-    public void buyPotion(PlayableHeroes hero, Potion potion) {
-        // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
-        if (hero.isShop()) {
-            if (hero.getMoney() > potion.getCost()) {
-                potion.incCount();
-                hero.decMoney(potion.getCost());
-            } else { System.out.println("Не хватает денег на зелье!"); }
-        }
+    private List<Item> shopItems = new ArrayList<>();
+    public void addShopItems(Item item) {
+        shopItems.add(item);
     }
 
+    public List<Item> getShopItems() {
+        return shopItems;
+    }
 
-    public void buyEquipment(PlayableHeroes hero, Equipment equipment) {
+    public int getShopSize() {
+        return shopItems.size();
+    }
+
+    public void initializeShop() {
+        addShopItems(sword1);
+        addShopItems(sword2);
+        addShopItems(iron_chest);
+        addShopItems(healPotion);
+        addShopItems(poison);
+    }
+    // Наполняем магазин товарами
+    private IronSword sword1 = new IronSword();
+    private GoldSword sword2 = new GoldSword();
+    private IronChest iron_chest = new IronChest();
+    private HealPotion healPotion = new HealPotion();
+    private Poison poison = new Poison();
+
+    
+
+    public void buyGoods(PlayableHeroes hero, Item item) {
+        // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
         if (hero.isShop()) {
-            if (hero.getMoney() > equipment.getCost()) {
-                equipment.setPurchased(true);
-                hero.decMoney(equipment.getCost());
-            } else { System.out.println("Не хватает денег на снаряжение!"); }
+            if (hero.getMoney() > item.getCost()) {
+                item.incCount();
+                hero.decMoney(item.getCost());
+            } else { System.out.println("Не хватает денег!"); }
         }
     }
 }
+
+// С 06.07.2026 (сикс сеееейвен) пытаюсь реализовать красивый выбор для игроков. Пока что вообще не представляю как это всё делать
+
 
 
 // Попробовать использовать enum для локаций
