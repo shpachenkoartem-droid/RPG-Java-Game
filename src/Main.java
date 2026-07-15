@@ -9,6 +9,9 @@ public class Main {
         Shop shop = new Shop();
         shop.initializeShop();
         Hero hero = new Hero();
+
+        //hero.setArmor(shop.getShopItems().get(2));
+
         // Создаю новое сражение
         Battle battle1 = new Battle();
         while (true) {
@@ -16,6 +19,7 @@ public class Main {
             System.out.println("1. Создать битву");
             System.out.println("2. Сменить локацию");
             System.out.println("3. Закупиться в магазине");
+            System.out.println("4. Экипировать снаряжение");
             System.out.println("0. Выйти");
             int choise = scanner.nextInt();
             if (choise == 0) { break;}
@@ -33,9 +37,9 @@ public class Main {
                             battle1.battle(hero, ogre);
                         }
                         case 2 -> {
-                            //shop.buyGoods(hero, );
-                            //hero.hero_inventory.addItem(shop.buyGoods(hero, ));
-                            System.out.println(hero.hero_inventory.getItems());
+                            //shop.buyItems(hero, );
+                            //hero.hero_inventory.addItem(shop.buyItems(hero, ));
+                            System.out.println(hero.getInventory());
                             Goblin goblin = new Goblin();
                             battle1.battle(hero, goblin);
                         }
@@ -51,16 +55,28 @@ public class Main {
                         case 2 -> hero.goForest();
                     }
                 }
-                case 3 -> {
-                    if (hero.isShop()) {
-                        for (int i = 0; i < shop.getShopSize(); i++) {
-                            // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
-                            System.out.println(i + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
+                case 3 -> shop.buyItems(hero);
+                case 4 -> {
+                    System.out.println("Вот имеющееся снаряжение: ");
+                    System.out.println(hero.getInventory());
+                    System.out.println("1. Поменять оружие");
+                    System.out.println("2. Поменять броню");
+                    int choise3 = scanner.nextInt();
+                        switch (choise3) {
+                            case 1 -> {
+                                System.out.println("Ваше оружие: " + hero.getSword());
+                                // Пройтись по всему снаряжению, найти оружия и вывести их сюда
+                                for (int i = 0; i < hero.getLenInventory(); i++) {
+                                    System.out.println(hero.getInventoryByNumber(i));
+
+                                }
+                            }
+                            case 2 -> {
+                                System.out.println("Ваша броня: " + hero.getArmor());
+                            }
                         }
-                    } else {
-                        System.out.println("Сначала зайдите в магазин");
-                    }
                 }
+
             }
         }
 
@@ -101,16 +117,16 @@ public class Main {
         // Вроде всё работает
         System.out.println("Начало теста магазина!!!!");
         System.out.println(hero.getMoney());
-        shop.buyGoods(hero, healPotion);
+        shop.buyItems(hero, healPotion);
         hero.goShop();
-        shop.buyGoods(hero, healPotion);
+        shop.buyItems(hero, healPotion);
         hero.drinkPotion(healPotion);
         System.out.println(hero.getHp());
         System.out.println("Пытаюсь выпить когда зелий нет!");
         hero.drinkPotion(healPotion);
         System.out.println(hero.getHp());
         System.out.println("Пытаюсь надеть броню!");
-        shop.buyGoods(hero, iron_chest);
+        shop.buyItems(hero, iron_chest);
         System.out.println("Вычет урона до надетой брони " + hero.getReduce_damage());
         hero.equipArmor(iron_chest);
         System.out.println("Вычет урона после надетой брони " + hero.getReduce_damage());
@@ -292,10 +308,22 @@ enum Locations {
 // Дал возможность героям ходить в локации. Долго думал как сделать, но по итогу вышло достаточно просто. Надо на бумаге рисовать примерные схемки.
 abstract class PlayableHeroes extends Fighter implements Healer {
     private int heal;
-    private Locations location = Locations.FOREST;
-    private Inventory inventory;
+    private Locations location = Locations.SHOP;
+    private Inventory inventory = new Inventory();
 
-    public void puckUp(Item item) {
+    public List<Item> getInventory() {
+        return inventory.getItems();
+    }
+
+    public Item getInventoryByNumber(int number) {
+        return getInventory().get(number);
+    }
+
+    public int getLenInventory() {
+        return getInventory().toArray().length;
+    }
+
+    public void pickUp(Item item) {
         inventory.addItem(item);
     }
 
@@ -376,13 +404,12 @@ class Ogre extends Fighter {
 class Hero extends PlayableHeroes {
     // Создаём инвентарь только для одного героя
     // Все методы для воздействия реализуем в PlayableHeroes
-    Inventory hero_inventory = new Inventory();
     public Hero() {
         setMax_hp(50);
         setHp(50);
         setDmg(3);
         setName("Герой");
-        setMoney(0);
+        setMoney(1000);
         setHeal(2);
     }
 }
@@ -482,10 +509,24 @@ abstract class Item {
     }
 }
 
+enum EquipmentType {
+    SWORD,
+    ARMOR
+}
+
 // Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
 abstract class Equipment extends Item {
     private int dmg;
     private int armor;
+    private EquipmentType equipmentType;
+
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
+    }
+
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
+    }
 
     public int getDmg() {
         return dmg;
@@ -509,6 +550,7 @@ class IronSword extends Equipment {
         setName("Iron sword");
         setDmg(4);
         setCost(50);
+        setEquipmentType(EquipmentType.SWORD);
     }
 }
 class GoldSword extends Equipment {
@@ -516,6 +558,7 @@ class GoldSword extends Equipment {
         setName("Gold sword");
         setDmg(5);
         setCost(120);
+        setEquipmentType(EquipmentType.SWORD);
     }
 }
 class IronChest extends Equipment {
@@ -523,6 +566,7 @@ class IronChest extends Equipment {
         setName("IronChest");
         setCost(200);
         setArmor(1);
+        setEquipmentType(EquipmentType.ARMOR);
     }
 }
 
@@ -602,8 +646,14 @@ class Shop {
         shopItems.add(item);
     }
 
+    // Для всех предметов магазина
     public List<Item> getShopItems() {
         return shopItems;
+    }
+
+    // Для одного предмета магазина
+    public Item getShopItem(int number) {
+        return shopItems.get(number);
     }
 
     public int getShopSize() {
@@ -624,15 +674,34 @@ class Shop {
     private HealPotion healPotion = new HealPotion();
     private Poison poison = new Poison();
 
-    
-
-    public void buyGoods(PlayableHeroes hero, Item item) {
-        // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
+    // Сам процесс покупки когда уже выбрали предмет
+    public void buySoloItem(PlayableHeroes hero, Item item) {
         if (hero.isShop()) {
             if (hero.getMoney() > item.getCost()) {
                 item.incCount();
                 hero.decMoney(item.getCost());
+                hero.pickUp(item);
+                System.out.println("Дзынь! Успешная покупка!");
             } else { System.out.println("Не хватает денег!"); }
+        }
+    }
+
+    // Создание списка покупок и возможности выбора одного предмета
+    public void buyItems(PlayableHeroes hero) {
+        Scanner scanner = new Scanner(System.in);
+        // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
+        System.out.println("Выберите что хотите купить");
+        for (int i = 0; i < getShopSize(); i++) {
+            // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
+            System.out.println(i+1 + "." + "Купить " + getShopItems().get(i).getName() + " за " + getShopItems().get(i).getCost());
+        }
+        int choise_items = scanner.nextInt();
+        switch (choise_items) {
+            case 1 -> buySoloItem(hero, getShopItem(0));
+            case 2 -> buySoloItem(hero, getShopItem(1));
+            case 3 -> buySoloItem(hero, getShopItem(2));
+            case 4 -> buySoloItem(hero, getShopItem(3));
+            case 5 -> buySoloItem(hero, getShopItem(4));
         }
     }
 }
