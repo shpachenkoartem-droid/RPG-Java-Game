@@ -7,173 +7,25 @@ public class Main {
         // Реализация интерфейса с пользователем
         Scanner scanner = new Scanner(System.in);
         Shop shop = new Shop();
+        Logic logic = new Logic();
         shop.initializeShop();
         Hero hero = new Hero();
 
         // Создаю новое сражение
         Battle battle1 = new Battle();
         while (true) {
-            System.out.println("Выберите действие:");
-            System.out.println("1. Создать битву");
-            System.out.println("2. Сменить локацию");
-            System.out.println("3. Закупиться в магазине");
-            System.out.println("4. Экипировать снаряжение");
-            System.out.println("5. Вывести информацию о герое");
-            System.out.println("0. Выйти");
-            int choice = scanner.nextInt();
-            if (choice == 0) { break;}
+            logic.maimMenu();
+            int choice_main = scanner.nextInt();
+            if (choice_main == 0) { break; }
 
-            switch (choice) {
-                case 1 -> {
-                    System.out.println("Выберите с кем создать битву");
-                    System.out.println("1. Огр");
-                    System.out.println("2. Гоблин");
-
-                    int choice2 = scanner.nextInt();
-                    switch (choice2) {
-                        case 1 -> {
-                            Ogre ogre = new Ogre();
-                            battle1.battle(hero, ogre);
-                        }
-                        case 2 -> {
-                            System.out.println(hero.getInventory());
-                            Goblin goblin = new Goblin();
-                            battle1.battle(hero, goblin);
-                        }
-                    }
-                }
-                case 2-> {
-                    System.out.println("1. Магазин");
-                    System.out.println("2. Лес");
-
-                    int choice3 = scanner.nextInt();
-                    switch (choice3) {
-                        case 1 -> hero.goShop();
-                        case 2 -> hero.goForest();
-                    }
-                }
+            switch (choice_main) {
+                case 1 -> logic.chooseFighters(hero, battle1);
+                case 2-> logic.chooseLocation(hero);
                 case 3 -> shop.buyItems(hero);
-                case 4 -> {
-                    System.out.println("Вот имеющееся снаряжение: ");
-                    System.out.println(hero.getInventory());
-                    System.out.println("1. Поменять оружие");
-                    System.out.println("2. Поменять броню");
-                    int choice3 = scanner.nextInt();
-                        switch (choice3) {
-                            case 1 -> {
-                                ArrayList<Equipment> swords = new ArrayList<>();
-                                System.out.println("Ваше оружие: " + hero.getSword());
-                                // Пройтись по всему снаряжению, найти оружия и вывести их сюда
-                                for (int i = 0; i < hero.getLenInventory(); i++) {
-                                    // Считаем что поступающий нам предмет это какой-то Item
-                                    Item one_from_inventory = hero.getInventoryByNumber(i);
-                                    // Проверяем если объект является экземпляром класса Equippable
-                                    if (one_from_inventory instanceof Equippable equippable) {
-                                        // Надо привести one_from_inventory к equippable
-                                        // Если true, тогда приводим к типу Equipable чтобы работать с его методами
-                                        // Проверяем какой тип
-                                        if (equippable.getEquipmentType() == EquipmentType.SWORD) {
-                                            swords.add((Equipment) equippable);
-                                        }
-                                    }
-                                }
-                                System.out.println("Выберите что экипировать");
-                                int k = 1;
-                                for (Equipment j : swords) {
-                                    System.out.println(k + " Меч " + j.getName());
-                                    k++;
-                                }
-
-                                int choice4 = scanner.nextInt();
-                                switch (choice4) {
-                                    case 1 -> {
-                                        System.out.println("Вы экипировали меч 1");
-
-                                    }
-                                    case 2 -> {
-                                        System.out.println("Вы экипировали меч 2");
-                                        System.out.println(hero.getDmg());
-                                        hero.equipSword(swords.get(1));
-                                        System.out.println(swords.get(1));
-                                        System.out.println(hero.getDmg());
-                                    }
-                                }
-                            }
-                            case 2 -> {
-                                System.out.println("Ваша броня: " + hero.getArmor());
-                            }
-                        }
-                }
-                case 5 -> {
-                    System.out.println("1. Имя: " + hero.getName());
-                    System.out.println("2. HP: " + hero.getHp());
-                    System.out.println("3. Max_HP: " + hero.getMax_hp());
-                    System.out.println("4. Урон:" + hero.getDmg());
-                    System.out.println("5. Деньги: " + hero.getMoney());
-                    System.out.println("6. Меч: " + hero.getSword().getName());
-                    System.out.println("7. Броня: " + hero.getArmor().getName());
-                }
-
+                case 4 -> logic.fullEquip(hero, logic);
+                case 5 -> logic.showStats(hero);
             }
         }
-
-
-
-
-
-
-
-
-        /*
-         // Создаю героя
-        Goblin goblin1 = new Goblin(); // Создаю нового гоблина
-        Goblin goblin2 = new Goblin();
-
-
-        IronSword sword1 = new IronSword();
-        GoldSword sword2 = new GoldSword();
-        IronChest iron_chest = new IronChest();
-        HealPotion healPotion = new HealPotion();
-        Poison poison = new Poison();
-
-
-        System.out.println(poison.getCount());
-
-        // Сражение
-        hero.goForest();
-
-
-        hero.heal(hero);
-        Shop shop = new Shop();
-
-        // Фигня полная, надо что-то сделать с тем откуда берутся зелья
-        // И реализовать интерфейс для зелий и снаряжения
-        // Но логика с покупкой зелий сработала!
-
-        // Полная проверка работоспособности магазина
-        // Вроде всё работает
-        System.out.println("Начало теста магазина!!!!");
-        System.out.println(hero.getMoney());
-        shop.buyItems(hero, healPotion);
-        hero.goShop();
-        shop.buyItems(hero, healPotion);
-        hero.drinkPotion(healPotion);
-        System.out.println(hero.getHp());
-        System.out.println("Пытаюсь выпить когда зелий нет!");
-        hero.drinkPotion(healPotion);
-        System.out.println(hero.getHp());
-        System.out.println("Пытаюсь надеть броню!");
-        shop.buyItems(hero, iron_chest);
-        System.out.println("Вычет урона до надетой брони " + hero.getReduce_damage());
-        hero.equipArmor(iron_chest);
-        System.out.println("Вычет урона после надетой брони " + hero.getReduce_damage());
-
-        System.out.println(healPotion.getCount());
-
-        System.out.println(hero.getLocation());
-
-         */
-
     }
 }
 
@@ -352,6 +204,15 @@ abstract class PlayableHeroes extends Fighter implements Healer {
         return inventory.getItems();
     }
 
+    // Просто легендарно. Сам всё создал и понял. И сработало идеально. Создаём отдельный массив только для вывода названий
+    public List<String> getInventoryWithName() {
+        List<String> arrayWithNames = new ArrayList<>();
+        for (Item i : inventory.getItems()) {
+            arrayWithNames.add(i.getName());
+        }
+        return arrayWithNames;
+    }
+
     public Item getInventoryByNumber(int number) {
         return getInventory().get(number);
     }
@@ -376,7 +237,7 @@ abstract class PlayableHeroes extends Fighter implements Healer {
         if (getLocation().equals(Locations.FOREST)) {
             return true;
         } else {
-            System.out.println("Вы должны быть в лесу чтобы начать битву");
+            System.out.println("\nВы должны быть в лесу чтобы начать битву");
             return false;
         }
     }
@@ -384,18 +245,18 @@ abstract class PlayableHeroes extends Fighter implements Healer {
         if (getLocation().equals(Locations.SHOP)) {
             return true;
         } else {
-            System.out.println("Вы должны быть в магазине чтобы торговать");
+            System.out.println("\nВы должны быть в магазине чтобы торговать");
             return false;
         }
     }
     public void goForest() {
         location = Locations.FOREST;
-        System.out.println("Вы в лесу!");
+        System.out.println("\nВы в лесу!");
     }
 
     public void goShop() {
         location = Locations.SHOP;
-        System.out.println("Вы в магазине!");
+        System.out.println("\nВы в магазине!");
     }
 
     @Override
@@ -486,6 +347,149 @@ class Inventory {
     }
 }
 
+class Logic {
+    Scanner scanner = new Scanner(System.in);
+
+    public void fullEquip(PlayableHeroes hero, Logic logic) {
+        System.out.println(hero.getInventoryWithName());
+        if (hero.getInventory().isEmpty()) {
+            System.out.println("У вас нет нужного снаряжения");
+            // Придумать что сделать вместо break
+            // break;
+        }
+        System.out.println("\nВот имеющееся снаряжение: ");
+        System.out.println("1. Поменять оружие");
+        System.out.println("2. Поменять броню");
+        int choice_swap_equip = scanner.nextInt();
+        switch (choice_swap_equip) {
+            case 1 -> logic.chooseSwords(hero);
+            case 2 -> logic.chooseArmor(hero);
+        }
+    }
+
+    // Выбирает из массива со всем снаряжением мечи и создаёт массив с мечами
+    public void chooseSwords(PlayableHeroes hero) {
+        Scanner scanner = new Scanner(System.in);
+        // Отделяем мечи от всего снаряжения и даём им тип Equipment
+        ArrayList<Equipment> swords = new ArrayList<>();
+        System.out.println("Ваше оружие: " + hero.getSword().getName());
+        // Пройтись по всему снаряжению, найти оружия и вывести их сюда
+        for (int i = 0; i < hero.getLenInventory(); i++) {
+            // Считаем что поступающий нам предмет это какой-то Item
+            Item one_from_inventory = hero.getInventoryByNumber(i);
+            // Проверяем если объект является экземпляром класса Equippable
+            if (one_from_inventory instanceof Equippable equippable) {
+                // Надо привести one_from_inventory к equippable
+                // Если true, тогда приводим к типу Equipable чтобы работать с его методами
+                // Проверяем какой тип
+                if (equippable.getEquipmentType() == EquipmentType.SWORD) {
+                    swords.add((Equipment) equippable);
+                }
+            }
+        }
+        if (swords.isEmpty()) {
+            System.out.println("Сначала получите какой-то меч");
+            // Узнать что делать вместо break при void функции, мб можно обойтись без перехода к int или boolean
+        }
+        System.out.println("\nВыберите что экипировать");
+        int k = 1;
+        for (Equipment j : swords) {
+            System.out.println(k + " Меч " + j.getName());
+            k++;
+        }
+        int choice_equip_from_inventory = scanner.nextInt();
+        if (choice_equip_from_inventory <= swords.size()) {
+            System.out.println(hero.getDmg());
+            hero.equipSword(swords.get(choice_equip_from_inventory-1));
+            System.out.println(hero.getDmg());
+        }
+    }
+    public void chooseArmor(PlayableHeroes hero) {
+        // Отделяем мечи от всего снаряжения и даём им тип Equipment
+        ArrayList<Equipment> armors = new ArrayList<>();
+        System.out.println("Ваша броня: " + hero.getArmor().getName());
+        // Пройтись по всему снаряжению, найти оружия и вывести их сюда
+        for (int i = 0; i < hero.getLenInventory(); i++) {
+            // Считаем что поступающий нам предмет это какой-то Item
+            Item one_from_inventory = hero.getInventoryByNumber(i);
+            // Проверяем если объект является экземпляром класса Equippable
+            if (one_from_inventory instanceof Equippable equippable) {
+                // Надо привести one_from_inventory к equippable
+                // Если true, тогда приводим к типу Equipable чтобы работать с его методами
+                // Проверяем какой тип
+                if (equippable.getEquipmentType() == EquipmentType.ARMOR) {
+                    armors.add((Equipment) equippable);
+                }
+            }
+        }
+        if (armors.isEmpty()) {
+            System.out.println("Сначала получите какую-то броню");
+            // Узнать что делать вместо break при void функции, мб можно обойтись без перехода к int или boolean
+        }
+        System.out.println("\nВыберите что экипировать");
+        int k = 1;
+        for (Equipment j : armors) {
+            System.out.println(k + " Броня " + j.getName());
+            k++;
+        }
+        int choice_equip_from_inventory = scanner.nextInt();
+        if (choice_equip_from_inventory <= armors.size()) {
+            System.out.println(hero.getReduce_damage());
+            hero.equipArmor(armors.get(choice_equip_from_inventory-1));
+            System.out.println(hero.getReduce_damage());
+        }
+    }
+    public void showStats(PlayableHeroes hero) {
+        System.out.println("1. Имя: " + hero.getName());
+        System.out.println("2. HP: " + hero.getHp());
+        System.out.println("3. Max_HP: " + hero.getMax_hp());
+        System.out.println("4. Урон:" + hero.getDmg());
+        System.out.println("5. Деньги: " + hero.getMoney());
+        System.out.println("6. Меч: " + hero.getSword().getName());
+        System.out.println("7. Броня: " + hero.getArmor().getName());
+        System.out.println("8. Сопротивление урону" + hero.getReduce_damage() + "\n");
+    }
+    public void maimMenu() {
+        System.out.println("Выберите действие:");
+        System.out.println("1. Создать битву");
+        System.out.println("2. Сменить локацию");
+        System.out.println("3. Закупиться в магазине");
+        System.out.println("4. Экипировать снаряжение");
+        System.out.println("5. Вывести информацию о герое");
+        System.out.println("0. Выйти");
+    }
+    public void chooseFighters(PlayableHeroes hero, Battle battle1) {
+        System.out.println("\nВыберите с кем создать битву");
+        System.out.println("1. Огр");
+        System.out.println("2. Гоблин");
+
+        int choice_create_fight = scanner.nextInt();
+        switch (choice_create_fight) {
+            case 1 -> {
+                Ogre ogre = new Ogre();
+                battle1.battle(hero, ogre);
+            }
+            case 2 -> {
+                Goblin goblin = new Goblin();
+                battle1.battle(hero, goblin);
+            }
+        }
+    }
+    public void chooseLocation(PlayableHeroes hero) {
+        System.out.println("\n1. Магазин");
+        System.out.println("2. Лес");
+
+        int choice_location = scanner.nextInt();
+        switch (choice_location) {
+            case 1 -> hero.goShop();
+            case 2 -> hero.goForest();
+        }
+    }
+}
+
+
+
+
 class Battle {
     public void battle(PlayableHeroes hero, Fighter fighter2) {
         if (hero.isForest()) {
@@ -498,11 +502,14 @@ class Battle {
                 System.out.println("2. Выпить зелье");
                 int move = scanner.nextInt();
                 switch (move) {
-                    case 1:
+                    case 1 -> {
                         hero.attack(fighter2);
                         fighter2.attack(hero);
                         System.out.println("Обменялись ударами!" + "\n" + "Здоровье " + hero.getName() + ": " + hero.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
-                    case 2:
+                    }
+                    case 2 -> {
+                        // Надо сделать чтобы герой получал инвентарь, и по enum хранилище типов зелий. Затем зелья проверяются и если есть соответствующего типа, то пьют
+                    }
                 }
                 }
 
@@ -752,7 +759,7 @@ class Shop {
                 item.incCount();
                 hero.decMoney(item.getCost());
                 hero.pickUp(item);
-                System.out.println("Дзынь! Успешная покупка!");
+                System.out.println("\nДзынь! Успешная покупка!");
             } else { System.out.println("Не хватает денег!"); }
         }
     }
@@ -760,7 +767,7 @@ class Shop {
     // Создание списка покупок и возможности выбора одного предмета
     public void buyItems(PlayableHeroes hero) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ваши монеты: " + hero.getMoney());
+        System.out.println("\nВаши монеты: " + hero.getMoney());
         // Если в магазине, хз можно ли сделать проверку проще, вроде и так хорошо
         System.out.println("Выберите что хотите купить");
         for (int i = 0; i < getShopSize(); i++) {
