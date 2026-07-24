@@ -10,14 +10,13 @@ public class Main {
         Logic logic = new Logic();
         shop.initializeShop();
         Hero hero = new Hero();
-
         // Создаю новое сражение
         Battle battle1 = new Battle();
         while (true) {
             logic.maimMenu();
+            logic.createOneTypeInventory(hero, ItemType.POTION);
             int choice_main = scanner.nextInt();
             if (choice_main == 0) { break; }
-
             switch (choice_main) {
                 case 1 -> logic.chooseFighters(hero, battle1);
                 case 2-> logic.chooseLocation(hero);
@@ -328,8 +327,12 @@ class Paladin extends PlayableHeroes {
 class Inventory {
     private final List<Item> items = new ArrayList<>();
     private int max_size = 20;
+
     public void addItem(Item item) {
-        items.add(item);
+        if (items.size() < max_size) {
+            items.add(item);
+        } else { System.out.println("Инвентарь забит, места нет!"); }
+
     }
     public void removeItem(Item item) {
         items.remove(item);
@@ -345,17 +348,31 @@ class Inventory {
     public void setMax_size(int max_size) {
         this.max_size = max_size;
     }
+
 }
 
 class Logic {
     Scanner scanner = new Scanner(System.in);
 
-    public void fullEquip(PlayableHeroes hero, Logic logic) {
+    //Функция создания инвентаря с каким-то конкретным типом предметов. Возвращает массив предметов одного типа, которые есть в инвентаре
+    public List<Item> createOneTypeInventory(PlayableHeroes hero, ItemType itemType) {
+        ArrayList<Item> OneTypeInventory = new ArrayList<>();
+        for (Item i: hero.getInventory()) {
+            if (i.getItemType().equals(itemType)) {
+                OneTypeInventory.add(i);
+            }
+        }
+        System.out.println(OneTypeInventory);
+        return OneTypeInventory;
+    }
+
+    public boolean fullEquip(PlayableHeroes hero, Logic logic) {
         System.out.println(hero.getInventoryWithName());
         if (hero.getInventory().isEmpty()) {
-            System.out.println("У вас нет нужного снаряжения");
+            System.out.println("У вас нет нужного снаряжения\n");
             // Придумать что сделать вместо break
             // break;
+            return false;
         }
         System.out.println("\nВот имеющееся снаряжение: ");
         System.out.println("1. Поменять оружие");
@@ -365,11 +382,16 @@ class Logic {
             case 1 -> logic.chooseSwords(hero);
             case 2 -> logic.chooseArmor(hero);
         }
+        return true;
     }
 
     // Выбирает из массива со всем снаряжением мечи и создаёт массив с мечами
     public void chooseSwords(PlayableHeroes hero) {
         Scanner scanner = new Scanner(System.in);
+        // Создаём инвентарь с мечами
+        List<Item> swords = createOneTypeInventory(hero, ItemType.SWORD);
+
+        /*
         // Отделяем мечи от всего снаряжения и даём им тип Equipment
         ArrayList<Equipment> swords = new ArrayList<>();
         System.out.println("Ваше оружие: " + hero.getSword().getName());
@@ -378,34 +400,36 @@ class Logic {
             // Считаем что поступающий нам предмет это какой-то Item
             Item one_from_inventory = hero.getInventoryByNumber(i);
             // Проверяем если объект является экземпляром класса Equippable
-            if (one_from_inventory instanceof Equippable equippable) {
-                // Надо привести one_from_inventory к equippable
-                // Если true, тогда приводим к типу Equipable чтобы работать с его методами
-                // Проверяем какой тип
-                if (equippable.getEquipmentType() == EquipmentType.SWORD) {
-                    swords.add((Equipment) equippable);
-                }
+            if (one_from_inventory.getItemType() == ItemType.SWORD) {
+                swords.add((Equipment) one_from_inventory);
             }
         }
+
+         */
         if (swords.isEmpty()) {
             System.out.println("Сначала получите какой-то меч");
             // Узнать что делать вместо break при void функции, мб можно обойтись без перехода к int или boolean
         }
         System.out.println("\nВыберите что экипировать");
+
         int k = 1;
-        for (Equipment j : swords) {
+        for (Item j : swords) {
             System.out.println(k + " Меч " + j.getName());
             k++;
         }
+
         int choice_equip_from_inventory = scanner.nextInt();
         if (choice_equip_from_inventory <= swords.size()) {
             System.out.println(hero.getDmg());
-            hero.equipSword(swords.get(choice_equip_from_inventory-1));
+            hero.equipSword((Equipment) swords.get(choice_equip_from_inventory-1));
             System.out.println(hero.getDmg());
         }
     }
     public void chooseArmor(PlayableHeroes hero) {
         // Отделяем мечи от всего снаряжения и даём им тип Equipment
+
+        List<Item> armors = createOneTypeInventory(hero, ItemType.ARMOR);
+        /*
         ArrayList<Equipment> armors = new ArrayList<>();
         System.out.println("Ваша броня: " + hero.getArmor().getName());
         // Пройтись по всему снаряжению, найти оружия и вывести их сюда
@@ -413,32 +437,51 @@ class Logic {
             // Считаем что поступающий нам предмет это какой-то Item
             Item one_from_inventory = hero.getInventoryByNumber(i);
             // Проверяем если объект является экземпляром класса Equippable
-            if (one_from_inventory instanceof Equippable equippable) {
-                // Надо привести one_from_inventory к equippable
-                // Если true, тогда приводим к типу Equipable чтобы работать с его методами
-                // Проверяем какой тип
-                if (equippable.getEquipmentType() == EquipmentType.ARMOR) {
-                    armors.add((Equipment) equippable);
-                }
+            // Изменил, теперь не проверяется Equippable, избавился от интерфейса маркера проверкой по типу Enum, теперь getItemType для всех Item, а не для Equipment
+            if (one_from_inventory.getItemType() == ItemType.ARMOR) {
+                armors.add((Equipment) one_from_inventory);
             }
         }
+
+         */
         if (armors.isEmpty()) {
             System.out.println("Сначала получите какую-то броню");
             // Узнать что делать вместо break при void функции, мб можно обойтись без перехода к int или boolean
         }
         System.out.println("\nВыберите что экипировать");
         int k = 1;
-        for (Equipment j : armors) {
+        for (Item j : armors) {
             System.out.println(k + " Броня " + j.getName());
             k++;
         }
         int choice_equip_from_inventory = scanner.nextInt();
         if (choice_equip_from_inventory <= armors.size()) {
             System.out.println(hero.getReduce_damage());
-            hero.equipArmor(armors.get(choice_equip_from_inventory-1));
+            hero.equipArmor((Equipment) armors.get(choice_equip_from_inventory-1));
             System.out.println(hero.getReduce_damage());
         }
     }
+
+    public void choosePotion(PlayableHeroes hero) {
+        List<Item> potions = createOneTypeInventory(hero, ItemType.ARMOR);
+        if (potions.isEmpty()) {
+            System.out.println("Сначала получите какое-то зелье");
+            // Узнать что делать вместо break при void функции, мб можно обойтись без перехода к int или boolean
+        }
+        System.out.println("\nВыберите какое зелье выпить");
+        int k = 1;
+        for (Item j : potions) {
+            System.out.println(k + " Зелья " + j.getName());
+            k++;
+        }
+        int choice_equip_from_inventory = scanner.nextInt();
+        if (choice_equip_from_inventory <= potions.size()) {
+            System.out.println(hero.getHp());
+            hero.drinkPotion((Potion) potions.get(choice_equip_from_inventory-1));
+            System.out.println(hero.getHp());
+        }
+    }
+
     public void showStats(PlayableHeroes hero) {
         System.out.println("1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
@@ -447,7 +490,7 @@ class Logic {
         System.out.println("5. Деньги: " + hero.getMoney());
         System.out.println("6. Меч: " + hero.getSword().getName());
         System.out.println("7. Броня: " + hero.getArmor().getName());
-        System.out.println("8. Сопротивление урону" + hero.getReduce_damage() + "\n");
+        System.out.println("8. Сопротивление урону: " + hero.getReduce_damage() + "\n");
     }
     public void maimMenu() {
         System.out.println("Выберите действие:");
@@ -488,9 +531,8 @@ class Logic {
 }
 
 
-
-
 class Battle {
+    Logic logic = new Logic();
     public void battle(PlayableHeroes hero, Fighter fighter2) {
         if (hero.isForest()) {
             System.out.print("Изначальное здоровье " + hero.getName() + ": " + hero.getHp() + "\n");
@@ -508,7 +550,13 @@ class Battle {
                         System.out.println("Обменялись ударами!" + "\n" + "Здоровье " + hero.getName() + ": " + hero.getHp() + "\n" + "Здоровье " + fighter2.getName() + ": " + fighter2.getHp());
                     }
                     case 2 -> {
+                        System.out.println(hero.getInventory());
                         // Надо сделать чтобы герой получал инвентарь, и по enum хранилище типов зелий. Затем зелья проверяются и если есть соответствующего типа, то пьют
+
+                        // Отдельное хранилище для зелий
+                        System.out.println("Здоровья до зелья: " + hero.getHp());
+                        logic.choosePotion(hero);
+                        System.out.println("Здоровья после зелья: " + hero.getHp());
                     }
                 }
                 }
@@ -526,6 +574,7 @@ class Battle {
 
 // Абстрактный метод для всех предметов вообще
 abstract class Item {
+    private ItemType itemType;
     private String name;
     private int cost;
     private int count;
@@ -561,32 +610,29 @@ abstract class Item {
         return getCount() > 0;
     }
 
+    public ItemType getItemType() {
+        return itemType;
+    }
 
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
 }
 
-interface Equippable {
-    EquipmentType getEquipmentType();
-}
+//interface Equippable {
+//    ItemType getItemType();
+//}
 
-enum EquipmentType {
+enum ItemType {
     SWORD,
-    ARMOR
+    ARMOR,
+    POTION
 }
 
 // Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
-abstract class Equipment extends Item implements Equippable {
+abstract class Equipment extends Item {
     private int dmg;
     private int armor;
-    private EquipmentType equipmentType;
-
-    public void setEquipmentType(EquipmentType equipmentType) {
-        this.equipmentType = equipmentType;
-    }
-
-    @Override
-    public EquipmentType getEquipmentType() {
-        return equipmentType;
-    }
 
     public int getDmg() {
         return dmg;
@@ -609,7 +655,7 @@ class Fist extends Equipment {
     public Fist() {
         setName("Fist");
         setDmg(3);
-        setEquipmentType(EquipmentType.SWORD);
+        setItemType(ItemType.SWORD);
         incCount();
     }
 }
@@ -618,7 +664,7 @@ class Skin extends Equipment {
     public Skin() {
         setName("Skin");
         setArmor(0);
-        setEquipmentType(EquipmentType.ARMOR);
+        setItemType(ItemType.ARMOR);
         incCount();
     }
 }
@@ -628,7 +674,7 @@ class IronSword extends Equipment {
         setName("Iron sword");
         setDmg(4);
         setCost(50);
-        setEquipmentType(EquipmentType.SWORD);
+        setItemType(ItemType.SWORD);
     }
 }
 class GoldSword extends Equipment {
@@ -636,7 +682,7 @@ class GoldSword extends Equipment {
         setName("Gold sword");
         setDmg(5);
         setCost(120);
-        setEquipmentType(EquipmentType.SWORD);
+        setItemType(ItemType.SWORD);
     }
 }
 class IronChest extends Equipment {
@@ -644,7 +690,7 @@ class IronChest extends Equipment {
         setName("IronChest");
         setCost(200);
         setArmor(1);
-        setEquipmentType(EquipmentType.ARMOR);
+        setItemType(ItemType.ARMOR);
     }
 }
 
@@ -682,6 +728,7 @@ class HealPotion extends Potion {
         setName("Heal potion");
         setHealAmount(8);
         setCost(30);
+        setItemType(ItemType.POTION);
     }
     // Его непосредственное применение
     @Override
@@ -707,6 +754,7 @@ class Poison extends Potion {
         setName("Poison");
         setDmgAmount(5);
         setCost(40);
+        setItemType(ItemType.POTION);
     }
     @Override
     public void apply (Fighter target) {
