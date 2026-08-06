@@ -9,6 +9,7 @@ import main.java.com.game.enums.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Controller {
@@ -23,11 +24,11 @@ public class Controller {
         this.hero = hero;
         this.shop = shop;
         this.battle1 = battle1;
+        shop.initializeShop();
 
     }
 
     public void run() {
-        shop.initializeShop();
         while (true) {
             view.maimMenu();
             int choice_main = scanner.nextInt();
@@ -38,6 +39,7 @@ public class Controller {
                 case 3 -> shop.buyItems(hero);
                 case 4 -> fullEquip();
                 case 5 -> view.showStats(hero);
+                default -> run();
             }
         }
     }
@@ -53,6 +55,7 @@ public class Controller {
                 Goblin goblin = new Goblin();
                 battle1.battle(hero, goblin);
             }
+            default -> chooseFighters();
         }
     }
     public void chooseLocation() {
@@ -61,15 +64,14 @@ public class Controller {
         switch (choice_location) {
             case 1 -> hero.goShop();
             case 2 -> hero.goForest();
+            default -> chooseLocation();
         }
     }
 
     public boolean fullEquip() {
-        view.showInventaryWithName(hero);
+        view.showInventoryWithName(hero);
         if (hero.getInventory().isEmpty()) {
             view.noEquip();
-            // Придумать что сделать вместо break
-            // break;
             return false;
         }
         view.showChooseEquip();
@@ -77,36 +79,93 @@ public class Controller {
         switch (choice_swap_equip) {
             case 1 -> chooseSwords(hero);
             case 2 -> chooseArmor(hero);
+            default -> fullEquip();
         }
         return true;
     }
     //Функция создания инвентаря с каким-то конкретным типом предметов. Возвращает массив предметов одного типа, которые есть в инвентаре
     public List<Item> createOneTypeInventory(PlayableHeroes hero, ItemType itemType) {
+
+        // Прошли и добавили все предметы одного типа
         ArrayList<Item> OneTypeInventory = new ArrayList<>();
         for (Item i: hero.getInventory()) {
-            if (i.getItemType().equals(itemType)) {
+            // Проверяем типы и если совпадает, то подготавливаем чтобы положить в новый инвентарь
+            if (Objects.equals(i.getItemType(), itemType)) {
                 OneTypeInventory.add(i);
+                view.showCount(i);
             }
         }
 
+
+        // Проверяем добавленное, если есть одинаковое - выгоняем
+        // j проходится по всему снаряжению, сравнивается с i
+        // Выгоняем j если что-то совпадает
+        int size = OneTypeInventory.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = i+1; j < size; j++) {
+                if (Objects.equals(OneTypeInventory.get(i).getName(), OneTypeInventory.get(j).getName())) {
+                            OneTypeInventory.remove(j);
+                            size = OneTypeInventory.size();
+                            j = j - 1;
+                }
+            }
+        }
+
+        // Получаем инвентарь уникальных предметов с 1 типом
         return OneTypeInventory;
     }
+
 
     // Выбирает из массива со всем снаряжением мечи и создаёт массив с мечами
     public void chooseSwords(PlayableHeroes hero) {
         // Создаём инвентарь с мечами
         List<Item> swords = createOneTypeInventory(hero, ItemType.SWORD);
+        System.out.println(swords);
         view.showSwordList(swords);
 
+        // Выбираем номер предмета из инвентаря
         int choice_equip_from_inventory = scanner.nextInt();
+        //if (choice_equip_from_inventory > swords.size()) {
+         //   view.wrong();
+         //   supportChoiceEquipFromInventory(choice_equip_from_inventory, swords.size());
+        //}
+        readIntInRange(1, swords.size());
+        Equipment newSword = (Equipment) swords.get(choice_equip_from_inventory-1);
+
+        // После того как выбрали что будем экипировать, выбрасываем это
+        hero.drop(newSword);
+
         if (choice_equip_from_inventory <= swords.size()) {
             view.showDmg(hero);
-            Equipment newSword = (Equipment) swords.get(choice_equip_from_inventory-1);
+            // Хорошая практика вызывать View только лишь в Controller
             hero.equipSword(newSword);
-            newSword.decCount();
+            boolean decreased = newSword.decCount();
+            if (!decreased) {
+                view.zeroCount();
+            }
             view.showDmg(hero);
         }
     }
+
+    private int readIntInRange(int min, int max) {
+        while (true) {
+            // hasNextInt проверка будет ли следующее число целым
+            if (scanner.hasNextInt()) {
+                int value = scanner.nextInt();
+                if (value >= min && value <= max) {
+                    return value;
+                } else {
+                    view.wrong();
+                    System.out.println("Введите число от " + min + " до " + max);
+                }
+            } else {
+                // Пользователь ввёл не число – пропускаем некорректный ввод
+                System.out.println("Это не число. Попробуйте снова.");
+                scanner.next(); // съедаем неверный токен
+            }
+        }
+    }
+
     public void chooseArmor(PlayableHeroes hero) {
         List<Item> armors = createOneTypeInventory(hero, ItemType.ARMOR);
         view.showArmorList(armors);

@@ -1,11 +1,9 @@
 package main.java.com.game.item;
 
 import main.java.com.game.enums.ItemType;
-import main.java.com.game.view.View;
 
 // Абстрактный метод для всех предметов вообще
 public abstract class Item {
-    private View view;
     private ItemType itemType;
     private String name;
     private int cost;
@@ -31,12 +29,14 @@ public abstract class Item {
         setCount(getCount() + 1);
     }
 
-    public void decCount() {
+    public boolean decCount() {
         if (getCount() > 0) {
             setCount(getCount() - 1);
-        } else { view.zeroCount(); }
-
+            return true;
+        }
+    return false;
     }
+
     public int getCost() {
         return cost;
     }

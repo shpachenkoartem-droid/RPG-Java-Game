@@ -1,5 +1,6 @@
 package main.java.com.game.view;
 
+import main.java.com.game.enums.ItemType;
 import main.java.com.game.model.*;
 import main.java.com.game.item.Item;
 
@@ -43,15 +44,19 @@ public class View {
         System.out.println("7. Броня: " + hero.getArmor().getName());
         System.out.println("8. Сопротивление урону: " + hero.getReduce_damage() + "\n");
     }
-    public void showName(Fighter fighter) {System.out.println("Имя: " + fighter.getHp());}
-    public void showHP(Fighter fighter) {System.out.println("HP: " + fighter.getHp());}
-    public void showMaxHP(Fighter fighter) {System.out.println("Max_HP: " + fighter.getMax_hp());}
-    public void showDmg(Fighter fighter) {System.out.println("Урон: " + fighter.getDmg());}
-    public void showMoney(Fighter fighter) {System.out.println("Деньги: " + fighter.getMoney());}
-    public void showSword(Fighter fighter) {System.out.println("Меч: " + fighter.getSword());}
-    public void showArmor(Fighter fighter) {System.out.println("Броня: " + fighter.getArmor());}
-    public void showReduceDamage(Fighter fighter) {System.out.println("Снижение урона: " + fighter.getReduce_damage());}
-
+    public void showFighterName(Fighter fighter) {System.out.println("\nИмя: " + fighter.getHp());}
+    public void showHP(Fighter fighter) {System.out.println("\nHP: " + fighter.getHp());}
+    public void showMaxHP(Fighter fighter) {System.out.println("\nMax_HP: " + fighter.getMax_hp());}
+    public void showDmg(Fighter fighter) {System.out.println("\nУрон: " + fighter.getDmg());}
+    public void showMoney(Fighter fighter) {System.out.println("\nДеньги: " + fighter.getMoney());}
+    public void showSword(Fighter fighter) {System.out.println("\nМеч: " + fighter.getSword());}
+    public void showArmor(Fighter fighter) {System.out.println("\nБроня: " + fighter.getArmor());}
+    public void showReduceDamage(Fighter fighter) {System.out.println("\nСнижение урона: " + fighter.getReduce_damage());}
+    public void showItemName(Item item) {System.out.println("\nИмя предмета: " + item.getName());}
+    public void showCost(Item item) {System.out.println("\nСтоимость предмета: " + item.getCost());}
+    public void showCount(Item item) {System.out.println("\nКоличество предмета: " + item.getCount());}
+    public void here() {System.out.println("\nВот тут! Прямо здесь! Прямо в этой части кода!");}
+    public void wrong() {System.out.println("\nВведите правильное значение.");}
 
     public void showPotionList(List<Item> potions) {
         if (potions.isEmpty()) {
@@ -61,6 +66,18 @@ public class View {
         System.out.println("Ваши зелья:");
         for (int i = 0; i < potions.size(); i++) {
             Item p = potions.get(i);
+            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
+        }
+    }
+
+    public void showEquipmentList(List<Item> equipmentType, ItemType itemType) {
+        if (equipmentType.isEmpty()) {
+            System.out.println("У вас нет " + itemType);
+            return;
+        }
+        System.out.println("Ваши " + itemType + ":");
+        for (int i = 0; i < equipmentType.size(); i++) {
+            Item p = equipmentType.get(i);
             System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
         }
     }
@@ -90,7 +107,8 @@ public class View {
     }
 
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
-    public void showInventaryWithName(Hero hero) {System.out.println(hero.getInventoryWithName());}
+    public void showInventory(Hero hero) {System.out.println("Ваш инвентарь: " + hero.getInventory());}
+    public void showInventoryWithName(Hero hero) {System.out.println(hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("У вас нет этого предмета!"); }
 
 }

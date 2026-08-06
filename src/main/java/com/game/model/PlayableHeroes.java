@@ -25,7 +25,7 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
         return arrayWithNames;
     }
 
-    public Item getInventoryByNumber(int number) {
+    public Item getInventoryCellByNumber(int number) {
         return getInventory().get(number);
     }
 

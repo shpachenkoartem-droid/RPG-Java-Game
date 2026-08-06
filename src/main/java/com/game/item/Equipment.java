@@ -20,4 +20,7 @@ public abstract class Equipment extends Item {
     public void setArmor(int armor) {
         this.armor = armor;
     }
+    public void NullEquipment() {
+
+    }
 }
