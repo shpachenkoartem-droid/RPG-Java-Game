@@ -3,6 +3,7 @@ package main.java.com.game.view;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.model.*;
 import main.java.com.game.item.Item;
+import main.java.com.game.service.Shop;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class View {
         System.out.println("2. Поменять броню");
     }
     public void showStats(PlayableHeroes hero) {
-        System.out.println("1. Имя: " + hero.getName());
+        System.out.println("\n1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
         System.out.println("3. Max_HP: " + hero.getMax_hp());
         System.out.println("4. Урон:" + hero.getDmg());
@@ -57,6 +58,17 @@ public class View {
     public void showCount(Item item) {System.out.println("\nКоличество предмета: " + item.getCount());}
     public void here() {System.out.println("\nВот тут! Прямо здесь! Прямо в этой части кода!");}
     public void wrong() {System.out.println("\nВведите правильное значение.");}
+
+    public void whatYouWantBuy() {System.out.println("Выберите что хотите купить");}
+    public void successBuying() {System.out.println("\nДзынь! Успешная покупка!");}
+    public void notEnoughMoney() {System.out.println("Не хватает денег!");}
+
+    public void showShopStock(Shop shop) {
+        for (int i = 0; i < shop.getShopSize(); i++) {
+            // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
+            System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
+        }
+    }
 
     public void showPotionList(List<Item> potions) {
         if (potions.isEmpty()) {
