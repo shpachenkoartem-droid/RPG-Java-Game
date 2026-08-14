@@ -1,5 +1,6 @@
 package main.java.com.game.service;
 
+import main.java.com.game.enums.PurchaseResult;
 import main.java.com.game.item.*;
 import main.java.com.game.model.*;
 
@@ -34,6 +35,7 @@ public class Shop {
         addShopItems(healPotion);
         addShopItems(poison);
     }
+
     // Наполняем магазин товарами
     private final IronSword sword1 = new IronSword();
     private final GoldSword sword2 = new GoldSword();
@@ -41,4 +43,36 @@ public class Shop {
     private final HealPotion healPotion = new HealPotion();
     private final Poison poison = new Poison();
 
+
+    // Главная идея - создавать методы в Model, которые возвращают значения (можно enum),
+    // а Controller эти значения обрабатывает и что-то выводит, он создаёт связь между выводимым из Model и из View
+
+    // Сам процесс покупки когда уже выбрали предмет
+    public PurchaseResult buySoloItem(PlayableHeroes hero, Item item) {
+        if (hero.isShop()) {
+            if (hero.getMoney() > item.getCost()) {
+                item.incCount();
+                hero.decMoney(item.getCost());
+                hero.pickUp(item);
+                return PurchaseResult.SUCCESS;
+            } else {
+                return PurchaseResult.NOT_ENOUGH_MONEY;
+            }
+        }
+        return PurchaseResult.NOT_IN_SHOP;
+    }
 }
+
+    /*
+    // Создание списка покупок и возможности выбора одного предмета
+    public void buyItems(PlayableHeroes hero) {
+        int choice_items =
+        switch (choice_items) {
+            case 1 -> buySoloItem(hero, getShopItem(0));
+            case 2 -> buySoloItem(hero, getShopItem(1));
+            case 3 -> buySoloItem(hero, getShopItem(2));
+            case 4 -> buySoloItem(hero, getShopItem(3));
+            case 5 -> buySoloItem(hero, getShopItem(4));
+        }
+    }
+    */

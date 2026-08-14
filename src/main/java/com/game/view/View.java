@@ -1,9 +1,12 @@
 package main.java.com.game.view;
 
 import main.java.com.game.enums.ItemType;
+import main.java.com.game.enums.PurchaseResult;
 import main.java.com.game.model.*;
 import main.java.com.game.item.Item;
 import main.java.com.game.service.Shop;
+import java.util.Scanner;
+
 
 import java.util.List;
 
@@ -12,7 +15,8 @@ import java.util.List;
 // Класс Model не будет знать как выводить, он лишь будет передавать данные
 // Все вызовы будет производить main.java.com.game.Controller, Model лишь будет выполнять техническую часть
 public class View {
-    public void maimMenu() {
+    private final Scanner scanner = new Scanner(System.in);
+    public int maimMenu() {
         System.out.println("Выберите действие:");
         System.out.println("1. Создать битву");
         System.out.println("2. Сменить локацию");
@@ -20,20 +24,24 @@ public class View {
         System.out.println("4. Экипировать снаряжение");
         System.out.println("5. Вывести информацию о герое");
         System.out.println("0. Выйти");
+        return readIntInRange(0,5);
     }
-    public void showChooseFighters() {
+    public int showChooseFighters() {
         System.out.println("\nВыберите с кем создать битву");
         System.out.println("1. Огр");
         System.out.println("2. Гоблин");
+        return readIntInRange(1,2);
     }
-    public void showChooseLocation() {
+    public int showChooseLocation() {
         System.out.println("\n1. Магазин");
         System.out.println("2. Лес");
+        return readIntInRange(1,2);
     }
-    public void showChooseEquip() {
+    public int showChooseEquip() {
         System.out.println("\nВот имеющееся снаряжение: ");
         System.out.println("1. Поменять оружие");
         System.out.println("2. Поменять броню");
+        return readIntInRange(1,2);
     }
     public void showStats(PlayableHeroes hero) {
         System.out.println("\n1. Имя: " + hero.getName());
@@ -70,6 +78,7 @@ public class View {
         }
     }
 
+    /*
     public void showPotionList(List<Item> potions) {
         if (potions.isEmpty()) {
             System.out.println("У вас нет зелий.");
@@ -78,18 +87,6 @@ public class View {
         System.out.println("Ваши зелья:");
         for (int i = 0; i < potions.size(); i++) {
             Item p = potions.get(i);
-            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
-        }
-    }
-
-    public void showEquipmentList(List<Item> equipmentType, ItemType itemType) {
-        if (equipmentType.isEmpty()) {
-            System.out.println("У вас нет " + itemType);
-            return;
-        }
-        System.out.println("Ваши " + itemType + ":");
-        for (int i = 0; i < equipmentType.size(); i++) {
-            Item p = equipmentType.get(i);
             System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
         }
     }
@@ -118,10 +115,58 @@ public class View {
         }
     }
 
+    */
+
+    public void showItemList(List<Item> items, ItemType itemType) {
+        if (items.isEmpty()) {
+            System.out.println("У вас нет " + itemType);
+            return;
+        }
+        System.out.println("Ваши " + itemType + ":");
+        for (int i = 0; i < items.size(); i++) {
+            Item p = items.get(i);
+            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
+        }
+    }
+
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
     public void showInventory(Hero hero) {System.out.println("Ваш инвентарь: " + hero.getInventory());}
     public void showInventoryWithName(Hero hero) {System.out.println(hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("У вас нет этого предмета!"); }
+    public void showPurchaseResult(PurchaseResult purchaseResult) {System.out.println(purchaseResult);}
 
+
+    // Проверяет ли является число целыми число ли вообще. Если не является - заставляет вводить заново
+    // Если является - возвращает true
+    private boolean isIntInput() {
+        do {
+            if (scanner.hasNextInt()) return true;
+            else {
+                System.out.println("\nЭто не число. Попробуйте снова.");
+                scanner.next();
+                return false;
+            }
+        } while (false);
+    }
+
+
+
+    // Функция для возврата числа
+    // View должен принимать и обрабатывать внутри себя введённые данные
+    public int readIntInRange(int min, int max) {
+        while (true) {
+            System.out.print("Ваш выбор: ");
+            if (scanner.hasNextInt()) {
+                int value = scanner.nextInt();
+                scanner.nextLine(); // очистка буфера
+                if (value >= min && value <= max) {
+                    return value;
+                }
+            } else {
+                scanner.next(); // сбросить некорректный ввод
+            }
+            System.out.println("Введите число от " + min + " до " + max);
+        }
+    }
 }
 
