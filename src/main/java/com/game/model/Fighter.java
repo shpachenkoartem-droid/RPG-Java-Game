@@ -1,6 +1,9 @@
 package main.java.com.game.model;
 
+import main.java.com.game.enums.ItemType;
 import main.java.com.game.item.*;
+
+import java.util.Objects;
 
 // абстрактный класс бойца - "образ" всех кто должен сражаться
 public abstract class Fighter {
@@ -15,32 +18,31 @@ public abstract class Fighter {
     private Equipment sword;
     private Equipment armor;
 
-    public void attack(Fighter target) {
-        target.decHp(getDmg() - target.getReduce_damage());
-        System.out.println("\n" + target.getName() + " Получает " + getDmg() + " урона!");
-        System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
+    // Возвращаем урон, который наносится
+    public int attack(Fighter target) {
+        int damage = Math.max(0, getDmg() - target.getReduceDamage());
+        target.decHp(damage);
+        return damage;
     }
 
-
-    public void equipSword(Equipment equipment) {
+    // Как работает экипировка мечей
+    // С помощью конструкторов мы создаём каждый меч
+    // main.java.com.game.Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов main.java.com.game.Equipment, а значит и в частности наш меч
+    // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
+    public void equip(Equipment equipment) {
         if (equipment.isNotNull()) {
-            this.sword = equipment;
-            setDmg(equipment.getDmg());
-        } else { System.out.println("У вас нет такого меча"); }
-        // Как работает экипировка мечей
-        // С помощью конструкторов мы создаём каждый меч
-        // main.java.com.game.Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов main.java.com.game.Equipment, а значит и в частности наш меч
-        // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
+            if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
+                this.sword = equipment;
+                setDmg(equipment.getDmg());
+            }
+            if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
+                this.armor = equipment;
+                setArmor(equipment);
+            }
+        }
+        else { System.out.println("У вас нет такого" + equipment.getItemType()); }
     }
 
-
-    public void equipArmor(Equipment equipment) {
-        if (equipment.isNotNull()) {
-            this.armor = equipment;
-            setReduce_damage(equipment.getArmor());
-        } else { System.out.println("У вас нет такой брони"); }
-
-    }
 
     public void drinkPotion(Potion potion) {
         // Зелье применяется на выпившего его
@@ -97,6 +99,28 @@ public abstract class Fighter {
         return dmg;
     }
 
+    /*
+    public Equipment getNeedForEquip(Equipment equipment) {
+        if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
+            return sword;
+        }
+        if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
+            return armor;
+        }
+        return test;
+    }
+
+    public void setNeedForEquip(Equipment equipment) {
+        if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
+            setDmg(equipment.getDmg());
+        }
+        if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
+            setReduceDamage(equipment.getArmor());
+        }
+    }
+
+     */
+
     public void setDmg(int dmg) {
         if (dmg <= 0) { System.out.print("Урон должен быть больше 0"); }
         else { this.dmg = dmg; }
@@ -119,7 +143,7 @@ public abstract class Fighter {
     }
 
     // Хочу чтобы getMoney вызывалась "под капотом", и вместо fighter1.setMoney(fighter1.getMoney() + 10) было fighter1.incMoney(10)
-// this обозначает вызвавшего
+    // this обозначает вызвавшего
     public void incMoney(int money) {
         setMoney(this.getMoney() + money);
     }
@@ -148,11 +172,8 @@ public abstract class Fighter {
         this.armor = armor;
     }
 
-    public int getReduce_damage() {
+    public int getReduceDamage() {
         return reduce_damage;
     }
 
-    public void setReduce_damage(int reduce_damage) {
-        this.reduce_damage = reduce_damage;
-    }
 }

@@ -1,7 +1,11 @@
 package main.java.com.game.service;
 
+import java.util.Objects;
 import java.util.Scanner;
+
+import main.java.com.game.enums.BattleResult;
 import main.java.com.game.model.*;
+
 
 public class Battle {
     public void battle(PlayableHeroes hero, Fighter fighter2) {
@@ -41,6 +45,31 @@ public class Battle {
             // Получение денег
             hero.incMoney(fighter2.getMoney());
         }
+    }
+
+    public void getMoneyForEnemyKill(Hero hero, Fighter fighter) {
+        hero.incMoney(fighter.getMoney());
+    }
+
+    // Метод для проведения 1 раунда боя
+    // Остальное возвращает в контроллер
+    public BattleResult fightRound(PlayableHeroes hero, Fighter fighter, int choice) {
+        // Мы конечно сделали тут while, но всё равно сразу же возвращаем результат в контроллер
+            switch (choice) {
+                case 1 -> {
+                    hero.attack(fighter);
+                    fighter.attack(hero);
+                    return BattleResult.ATTACK;
+                }
+
+                case 2 -> {
+                    fighter.attack(hero);
+                    return BattleResult.DRINK_POTION;
+                }
+            }
+        if (Objects.equals(fighter.getHp(), 0))  return BattleResult.WIN;
+        if (Objects.equals(hero.getHp(), 0))  return BattleResult.LOSE;
+    return BattleResult.NONE;
     }
 }
 

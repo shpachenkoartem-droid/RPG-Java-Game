@@ -2,6 +2,7 @@ package main.java.com.game.view;
 
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.enums.PurchaseResult;
+import main.java.com.game.item.Potion;
 import main.java.com.game.model.*;
 import main.java.com.game.item.Item;
 import main.java.com.game.service.Shop;
@@ -49,9 +50,9 @@ public class View {
         System.out.println("3. Max_HP: " + hero.getMax_hp());
         System.out.println("4. Урон:" + hero.getDmg());
         System.out.println("5. Деньги: " + hero.getMoney());
-        System.out.println("6. Меч: " + hero.getSword().getName());
+        System.out.println("6. Оружие: " + hero.getSword().getName());
         System.out.println("7. Броня: " + hero.getArmor().getName());
-        System.out.println("8. Сопротивление урону: " + hero.getReduce_damage() + "\n");
+        System.out.println("8. Сопротивление урону: " + hero.getArmor().getArmor() + "\n");
     }
     public void showFighterName(Fighter fighter) {System.out.println("\nИмя: " + fighter.getHp());}
     public void showHP(Fighter fighter) {System.out.println("\nHP: " + fighter.getHp());}
@@ -60,7 +61,7 @@ public class View {
     public void showMoney(Fighter fighter) {System.out.println("\nДеньги: " + fighter.getMoney());}
     public void showSword(Fighter fighter) {System.out.println("\nМеч: " + fighter.getSword());}
     public void showArmor(Fighter fighter) {System.out.println("\nБроня: " + fighter.getArmor());}
-    public void showReduceDamage(Fighter fighter) {System.out.println("\nСнижение урона: " + fighter.getReduce_damage());}
+    public void showReduceDamage(Fighter  fighter) {System.out.println("\nСнижение урона: " + fighter.getReduceDamage());}
     public void showItemName(Item item) {System.out.println("\nИмя предмета: " + item.getName());}
     public void showCost(Item item) {System.out.println("\nСтоимость предмета: " + item.getCost());}
     public void showCount(Item item) {System.out.println("\nКоличество предмета: " + item.getCount());}
@@ -117,6 +118,7 @@ public class View {
 
     */
 
+
     public void showItemList(List<Item> items, ItemType itemType) {
         if (items.isEmpty()) {
             System.out.println("У вас нет " + itemType);
@@ -132,7 +134,7 @@ public class View {
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
     public void showInventory(Hero hero) {System.out.println("Ваш инвентарь: " + hero.getInventory());}
     public void showInventoryWithName(Hero hero) {System.out.println(hero.getInventoryWithName());}
-    public void zeroCount() { System.out.println("У вас нет этого предмета!"); }
+    public void zeroCount() { System.out.println("\nУ вас нет этого предмета!"); }
     public void showPurchaseResult(PurchaseResult purchaseResult) {System.out.println(purchaseResult);}
 
 
@@ -167,6 +169,30 @@ public class View {
             }
             System.out.println("Введите число от " + min + " до " + max);
         }
+    }
+
+    public void showAttackResult(PlayableHeroes hero, Fighter target) {
+        System.out.println("\n" + target.getName() + " Получает " + hero.getDmg() + " урона!");
+        System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
+    }
+    public void showFightersHP(PlayableHeroes hero, Fighter fighter) {
+        System.out.println("Изначальное здоровье " + hero.getName() + ": " + hero.getHp());
+        System.out.println("Изначальное здоровье " + fighter.getName() + ": " + fighter.getHp() + "\n");
+    }
+    public int showFightActions() {
+        System.out.println("Выберите действие");
+        System.out.println("1. Атаковать");
+        System.out.println("2. Выпить зелье");
+        return readIntInRange(1,2);
+    }
+    public void showDrinkPotionMenu(PlayableHeroes hero) {
+        System.out.println(hero.getInventory());
+        // Надо сделать чтобы герой получал инвентарь, и по enum хранилище типов зелий. Затем зелья проверяются и если есть соответствующего типа, то пьют
+
+        // Отдельное хранилище для зелий
+        System.out.println("Здоровья до зелья: " + hero.getHp());
+        //choosePotion(hero);
+        System.out.println("Здоровья после зелья: " + hero.getHp());
     }
 }
 

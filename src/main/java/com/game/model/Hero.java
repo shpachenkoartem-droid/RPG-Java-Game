@@ -13,7 +13,7 @@ public class Hero extends PlayableHeroes {
         setName("Герой");
         setMoney(1000);
         setHeal(2);
-        equipSword(fist);
-        equipArmor(skin);
+        equip(fist);
+        equip(skin);
     }
 }

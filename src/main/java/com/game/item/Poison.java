@@ -20,7 +20,6 @@ public class Poison extends Potion {
     }
     @Override
     public void apply (Fighter target) {
-        // Если 0, то выводится сообщение что нет зелий, сделать это в отдельном методе
         if (drink()) {
             target.decHp(getDmgAmount());
         }

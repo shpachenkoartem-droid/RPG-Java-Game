@@ -8,12 +8,13 @@ public abstract class Potion extends Item {
     public abstract void apply (Fighter target);
 
     // Здесь drink это внутренняя функция, если захотим чтобы существо пило зелье, то оно будет hero.drinkPotion
+    // Создаём возможность пить зелья
     public boolean drink() {
         if (isNotNull()) {
             setCount(getCount() - 1);
+            System.out.println("Зелий нет!");
             return true;
         } else {
-            System.out.println("Зелий нет!");
             return false;
         }
     }

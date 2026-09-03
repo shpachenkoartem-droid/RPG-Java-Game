@@ -48,11 +48,11 @@ public class Controller {
         switch (choice_create_fight) {
             case 1 -> {
                 Ogre ogre = new Ogre();
-                battle1.battle(hero, ogre);
+                battleControl(hero, ogre);
             }
             case 2 -> {
                 Goblin goblin = new Goblin();
-                battle1.battle(hero, goblin);
+                battleControl(hero, goblin);
             }
             default -> chooseFighters();
         }
@@ -76,8 +76,8 @@ public class Controller {
         }
         int choice_swap_equip = view.showChooseEquip();
         switch (choice_swap_equip) {
-            case 1 -> chooseSwords(hero);
-            case 2 -> chooseArmor(hero);
+            case 1 -> chooseEquipment(hero, ItemType.SWORD);
+            case 2 -> chooseEquipment(hero, ItemType.ARMOR);
             default -> fullEquip();
         }
         return true;
@@ -114,18 +114,16 @@ public class Controller {
         return OneTypeInventory;
     }
 
-    // Понять как сделать одинаковым sword и armor
     public void chooseEquipment(PlayableHeroes hero, ItemType itemType) {
-        // Создаём инвентарь с мечами
 
+        // Создаём инвентарь с предметами, переданными в ItemType
         List<Item> equip = createOneTypeInventory(hero, itemType);
-
-
-        // !!!
+        if (equip.isEmpty()) {
+            view.zeroCount();
+            return;
+        }
+        // Выводим список предметов на экипировку
         view.showItemList(equip, itemType);
-
-
-
 
         // Выбираем номер предмета из инвентаря
         int choice_equip_from_inventory = view.readIntInRange(1, equip.size());
@@ -134,62 +132,16 @@ public class Controller {
         // После того как выбрали что будем экипировать, выбрасываем это
         hero.drop(newEquip);
 
+        // До сюда всё работает
         if (choice_equip_from_inventory <= equip.size()) {
-            view.here();
-        }
-    }
-
-    // Выбирает из массива со всем снаряжением мечи и создаёт массив с мечами
-    public void chooseSwords(PlayableHeroes hero) {
-        // Создаём инвентарь с мечами
-        List<Item> swords = createOneTypeInventory(hero, ItemType.SWORD);
-        view.showItemList(swords, ItemType.SWORD);
-
-        // Выбираем номер предмета из инвентаря
-        int choice_equip_from_inventory = view.readIntInRange(1, swords.size());
-
-        Equipment newSword = (Equipment) swords.get(choice_equip_from_inventory - 1);
-
-        // После того как выбрали что будем экипировать, выбрасываем это
-        hero.drop(newSword);
-
-        if (choice_equip_from_inventory <= swords.size()) {
-            view.showDmg(hero);
-            // Хорошая практика вызывать View только лишь в Controller
-            hero.equipSword(newSword);
-            boolean decreased = newSword.decCount();
+            hero.equip(newEquip);
+            boolean decreased = newEquip.decCount();
             if (!decreased) {
                 view.zeroCount();
             }
-            view.showDmg(hero);
         }
     }
 
-    public void chooseArmor(PlayableHeroes hero) {
-        List<Item> armors = createOneTypeInventory(hero, ItemType.ARMOR);
-        view.showItemList(armors, ItemType.ARMOR);
-
-        int choice_equip_from_inventory = view.readIntInRange(1, armors.size());
-        if (choice_equip_from_inventory <= armors.size()) {
-            view.showReduceDamage(hero);
-            Equipment newArmor = (Equipment) armors.get(choice_equip_from_inventory-1);
-            hero.equipArmor(newArmor);
-            view.showReduceDamage(hero);
-        }
-    }
-
-    public Potion choosePotion(PlayableHeroes hero) {
-        List<Item> potions = createOneTypeInventory(hero, ItemType.POTION);
-        view.showItemList(potions, ItemType.POTION);
-
-        int choice_equip_from_inventory = view.readIntInRange(1, potions.size());
-        if (choice_equip_from_inventory <= potions.size()) {
-            view.showHP(hero);
-            hero.drinkPotion((Potion) potions.get(choice_equip_from_inventory-1));
-            view.showHP(hero);
-        }
-        return null;
-    }
 
     public void buyItems(PlayableHeroes hero) {
         List<Item> items = shop.getShopItems();
@@ -204,7 +156,34 @@ public class Controller {
         PurchaseResult result = shop.buySoloItem(hero, selectedItem);
         view.showPurchaseResult(result);
     }
+
+    // Проведение атаки
+    //int damage = hero.attack(enemy);
+    //view.showAttackResult(hero, enemy, damage);
+
+    public void battleControl(PlayableHeroes hero, Fighter fighter) {
+        // То что и было раньше - в Controller действия
+        // В идеале контроллер должен только вызывать методы
+        // Может получится сделать метод, который соединяет раунды в один
+        while (hero.getHp()>0 && fighter.getHp()>0) {
+            if (hero.isForest()) {
+                view.showFightersHP(hero, fighter);
+                //view.showFightActions();
+                int choice = view.showFightActions();
+                BattleResult result = battle1.fightRound(hero, fighter, choice);
+
+                if (Objects.equals(result, BattleResult.ATTACK)) {
+                    view.showAttackResult(hero, fighter);
+                }
+
+                if (Objects.equals(result, BattleResult.DRINK_POTION)) {
+                    view.showDrinkPotionMenu(hero);
+                }
+            }
+        }
+    }
 }
+
 
 // Сделать Controller тоньше, лишь координатором. Всё что взаимодействует с model дать тем самым model
 // Controller узнаёт данные из model, проводит небольшие операции с ним и передаёт их во view

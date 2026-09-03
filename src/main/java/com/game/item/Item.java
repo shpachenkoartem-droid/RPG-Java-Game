@@ -34,7 +34,7 @@ public abstract class Item {
             setCount(getCount() - 1);
             return true;
         }
-    return false;
+        return false;
     }
 
     public int getCost() {
@@ -44,6 +44,7 @@ public abstract class Item {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
     public boolean isNotNull() {
         return getCount() > 0;
     }
