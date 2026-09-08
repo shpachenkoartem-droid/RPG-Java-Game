@@ -5,5 +5,6 @@ public enum BattleResult {
     LOSE,
     ATTACK, // Герой атакует
     DRINK_POTION, // По герою проходит удар и он выпивает зелье
-    NONE
+    NONE,
+    CONTINUE
 }

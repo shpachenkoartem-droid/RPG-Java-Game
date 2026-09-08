@@ -13,13 +13,13 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     private final Inventory inventory = new Inventory();
 
     public List<Item> getInventory() {
-        return inventory.getItems();
+        return inventory.getInventory();
     }
 
     // Просто легендарно. Сам всё создал и понял. И сработало идеально. Создаём отдельный массив только для вывода названий
     public List<String> getInventoryWithName() {
         List<String> arrayWithNames = new ArrayList<>();
-        for (Item i : inventory.getItems()) {
+        for (Item i : inventory.getInventory()) {
             arrayWithNames.add(i.getName());
         }
         return arrayWithNames;
@@ -46,29 +46,25 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     }
 
     public boolean isForest() {
-        if (getLocation().equals(Locations.FOREST)) {
+        if (getLocation() == Locations.FOREST) {
             return true;
         } else {
-            System.out.println("\nВы должны быть в лесу чтобы начать битву\n");
             return false;
         }
     }
     public boolean isShop() {
-        if (getLocation().equals(Locations.SHOP)) {
+        if (getLocation() == Locations.SHOP) {
             return true;
         } else {
-            System.out.println("\nВы должны быть в магазине чтобы торговать\n");
             return false;
         }
     }
     public void goForest() {
         location = Locations.FOREST;
-        System.out.println("\nВы в лесу!\n");
     }
 
     public void goShop() {
         location = Locations.SHOP;
-        System.out.println("\nВы в магазине!\n");
     }
 
     @Override

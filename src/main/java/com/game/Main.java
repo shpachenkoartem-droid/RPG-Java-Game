@@ -2,6 +2,7 @@ package main.java.com.game;
 
 import main.java.com.game.controller.Controller;
 import main.java.com.game.model.Hero;
+import main.java.com.game.model.Inventory;
 import main.java.com.game.service.Battle;
 import main.java.com.game.service.Shop;
 import main.java.com.game.view.View;
@@ -12,9 +13,10 @@ public class Main {
         Shop shop = new Shop();
         Battle battle1 = new Battle();
         View view = new View();
+        Inventory inventory = new Inventory();
 
 
-        Controller controller = new Controller(view, hero, shop, battle1);
+        Controller controller = new Controller(view, hero, shop, battle1, inventory);
         controller.run();
 
     }

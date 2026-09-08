@@ -3,6 +3,7 @@ package main.java.com.game.model;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.item.*;
 
+import java.util.List;
 import java.util.Objects;
 
 // абстрактный класс бойца - "образ" всех кто должен сражаться
@@ -29,6 +30,7 @@ public abstract class Fighter {
     // С помощью конструкторов мы создаём каждый меч
     // main.java.com.game.Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов main.java.com.game.Equipment, а значит и в частности наш меч
     // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
+
     public void equip(Equipment equipment) {
         if (equipment.isNotNull()) {
             if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
@@ -47,6 +49,10 @@ public abstract class Fighter {
     public void drinkPotion(Potion potion) {
         // Зелье применяется на выпившего его
         potion.apply(this);
+    }
+
+    public void drinkFirstPotion(PlayableHeroes hero, List<Item> potions) {
+        hero.getInventory().
     }
 
 

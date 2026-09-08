@@ -49,17 +49,14 @@ public class Shop {
 
     // Сам процесс покупки когда уже выбрали предмет
     public PurchaseResult buySoloItem(PlayableHeroes hero, Item item) {
-        if (hero.isShop()) {
-            if (hero.getMoney() > item.getCost()) {
-                item.incCount();
-                hero.decMoney(item.getCost());
-                hero.pickUp(item);
-                return PurchaseResult.SUCCESS;
-            } else {
-                return PurchaseResult.NOT_ENOUGH_MONEY;
-            }
+        if (hero.getMoney() > item.getCost()) {
+            item.incCount();
+            hero.decMoney(item.getCost());
+            hero.pickUp(item);
+            return PurchaseResult.SUCCESS;
+        } else {
+            return PurchaseResult.NOT_ENOUGH_MONEY;
         }
-        return PurchaseResult.NOT_IN_SHOP;
     }
 }
 
