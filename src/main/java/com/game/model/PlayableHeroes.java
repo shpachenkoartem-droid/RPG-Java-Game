@@ -12,25 +12,17 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     private Locations location = Locations.SHOP;
     private final Inventory inventory = new Inventory();
 
-    public List<Item> getInventory() {
-        return inventory.getInventory();
+    public Inventory getHeroInventory() {
+        return inventory;
     }
 
     // Просто легендарно. Сам всё создал и понял. И сработало идеально. Создаём отдельный массив только для вывода названий
     public List<String> getInventoryWithName() {
         List<String> arrayWithNames = new ArrayList<>();
-        for (Item i : inventory.getInventory()) {
+        for (Item i : inventory.getItems()) {
             arrayWithNames.add(i.getName());
         }
         return arrayWithNames;
-    }
-
-    public Item getInventoryCellByNumber(int number) {
-        return getInventory().get(number);
-    }
-
-    public int getLenInventory() {
-        return getInventory().toArray().length;
     }
 
     public void pickUp(Item item) {

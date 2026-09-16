@@ -1,28 +1,36 @@
 package main.java.com.game.model;
 
 import main.java.com.game.enums.ItemType;
+import main.java.com.game.item.Equipment;
 import main.java.com.game.item.Item;
-import main.java.com.game.item.Potion;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Inventory {
-    private final List<Item> inventory = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
     private int max_size = 20;
 
+    public Item get(int index) {
+        return items.get(index);
+    }
+
     public void addItem(Item item) {
-        if (inventory.size() < max_size) {
-            inventory.add(item);
+        if (items.size() < max_size) {
+            items.add(item);
         } else { System.out.println("Инвентарь забит, места нет!"); }
 
     }
+
     public void removeItem(Item item) {
-        inventory.remove(item);
+        items.remove(item);
     }
-    public List<Item> getInventory() {
-        return inventory;
+
+    public void removeItemByIndex(int index) {
+        items.remove(index);
+    }
+    public List<Item> getItems() {
+        return items;
     }
 
     public int getMax_size() {
@@ -33,36 +41,40 @@ public class Inventory {
         this.max_size = max_size;
     }
 
-    /*
-    public Potion getFirstPotion() {
-
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 
-     */
+    public int getSize() {
+        return items.size();
+    }
+
+
 
     //Функция создания инвентаря с каким-то конкретным типом предметов. Возвращает массив предметов одного типа, которые есть в инвентаре
-    public List<Item> createOneTypeInventory(PlayableHeroes hero, ItemType itemType) {
+    public Inventory createOneTypeInventory(ItemType itemType) {
 
         // Прошли и добавили все предметы одного типа
-        ArrayList<Item> OneTypeInventory = new ArrayList<>();
-        for (Item i : hero.getInventory()) {
+        // Предметы одного типа свой класс сохранили - но компилятор об этом не знает
+
+        Inventory OneTypeInventory = new Inventory();
+        for (Item i : items) {
             // Проверяем типы и если совпадает, то подготавливаем чтобы положить в новый инвентарь
             if (Objects.equals(i.getItemType(), itemType)) {
-                OneTypeInventory.add(i);
-                //view.showCount(i);
+                OneTypeInventory.addItem(i);
             }
         }
 
         // Проверяем добавленное, если есть одинаковое - выгоняем
         // j проходится по всему снаряжению, сравнивается с i
         // Выгоняем j если что-то совпадает
-        int size = OneTypeInventory.size();
+        int size = OneTypeInventory.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
                 if (Objects.equals(OneTypeInventory.get(i).getName(), OneTypeInventory.get(j).getName())) {
-                    OneTypeInventory.remove(j);
-                    size = OneTypeInventory.size();
-                    j = j - 1;
+                    OneTypeInventory.removeItemByIndex(j);
+                    size = OneTypeInventory.getSize();
+                    j--;
                 }
             }
         }

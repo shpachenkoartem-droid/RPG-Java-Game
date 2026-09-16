@@ -13,10 +13,9 @@ public class Main {
         Shop shop = new Shop();
         Battle battle1 = new Battle();
         View view = new View();
-        Inventory inventory = new Inventory();
 
 
-        Controller controller = new Controller(view, hero, shop, battle1, inventory);
+        Controller controller = new Controller(view, hero, shop, battle1);
         controller.run();
 
     }

@@ -12,15 +12,13 @@ public class Controller {
     private final View view;
     private final Hero hero;
     private final Shop shop;
-    private final Inventory inventory;
     private final Battle battle1;
 
 
-    public Controller(View view, Hero hero, Shop shop, Battle battle1, Inventory inventory) {
+    public Controller(View view, Hero hero, Shop shop, Battle battle1) {
         this.view = view;
         this.hero = hero;
         this.shop = shop;
-        this.inventory = inventory;
         this.battle1 = battle1;
         shop.initializeShop();
     }
@@ -76,11 +74,17 @@ public class Controller {
     }
 
     public boolean fullEquip() {
+
+        // Сам heroInventory это объект в памяти, его надо доставать разными методами из Inventory
+        Inventory heroInventory = hero.getHeroInventory();
+
         view.showInventoryWithName(hero);
-        if (hero.getInventory().isEmpty()) {
+
+        if (heroInventory.isEmpty()) {
             view.noEquip();
             return false;
         }
+
         int choice_swap_equip = view.showChooseEquip();
         switch (choice_swap_equip) {
             case 1 -> chooseOneTypeEquipment(hero, ItemType.SWORD);
@@ -94,7 +98,7 @@ public class Controller {
     public void chooseOneTypeEquipment(PlayableHeroes hero, ItemType itemType) {
 
         // Создаём временный инвентарь с предметами, переданными в ItemType
-        List<Item> equip = inventory.createOneTypeInventory(hero, itemType);
+        Inventory equip = hero.getHeroInventory().createOneTypeInventory(itemType);
         if (equip.isEmpty()) {
             view.zeroCount();
             return;
@@ -103,14 +107,15 @@ public class Controller {
         view.showItemList(equip, itemType);
 
         // Выбираем номер предмета из инвентаря
-        int choice_equip_from_inventory = view.readIntInRange(1, equip.size());
-        Equipment newEquip = (Equipment) equip.get(choice_equip_from_inventory - 1);
+        int choice = view.readIntInRange(1, equip.getSize());
 
-        // После того как выбрали что будем экипировать, выбрасываем это
-        hero.drop(newEquip);
+        Item chosen = equip.get(choice-1);
 
-        // До сюда всё работает
-        if (choice_equip_from_inventory <= equip.size()) {
+        // Проверяем является ли chosen типа Equipment или его наследника
+        // Затем говорим что newEquip это Equipment и он равен chosen
+        if (chosen instanceof Equipment newEquip) {
+            // После того как выбрали что будем экипировать, выбрасываем это
+            hero.drop(newEquip);
             hero.equip(newEquip);
             boolean decreased = newEquip.decCount();
             if (!decreased) {
@@ -152,8 +157,12 @@ public class Controller {
                 BattleResult result = battle1.fightRound(hero, enemy, choice);
 
                 switch (result) {
-                    case ATTACK, CONTINUE -> view.showAttackResult(hero, enemy);
-                    case DRINK_POTION -> view.showDrinkPotion(hero);
+                    case ATTACK, CONTINUE -> view.showBothAttackResult(hero, enemy);
+                    case NO_POTIONS -> view.NoPotions();
+                    case DRINK_POTION -> {
+                        view.showDrinkPotion(hero);
+                        view.showEnemyAttackResult(hero, enemy);
+                    }
                     case WIN -> view.heroWinInFight();
                     case LOSE -> view.heroLoseInFight();
                 }

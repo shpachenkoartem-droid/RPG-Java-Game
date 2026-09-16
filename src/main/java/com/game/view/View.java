@@ -2,13 +2,10 @@ package main.java.com.game.view;
 
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.enums.PurchaseResult;
-import main.java.com.game.item.Potion;
 import main.java.com.game.model.*;
 import main.java.com.game.item.Item;
 import main.java.com.game.service.Shop;
 import java.util.Scanner;
-import java.util.List;
-
 
 
 // Начинаю реализацию MVC - Model main.java.com.game.Controller main.java.com.game.View
@@ -74,20 +71,32 @@ public class View {
     public void heroWinInFight() {System.out.println("\nВы победили в бою!");}
     public void heroLoseInFight() {System.out.println("\nВы проиграли в бою!");}
 
-    public void showAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + hero.getName() + "Получает " + target.getDmg() + "урона!");
+    public void showBothAttackResult(PlayableHeroes hero, Fighter target) {
+        System.out.println("\n" + hero.getName() + " Получает " + target.getDmg() + " урона!");
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
         System.out.println("\n" + target.getName() + " Получает " + hero.getDmg() + " урона!");
         System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
     }
 
+    public void showHeroAttackResult(PlayableHeroes hero, Fighter target) {
+        System.out.println("\n" + target.getName() + " Получает " + hero.getDmg() + " урона!");
+        System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
+    }
+
+    public void showEnemyAttackResult(PlayableHeroes hero, Fighter target) {
+        System.out.println("\n" + hero.getName() + " Получает " + target.getDmg() + " урона!");
+        System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
+    }
+
+    public void NoPotions() {System.out.println("\nУ вас нет зелий!");}
+
     public void showFightersHP(PlayableHeroes hero, Fighter fighter) {
-        System.out.println("Изначальное здоровье " + hero.getName() + ": " + hero.getHp());
+        System.out.println("\nИзначальное здоровье " + hero.getName() + ": " + hero.getHp());
         System.out.println("Изначальное здоровье " + fighter.getName() + ": " + fighter.getHp() + "\n");
     }
 
     public int showFightActions() {
-        System.out.println("\nВыберите действие");
+        System.out.println("\nВыберите действие: ");
         System.out.println("1. Атаковать");
         System.out.println("2. Выпить зелье");
         return readIntInRange(1,2);
@@ -99,7 +108,7 @@ public class View {
     }
 
     public int showChooseFighters() {
-        System.out.println("\nВыберите с кем создать битву");
+        System.out.println("\nВыберите с кем создать битву: ");
         System.out.println("1. Огр");
         System.out.println("2. Гоблин");
         return readIntInRange(1,2);
@@ -166,26 +175,26 @@ public class View {
     // Инвентарь и магазин
 
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
-    public void showInventory(Hero hero) {System.out.println("Ваш инвентарь: " + hero.getInventory());}
-    public void showInventoryWithName(Hero hero) {System.out.println(hero.getInventoryWithName());}
+    public void showInventory(PlayableHeroes hero) {System.out.println("Ваш инвентарь: " + hero.getHeroInventory());}
+    public void showInventoryWithName(PlayableHeroes hero) {System.out.println(hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("\nУ вас нет этого предмета!"); }
     public void showPurchaseResult(PurchaseResult purchaseResult) {System.out.println(purchaseResult);}
-    public void whatYouWantBuy() {System.out.println("Выберите что хотите купить");}
+    public void whatYouWantBuy() {System.out.println("\nВыберите что хотите купить");}
     public void successBuying() {System.out.println("\nДзынь! Успешная покупка!");}
-    public void notEnoughMoney() {System.out.println("Не хватает денег!");}
+    public void notEnoughMoney() {System.out.println("\nНе хватает денег!");}
     public void showShopStock(Shop shop) {
         for (int i = 0; i < shop.getShopSize(); i++) {
             // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
             System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
         }
     }
-    public void showItemList(List<Item> items, ItemType itemType) {
+    public void showItemList(Inventory items, ItemType itemType) {
         if (items.isEmpty()) {
             System.out.println("\nУ вас нет " + itemType);
             return;
         }
         System.out.println("\nВаши " + itemType + ":");
-        for (int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < items.getSize(); i++) {
             Item p = items.get(i);
             System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
         }

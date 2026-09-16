@@ -51,9 +51,6 @@ public abstract class Fighter {
         potion.apply(this);
     }
 
-    public void drinkFirstPotion(PlayableHeroes hero, List<Item> potions) {
-        hero.getInventory().
-    }
 
 
 // Геттеры и сеттеры нужны чтобы получать и изменять значения хп, атаки и так далее для моих бойцов из любого места
