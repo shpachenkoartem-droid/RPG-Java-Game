@@ -10,7 +10,6 @@ import main.java.com.game.item.Item;
 
 public class Battle {
 
-
     // Метод для проведения 1 раунда боя
     // Остальное возвращает в контроллер
     public BattleResult fightRound(PlayableHeroes hero, Fighter enemy, int choice) {

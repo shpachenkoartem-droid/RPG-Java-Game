@@ -3,14 +3,12 @@ package main.java.com.game.model;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.item.*;
 
-import java.util.List;
 import java.util.Objects;
 
 // абстрактный класс бойца - "образ" всех кто должен сражаться
 public abstract class Fighter {
     private int hp;
     private int max_hp;
-    private int dmg;
     private String name;
     private int money;
     // Чтобы не нарушать принцип подстановки Барбары Лисков (LSP) надо сделать класс наследника, который может реализовывать лечение (герой, враг-жрец и тп)
@@ -18,10 +16,15 @@ public abstract class Fighter {
     private int reduce_damage;
     private Equipment sword;
     private Equipment armor;
+    private int dmg = sword.getDamage().roll();
+
 
     // Возвращаем урон, который наносится
     public int attack(Fighter target) {
-        int damage = Math.max(0, getDmg() - target.getReduceDamage());
+        int damage = sword.getDamage().roll();
+        // Получаем кость урона при атаке
+        // От оружия должны получить всю информацию при атаке
+        // Надо сделать так чтобы после каждой атаки урон менялся
         target.decHp(damage);
         return damage;
     }
@@ -35,7 +38,6 @@ public abstract class Fighter {
         if (equipment.isNotNull()) {
             if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
                 this.sword = equipment;
-                setDmg(equipment.getDmg());
             }
             if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
                 this.armor = equipment;
@@ -98,31 +100,10 @@ public abstract class Fighter {
         this.max_hp = max_hp;
     }
 
+
     public int getDmg() {
         return dmg;
     }
-
-    /*
-    public Equipment getNeedForEquip(Equipment equipment) {
-        if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
-            return sword;
-        }
-        if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
-            return armor;
-        }
-        return test;
-    }
-
-    public void setNeedForEquip(Equipment equipment) {
-        if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
-            setDmg(equipment.getDmg());
-        }
-        if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
-            setReduceDamage(equipment.getArmor());
-        }
-    }
-
-     */
 
     public void setDmg(int dmg) {
         if (dmg <= 0) { System.out.print("Урон должен быть больше 0"); }

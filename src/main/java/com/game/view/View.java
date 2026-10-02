@@ -49,7 +49,7 @@ public class View {
         System.out.println("\n1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
         System.out.println("3. Max_HP: " + hero.getMax_hp());
-        System.out.println("4. Урон:" + hero.getDmg());
+        System.out.println("4. Урон: " + hero.getDmg());
         System.out.println("5. Деньги: " + hero.getMoney());
         System.out.println("6. Оружие: " + hero.getSword().getName());
         System.out.println("7. Броня: " + hero.getArmor().getName());
