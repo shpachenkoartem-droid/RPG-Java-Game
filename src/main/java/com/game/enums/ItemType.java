@@ -3,5 +3,7 @@ package main.java.com.game.enums;
 public enum ItemType {
     SWORD,
     ARMOR,
-    POTION
+    POTION,
+    POISON,
+    HEAL_POTION
 }

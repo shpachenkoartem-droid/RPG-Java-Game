@@ -8,6 +8,7 @@ public class Fist extends Equipment {
         setDamage(new DamageDice(1, 4, 0));
         setItemType(ItemType.SWORD);
         incCount();
+        setDescription("Кулак. Больше ничего и не надо");
     }
 }
 

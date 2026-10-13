@@ -19,11 +19,6 @@ public class Shop {
         return shopItems;
     }
 
-    // Для одного предмета магазина
-    public Item getShopItem(int number) {
-        return shopItems.get(number);
-    }
-
     public int getShopSize() {
         return shopItems.size();
     }
@@ -48,6 +43,7 @@ public class Shop {
     // а Controller эти значения обрабатывает и что-то выводит, он создаёт связь между выводимым из Model и из View
 
     // Сам процесс покупки когда уже выбрали предмет
+    // Здесь он добавляется в инвентарь
     public PurchaseResult buySoloItem(PlayableHeroes hero, Item item) {
         if (hero.getMoney() > item.getCost()) {
             item.incCount();

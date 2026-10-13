@@ -129,17 +129,19 @@ public class Controller {
 
     public void buyItems(PlayableHeroes hero) {
         if (hero.isShop()) {
-            List<Item> items = shop.getShopItems();
+            List<Item> itemsInShop = shop.getShopItems();
             view.showMoney(hero);
             view.whatYouWantBuy();
             view.showShopStock(shop);
-            int choice = view.readIntInRange(1, items.size());
+            int choice = view.readIntInRange(1, itemsInShop.size());
             if (choice == 0) return;
-            Item selectedItem = items.get(choice - 1);
+
+            Item selectedItem = itemsInShop.get(choice - 1);
+            view.showItemData(itemsInShop.get(choice - 1));
             // result получит один из трёх состояний и передаст данные в Controller
             // А buySoloItem повзаимодействует с hero
             PurchaseResult result = shop.buySoloItem(hero, selectedItem);
-            view.showPurchaseResult(result);
+            //view.showPurchaseResult(result);
         } else view.notInShop();
     }
 
@@ -153,7 +155,7 @@ public class Controller {
         // В идеале контроллер должен только вызывать методы
         // Может получится сделать метод, который соединяет раунды в один
         // Method(param1, param2)
-        while (hero.getHp()>0 && enemy.getHp()>0) {
+        while (hero.getHp() > 0 && enemy.getHp() > 0) {
 
                 int choice = view.showFightActions();
                 BattleResult result = battle1.fightRound(hero, enemy, choice);
@@ -186,14 +188,35 @@ public class Controller {
         while (true) {
             int choiceInventory = view.showInventoryMenu(); // Вызываем меню и передаём число в него
             if (choiceInventory == 0) break;
+            if (hero.getHeroInventory().getItems().isEmpty()) {
+                view.noEquip();
+                break;
+            }
+            view.showInventoryWithName(hero);
+            // Запрашиваем новое число, которое определит номер выбранного предмета в инвентаре
+            int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
+            // Сам выбранный предмет
+            Item chosen = hero.getHeroInventory().get(choice - 1);
+
             switch (choiceInventory) {
-                case 1 -> chooseItemToDrop(); // Перейти дальше к меню выбрасывания предметов
+                case 1 -> chooseItemToDrop(chosen); // Перейти дальше к меню выбрасывания предметов
+                case 2 -> view.showItemData(chosen); // Перейти к описанию предмета
                 default -> openInventory();
             }
         }
     }
 
-    public void chooseItemToDrop() {
+    public void chooseItemToDrop(Item chosen) {
+        if (hero.getHeroInventory().getSize() == 0) {
+            view.noEquip();
+            return;
+        }
+        // Сам выбранный предмет
+        hero.drop(chosen);
+        view.showInventoryWithName(hero);
+    }
+
+    /*public void chooseItemToDrop() {
         if (hero.getHeroInventory().getSize() == 0) {
             view.noEquip();
             return;
@@ -201,11 +224,17 @@ public class Controller {
         view.showInventoryWithName(hero);
         // Запрашиваем новое число, которое определит номер выбранного предмета в инвентаре
         int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
-        // Сам выбранный предмет
         Item chosen = hero.getHeroInventory().get(choice - 1);
         hero.drop(chosen);
         view.showInventoryWithName(hero);
     }
+
+    public void lookDescription() {
+        view.showInventoryWithName(hero);
+        int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
+        Item chosen = hero.getHeroInventory().get(choice - 1);
+        view.showItemData(chosen);
+    }*/
 }
 
 

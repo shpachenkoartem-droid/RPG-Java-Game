@@ -5,7 +5,7 @@ import main.java.com.game.enums.ItemType;
 public class Skin extends Equipment {
     public Skin() {
         setName("Skin");
-        setArmor(0);
+        setArmorCount(0);
         setItemType(ItemType.ARMOR);
         incCount();
     }

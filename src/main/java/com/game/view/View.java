@@ -2,9 +2,12 @@ package main.java.com.game.view;
 
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.enums.PurchaseResult;
+import main.java.com.game.item.*;
 import main.java.com.game.model.*;
-import main.java.com.game.item.Item;
 import main.java.com.game.service.Shop;
+
+import java.awt.dnd.DnDConstants;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -50,11 +53,12 @@ public class View {
         System.out.println("\n1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
         System.out.println("3. Max_HP: " + hero.getMax_hp());
-        System.out.println("4. Урон: " + hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus());
+        System.out.print("4. Урон: ");
+        showHeroDnDDamage(hero);
         System.out.println("5. Деньги: " + hero.getMoney());
         System.out.println("6. Оружие: " + hero.getSword().getName());
         System.out.println("7. Броня: " + hero.getArmor().getName());
-        System.out.println("8. Сопротивление урону: " + hero.getArmor().getArmor() + "\n");
+        System.out.println("8. Сопротивление урону: " + hero.getArmor().getArmorCount() + "\n");
     }
 
     public void showFighterName(Fighter fighter) {System.out.println("\nИмя: " + fighter.getHp());}
@@ -161,7 +165,8 @@ public class View {
     */
 
     // Снаряжение
-
+    public void showHeroDnDDamage(PlayableHeroes hero) {System.out.println(hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus());}
+    public void showEquipmentDnDDamage(Equipment equipment) {System.out.print(equipment.getDamage().getCount() + "d" + equipment.getDamage().getSides() + " + " + equipment.getDamage().getBonus());}
     public void showItemName(Item item) {System.out.println("\nИмя предмета: " + item.getName());}
     public void showCost(Item item) {System.out.println("\nСтоимость предмета: " + item.getCost());}
     public void showCount(Item item) {System.out.println("\nКоличество предмета: " + item.getCount());}
@@ -177,8 +182,9 @@ public class View {
     public int showInventoryMenu() {
         System.out.println("\nВыберите действие:");
         System.out.println("1. Выбросить предмет");
+        System.out.println("2. Посмотреть описание предмета");
         System.out.println("0. Выйти");
-        return readIntInRange(0,1);
+        return readIntInRange(0,2);
     }
 //    public int showDropMenu() {
 //        System.out.println("\nВыберите предмет:");
@@ -186,7 +192,7 @@ public class View {
 //    }
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
     // Вывод инвентаря в одну строчку
-    public void showInventoryWithName(PlayableHeroes hero) {System.out.println(hero.getInventoryWithName());}
+    public void showInventoryWithName(PlayableHeroes hero) {System.out.println("\n" + hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("\nУ вас нет этого предмета!"); }
     public void showPurchaseResult(PurchaseResult purchaseResult) {System.out.println(purchaseResult);}
     public void whatYouWantBuy() {System.out.println("\nВыберите что хотите купить");}
@@ -212,6 +218,36 @@ public class View {
         }
     }
 
+    public void showItemData(Item item) {
+        System.out.println(item.getName());
+        System.out.println(item.getDescription());
+        if (Objects.equals(item.getItemType(), ItemType.SWORD)) {
+            showSwordData( (Equipment) item);
+        } else if (Objects.equals(item.getItemType(), ItemType.ARMOR)) {
+            showArmorData( (Equipment) item);
+        } else if (Objects.equals(item.getSubType(), ItemType.POISON)) {
+            showPotionData( (Potion) item);
+        }
+    }
+
+    public void showSwordData(Equipment equipment) {
+        showEquipmentDnDDamage(equipment);
+        //System.out.println(equipment.getDamage().getCount());
+    }
+
+    public void showArmorData(Equipment equipment) {
+        System.out.println(equipment.getArmorCount());
+    }
+
+    public void showPotionData(Potion potion) {
+        if (Objects.equals(potion.getSubType(), ItemType.POISON)) {
+            Poison poison = (Poison) potion;
+            System.out.println(poison.getDmgAmount());
+        } else if (Objects.equals(potion.getSubType(), ItemType.HEAL_POTION)) {
+            HealPotion healPotion = (HealPotion) potion;
+            System.out.println(healPotion.getHealAmount());
+        }
+    }
 
     //Вспомогательное
 
@@ -232,17 +268,20 @@ public class View {
 
     // Функция для возврата числа
     // View должен принимать и обрабатывать внутри себя введённые данные
+    // Пример: int choose = view.readIntInRange(1,5). Запрашивает число.
+    // Ждёт от 1 до 5, ввели 8, просит ввести ещё раз.
+    // Ввели 4, подходит, возвращает 4
     public int readIntInRange(int min, int max) {
         while (true) {
             System.out.print("Ваш выбор: ");
             if (scanner.hasNextInt()) {
                 int value = scanner.nextInt();
-                scanner.nextLine(); // очистка буфера
+                scanner.nextLine();
                 if (value >= min && value <= max) {
                     return value;
                 }
             } else {
-                scanner.next(); // сбросить некорректный ввод
+                scanner.next();
             }
             System.out.println("Введите число от " + min + " до " + max);
         }
