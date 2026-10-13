@@ -12,6 +12,7 @@ public class Battle {
 
     // Метод для проведения 1 раунда боя
     // Остальное возвращает в контроллер
+    // Врага тут получаем уже готового по типу: огр, гоблин и другие
     public BattleResult fightRound(PlayableHeroes hero, Fighter enemy, int choice) {
         Inventory inventory = hero.getHeroInventory();
         Inventory potions = inventory.createOneTypeInventory(ItemType.POTION);

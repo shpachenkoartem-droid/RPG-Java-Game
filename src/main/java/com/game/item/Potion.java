@@ -12,7 +12,6 @@ public abstract class Potion extends Item {
     public boolean drink() {
         if (isNotNull()) {
             setCount(getCount() - 1);
-            System.out.println("Зелий нет!");
             return true;
         } else {
             return false;

@@ -14,20 +14,36 @@ public abstract class Fighter {
     // Чтобы не нарушать принцип подстановки Барбары Лисков (LSP) надо сделать класс наследника, который может реализовывать лечение (герой, враг-жрец и тп)
     // Потому что не каждый боец может лечить
     private int reduce_damage;
+    private int damage;
     private Equipment sword;
     private Equipment armor;
-    private int dmg = sword.getDamage().roll();
-
 
     // Возвращаем урон, который наносится
     public int attack(Fighter target) {
-        int damage = sword.getDamage().roll();
+        if (sword == null) {
+            return 0;
+        }
+        // Вот здесь высчитывается и хранится цифра урона
+        int damage = rollDamageDiceWeapon();
         // Получаем кость урона при атаке
         // От оружия должны получить всю информацию при атаке
         // Надо сделать так чтобы после каждой атаки урон менялся
         target.decHp(damage);
         return damage;
     }
+
+    // Записываем в поле damage наше выпавшее значение
+    public int rollDamageDiceWeapon() {
+        damage = sword.getDamage().roll();
+        return damage;
+    }
+
+    // Получаем последнее значение урона
+    public int getLastDamage() {
+        return damage;
+    }
+
+
 
     // Как работает экипировка мечей
     // С помощью конструкторов мы создаём каждый меч
@@ -98,16 +114,6 @@ public abstract class Fighter {
 
     public void setMax_hp(int max_hp) {
         this.max_hp = max_hp;
-    }
-
-
-    public int getDmg() {
-        return dmg;
-    }
-
-    public void setDmg(int dmg) {
-        if (dmg <= 0) { System.out.print("Урон должен быть больше 0"); }
-        else { this.dmg = dmg; }
     }
 
     public String getName() {

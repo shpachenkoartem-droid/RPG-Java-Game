@@ -5,7 +5,6 @@ public class Goblin extends Fighter {
     public Goblin() {
         setMax_hp(5);
         setHp(5);
-        setDmg(2);
         setName("Гоблин");
         setMoney(10);
     }

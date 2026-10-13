@@ -12,6 +12,7 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     private Locations location = Locations.SHOP;
     private final Inventory inventory = new Inventory();
 
+    // Возвращает инвентарь как объект
     public Inventory getHeroInventory() {
         return inventory;
     }

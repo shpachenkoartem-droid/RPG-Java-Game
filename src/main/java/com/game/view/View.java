@@ -21,8 +21,9 @@ public class View {
         System.out.println("3. Закупиться в магазине");
         System.out.println("4. Экипировать снаряжение");
         System.out.println("5. Вывести информацию о герое");
+        System.out.println("6. Посмотреть инвентарь");
         System.out.println("0. Выйти");
-        return readIntInRange(0,5);
+        return readIntInRange(0,6);
     }
 
 
@@ -49,7 +50,7 @@ public class View {
         System.out.println("\n1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
         System.out.println("3. Max_HP: " + hero.getMax_hp());
-        System.out.println("4. Урон: " + hero.getDmg());
+        System.out.println("4. Урон: " + hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus());
         System.out.println("5. Деньги: " + hero.getMoney());
         System.out.println("6. Оружие: " + hero.getSword().getName());
         System.out.println("7. Броня: " + hero.getArmor().getName());
@@ -59,7 +60,7 @@ public class View {
     public void showFighterName(Fighter fighter) {System.out.println("\nИмя: " + fighter.getHp());}
     public void showHP(Fighter fighter) {System.out.println("\nHP: " + fighter.getHp());}
     public void showMaxHP(Fighter fighter) {System.out.println("\nMax_HP: " + fighter.getMax_hp());}
-    public void showDmg(Fighter fighter) {System.out.println("\nУрон: " + fighter.getDmg());}
+    public void showDmg(Fighter fighter) {System.out.println("\nУрон: " + fighter.getSword().getDamage());}
     public void showMoney(Fighter fighter) {System.out.println("\nДеньги: " + fighter.getMoney());}
     public void showSword(Fighter fighter) {System.out.println("\nМеч: " + fighter.getSword());}
     public void showArmor(Fighter fighter) {System.out.println("\nБроня: " + fighter.getArmor());}
@@ -72,19 +73,19 @@ public class View {
     public void heroLoseInFight() {System.out.println("\nВы проиграли в бою!");}
 
     public void showBothAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + hero.getName() + " Получает " + target.getDmg() + " урона!");
+        System.out.println("\n" + hero.getName() + " Получает " + target.getLastDamage() + " урона!");
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
-        System.out.println("\n" + target.getName() + " Получает " + hero.getDmg() + " урона!");
+        System.out.println("\n" + target.getName() + " Получает " + hero.getLastDamage() + " урона!");
         System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
     }
 
     public void showHeroAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + target.getName() + " Получает " + hero.getDmg() + " урона!");
+        System.out.println("\n" + target.getName() + " Получает " + hero.getLastDamage() + " урона!");
         System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
     }
 
     public void showEnemyAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + hero.getName() + " Получает " + target.getDmg() + " урона!");
+        System.out.println("\n" + hero.getName() + " Получает " + target.getLastDamage() + " урона!");
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
     }
 
@@ -173,9 +174,18 @@ public class View {
 
 
     // Инвентарь и магазин
-
+    public int showInventoryMenu() {
+        System.out.println("\nВыберите действие:");
+        System.out.println("1. Выбросить предмет");
+        System.out.println("0. Выйти");
+        return readIntInRange(0,1);
+    }
+//    public int showDropMenu() {
+//        System.out.println("\nВыберите предмет:");
+//
+//    }
     public void noEquip() { System.out.println("У вас нет снаряжения!");}
-    public void showInventory(PlayableHeroes hero) {System.out.println("Ваш инвентарь: " + hero.getHeroInventory());}
+    // Вывод инвентаря в одну строчку
     public void showInventoryWithName(PlayableHeroes hero) {System.out.println(hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("\nУ вас нет этого предмета!"); }
     public void showPurchaseResult(PurchaseResult purchaseResult) {System.out.println(purchaseResult);}
@@ -188,6 +198,8 @@ public class View {
             System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
         }
     }
+
+    // Вывод 1 типа предметов как инвентарь
     public void showItemList(Inventory items, ItemType itemType) {
         if (items.isEmpty()) {
             System.out.println("\nУ вас нет " + itemType);

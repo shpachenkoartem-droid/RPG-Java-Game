@@ -6,6 +6,7 @@ public class IronSword extends Equipment {
     public IronSword() {
         setName("Iron sword");
         setCost(50);
+        setDamage(new DamageDice(1, 6, 1));
         getDamage().roll();
         setItemType(ItemType.SWORD);
     }

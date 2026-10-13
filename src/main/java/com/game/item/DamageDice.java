@@ -3,9 +3,17 @@ package main.java.com.game.item;
 public class DamageDice {
     Dice dice = new Dice();
 
+
     private int count;
     private int sides;
     private int bonus;
+
+    public DamageDice(int count, int sides, int bonus) {
+        this.count = count;
+        this.sides = sides;
+        this.bonus = bonus;
+    }
+
 
     public int roll() {
         return dice.roll(count, sides, bonus);

@@ -1,7 +1,10 @@
 package main.java.com.game.tests;
 
+import main.java.com.game.model.Fighter;
 import main.java.com.game.model.Goblin;
 
+import main.java.com.game.model.Hero;
+import main.java.com.game.model.PlayableHeroes;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,5 +34,9 @@ class FighterTest {
     void newGoblin_hasFiveHp() {
         Goblin goblin = new Goblin();
         assertEquals(5, goblin.getHp());
+    }
+
+    void testSword() {
+        Hero hero = new Hero();
     }
 }

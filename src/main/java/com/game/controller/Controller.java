@@ -35,11 +35,13 @@ public class Controller {
                 case 3 -> buyItems(hero);
                 case 4 -> fullEquip();
                 case 5 -> view.showStats(hero);
+                case 6 -> openInventory();
                 default -> run();
             }
         }
     }
 
+    // Выбор врага - кто он такой
     public void fullChooseFighters() {
         if (!hero.isForest()) {
             view.notInForest();
@@ -109,7 +111,7 @@ public class Controller {
         // Выбираем номер предмета из инвентаря
         int choice = view.readIntInRange(1, equip.getSize());
 
-        Item chosen = equip.get(choice-1);
+        Item chosen = equip.get(choice - 1);
 
         // Проверяем является ли chosen типа Equipment или его наследника
         // Затем говорим что newEquip это Equipment и он равен chosen
@@ -177,6 +179,32 @@ public class Controller {
 
              */
         }
+    }
+    public void openInventory() {
+        // Показывает инвентарь
+        view.showInventoryWithName(hero);
+        while (true) {
+            int choiceInventory = view.showInventoryMenu(); // Вызываем меню и передаём число в него
+            if (choiceInventory == 0) break;
+            switch (choiceInventory) {
+                case 1 -> chooseItemToDrop(); // Перейти дальше к меню выбрасывания предметов
+                default -> openInventory();
+            }
+        }
+    }
+
+    public void chooseItemToDrop() {
+        if (hero.getHeroInventory().getSize() == 0) {
+            view.noEquip();
+            return;
+        }
+        view.showInventoryWithName(hero);
+        // Запрашиваем новое число, которое определит номер выбранного предмета в инвентаре
+        int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
+        // Сам выбранный предмет
+        Item chosen = hero.getHeroInventory().get(choice - 1);
+        hero.drop(chosen);
+        view.showInventoryWithName(hero);
     }
 }
 
