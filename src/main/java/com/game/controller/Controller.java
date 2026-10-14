@@ -80,14 +80,12 @@ public class Controller {
         // Сам heroInventory это объект в памяти, его надо доставать разными методами из Inventory
         Inventory heroInventory = hero.getHeroInventory();
 
-        view.showInventoryWithName(hero);
-
         if (heroInventory.isEmpty()) {
             view.noEquip();
             return false;
         }
 
-        int choice_swap_equip = view.showChooseEquip();
+        int choice_swap_equip = view.showChooseEquip(hero);
         switch (choice_swap_equip) {
             case 1 -> chooseOneTypeEquipment(hero, ItemType.SWORD);
             case 2 -> chooseOneTypeEquipment(hero, ItemType.ARMOR);
@@ -137,51 +135,21 @@ public class Controller {
             if (choice == 0) return;
 
             Item selectedItem = itemsInShop.get(choice - 1);
-            view.showItemData(itemsInShop.get(choice - 1));
-            // result получит один из трёх состояний и передаст данные в Controller
+            view.showItemData(selectedItem);
+            int agree = view.showBuyMenu();
+
+            // butResult получит один из четырёх состояний и передаст данные в Controller
             // А buySoloItem повзаимодействует с hero
-            PurchaseResult result = shop.buySoloItem(hero, selectedItem);
-            //view.showPurchaseResult(result);
+            PurchaseResult buyResult = shop.buySoloItem(hero, selectedItem, agree);
+            switch (buyResult) {
+                case SUCCESS -> view.successBuying();
+                case NOT_ENOUGH_MONEY -> view.notEnoughMoney();
+                case NOT_IN_SHOP -> view.notInShop();
+                case DENIED -> view.deniedBuying();
+            }
         } else view.notInShop();
     }
 
-    // Проведение атаки
-    //int damage = hero.attack(enemy);
-    //view.showAttackResult(hero, enemy, damage);
-
-    public void battleControl(PlayableHeroes hero, Fighter enemy) {
-        view.showFightersHP(hero, enemy);
-        // То что и было раньше - в Controller действия
-        // В идеале контроллер должен только вызывать методы
-        // Может получится сделать метод, который соединяет раунды в один
-        // Method(param1, param2)
-        while (hero.getHp() > 0 && enemy.getHp() > 0) {
-
-                int choice = view.showFightActions();
-                BattleResult result = battle1.fightRound(hero, enemy, choice);
-
-                switch (result) {
-                    case ATTACK, CONTINUE -> view.showBothAttackResult(hero, enemy);
-                    case NO_POTIONS -> view.NoPotions();
-                    case DRINK_POTION -> {
-                        view.showDrinkPotion(hero);
-                        view.showEnemyAttackResult(hero, enemy);
-                    }
-                    case WIN -> view.heroWinInFight();
-                    case LOSE -> view.heroLoseInFight();
-                }
-            /*
-                if (Objects.equals(result, BattleResult.ATTACK)) {
-                    view.showAttackResult(hero, enemy);
-                }
-
-                if (Objects.equals(result, BattleResult.DRINK_POTION)) {
-                    view.showDrinkPotionMenu(hero);
-                }
-
-             */
-        }
-    }
     public void openInventory() {
         // Показывает инвентарь
         view.showInventoryWithName(hero);
@@ -216,25 +184,29 @@ public class Controller {
         view.showInventoryWithName(hero);
     }
 
-    /*public void chooseItemToDrop() {
-        if (hero.getHeroInventory().getSize() == 0) {
-            view.noEquip();
-            return;
-        }
-        view.showInventoryWithName(hero);
-        // Запрашиваем новое число, которое определит номер выбранного предмета в инвентаре
-        int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
-        Item chosen = hero.getHeroInventory().get(choice - 1);
-        hero.drop(chosen);
-        view.showInventoryWithName(hero);
-    }
+    public void battleControl(PlayableHeroes hero, Fighter enemy) {
+        view.showFightersHP(hero, enemy);
+        // То что и было раньше - в Controller действия
+        // В идеале контроллер должен только вызывать методы
+        // Может получится сделать метод, который соединяет раунды в один
+        // Method(param1, param2)
+        while (hero.getHp() > 0 && enemy.getHp() > 0) {
 
-    public void lookDescription() {
-        view.showInventoryWithName(hero);
-        int choice = view.readIntInRange(1, hero.getHeroInventory().getSize());
-        Item chosen = hero.getHeroInventory().get(choice - 1);
-        view.showItemData(chosen);
-    }*/
+            int choice = view.showFightActions();
+            BattleResult result = battle1.fightRound(hero, enemy, choice);
+
+            switch (result) {
+                case ATTACK, CONTINUE -> view.showBothAttackResult(hero, enemy);
+                case NO_POTIONS -> view.NoPotions();
+                case DRINK_POTION -> {
+                    view.showDrinkPotion(hero);
+                    view.showEnemyAttackResult(hero, enemy);
+                }
+                case WIN -> view.heroWinInFight();
+                case LOSE -> view.heroLoseInFight();
+            }
+        }
+    }
 }
 
 

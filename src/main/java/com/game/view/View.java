@@ -6,7 +6,6 @@ import main.java.com.game.item.*;
 import main.java.com.game.model.*;
 import main.java.com.game.service.Shop;
 
-import java.awt.dnd.DnDConstants;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -122,61 +121,20 @@ public class View {
     public void here() {System.out.println("\nВот тут! Прямо здесь! Прямо в этой части кода!");}
     public void wrong() {System.out.println("\nВведите правильное значение.");}
 
-
-
-
-    /*
-    public void showPotionList(List<Item> potions) {
-        if (potions.isEmpty()) {
-            System.out.println("У вас нет зелий.");
-            return;
-        }
-        System.out.println("Ваши зелья:");
-        for (int i = 0; i < potions.size(); i++) {
-            Item p = potions.get(i);
-            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
-        }
-    }
-
-    public void showSwordList(List<Item> swords) {
-        if (swords.isEmpty()) {
-            System.out.println("У вас нет мечей.");
-            return;
-        }
-        System.out.println("Ваши мечи:");
-        for (int i = 0; i < swords.size(); i++) {
-            Item p = swords.get(i);
-            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
-        }
-    }
-
-    public void showArmorList(List<Item> armors) {
-        if (armors.isEmpty()) {
-            System.out.println("У вас нет брони.");
-            return;
-        }
-        System.out.println("Ваша броня:");
-        for (int i = 0; i < armors.size(); i++) {
-            Item p = armors.get(i);
-            System.out.println((i + 1) + ". " + p.getName() + " (осталось: " + p.getCount() + ")");
-        }
-    }
-
-    */
-
     // Снаряжение
-    public void showHeroDnDDamage(PlayableHeroes hero) {System.out.println(hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus());}
-    public void showEquipmentDnDDamage(Equipment equipment) {System.out.print(equipment.getDamage().getCount() + "d" + equipment.getDamage().getSides() + " + " + equipment.getDamage().getBonus());}
+    public void showHeroDnDDamage(PlayableHeroes hero) {System.out.println(hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus() + "\n");}
+    public void showEquipmentDnDDamage(Equipment equipment) {System.out.print(equipment.getDamage().getCount() + "d" + equipment.getDamage().getSides() + " + " + equipment.getDamage().getBonus() + "\n");}
     public void showItemName(Item item) {System.out.println("\nИмя предмета: " + item.getName());}
     public void showCost(Item item) {System.out.println("\nСтоимость предмета: " + item.getCost());}
     public void showCount(Item item) {System.out.println("\nКоличество предмета: " + item.getCount());}
-    public int showChooseEquip() {
+
+    public int showChooseEquip(PlayableHeroes hero) {
         System.out.println("\nВот имеющееся снаряжение: ");
+        showInventoryWithName(hero);
         System.out.println("1. Поменять оружие");
         System.out.println("2. Поменять броню");
         return readIntInRange(1,2);
     }
-
 
     // Инвентарь и магазин
     public int showInventoryMenu() {
@@ -186,11 +144,15 @@ public class View {
         System.out.println("0. Выйти");
         return readIntInRange(0,2);
     }
-//    public int showDropMenu() {
-//        System.out.println("\nВыберите предмет:");
-//
-//    }
-    public void noEquip() { System.out.println("У вас нет снаряжения!");}
+
+    public int showBuyMenu() {
+        System.out.println("\nКупить предмет?");
+        System.out.println("1. Купить");
+        System.out.println("2. Отказаться");
+        return  readIntInRange(1,2);
+    }
+
+    public void noEquip() { System.out.println("\nУ вас нет снаряжения!");}
     // Вывод инвентаря в одну строчку
     public void showInventoryWithName(PlayableHeroes hero) {System.out.println("\n" + hero.getInventoryWithName());}
     public void zeroCount() { System.out.println("\nУ вас нет этого предмета!"); }
@@ -198,6 +160,8 @@ public class View {
     public void whatYouWantBuy() {System.out.println("\nВыберите что хотите купить");}
     public void successBuying() {System.out.println("\nДзынь! Успешная покупка!");}
     public void notEnoughMoney() {System.out.println("\nНе хватает денег!");}
+    public void deniedBuying() {System.out.println("\nОтложим покупку на следующий раз");}
+
     public void showShopStock(Shop shop) {
         for (int i = 0; i < shop.getShopSize(); i++) {
             // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
@@ -219,33 +183,32 @@ public class View {
     }
 
     public void showItemData(Item item) {
-        System.out.println(item.getName());
+        System.out.println("\n" + item.getName());
         System.out.println(item.getDescription());
         if (Objects.equals(item.getItemType(), ItemType.SWORD)) {
             showSwordData( (Equipment) item);
         } else if (Objects.equals(item.getItemType(), ItemType.ARMOR)) {
             showArmorData( (Equipment) item);
-        } else if (Objects.equals(item.getSubType(), ItemType.POISON)) {
+        } else if (Objects.equals(item.getItemType(), ItemType.POTION)) {
             showPotionData( (Potion) item);
         }
     }
 
     public void showSwordData(Equipment equipment) {
         showEquipmentDnDDamage(equipment);
-        //System.out.println(equipment.getDamage().getCount());
     }
 
     public void showArmorData(Equipment equipment) {
-        System.out.println(equipment.getArmorCount());
+        System.out.println("Снижение урона на " + equipment.getArmorCount());
     }
 
     public void showPotionData(Potion potion) {
         if (Objects.equals(potion.getSubType(), ItemType.POISON)) {
             Poison poison = (Poison) potion;
-            System.out.println(poison.getDmgAmount());
+            System.out.println("Ядовитое отравление на " + poison.getDmgAmount() + " урона");
         } else if (Objects.equals(potion.getSubType(), ItemType.HEAL_POTION)) {
             HealPotion healPotion = (HealPotion) potion;
-            System.out.println(healPotion.getHealAmount());
+            System.out.println("Приятное облегчение на " + healPotion.getHealAmount() + " хп");
         }
     }
 
@@ -263,7 +226,6 @@ public class View {
             }
         } while (false);
     }
-
 
 
     // Функция для возврата числа

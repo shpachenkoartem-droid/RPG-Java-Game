@@ -44,7 +44,8 @@ public class Shop {
 
     // Сам процесс покупки когда уже выбрали предмет
     // Здесь он добавляется в инвентарь
-    public PurchaseResult buySoloItem(PlayableHeroes hero, Item item) {
+    public PurchaseResult buySoloItem(PlayableHeroes hero, Item item, int agree) {
+        if (agree == 2) { return PurchaseResult.DENIED;}
         if (hero.getMoney() > item.getCost()) {
             item.incCount();
             hero.decMoney(item.getCost());
