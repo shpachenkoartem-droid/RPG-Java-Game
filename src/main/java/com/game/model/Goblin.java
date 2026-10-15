@@ -1,11 +1,15 @@
 package main.java.com.game.model;
 
+import main.java.com.game.item.GoblinDagger;
+
 // Дочерний класс от бойца
-public class Goblin extends Fighter {
+public class Goblin extends Enemy {
     public Goblin() {
         setMax_hp(5);
         setHp(5);
+        setSword(new GoblinDagger());
         setName("Гоблин");
+        setDrop(new GoblinDagger(), 100);
         setMoney(10);
     }
     // Функции из main.java.com.game.Goblin можно вызывать только для объектов main.java.com.game.Goblin, для main.java.com.game.Fighter нельзя

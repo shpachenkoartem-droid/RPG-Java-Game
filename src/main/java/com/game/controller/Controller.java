@@ -49,7 +49,7 @@ public class Controller {
             return;
         }
         int choice = view.showChooseFighters();
-        Fighter enemy = switch (choice) {
+        Enemy enemy = switch (choice) {
             case 1 -> new Ogre();
             case 2 -> new Goblin();
             default -> null;
@@ -184,7 +184,7 @@ public class Controller {
         view.showInventoryWithName(hero);
     }
 
-    public void battleControl(PlayableHeroes hero, Fighter enemy) {
+    public void battleControl(PlayableHeroes hero, Enemy enemy) {
         view.showFightersHP(hero, enemy);
         // То что и было раньше - в Controller действия
         // В идеале контроллер должен только вызывать методы
@@ -202,7 +202,10 @@ public class Controller {
                     view.showDrinkPotion(hero);
                     view.showEnemyAttackResult(hero, enemy);
                 }
-                case WIN -> view.heroWinInFight();
+                case WIN -> {
+
+                    view.heroWinInFight();
+                }
                 case LOSE -> view.heroLoseInFight();
             }
         }

@@ -13,7 +13,7 @@ public class Battle {
     // Метод для проведения 1 раунда боя
     // Остальное возвращает в контроллер
     // Врага тут получаем уже готового по типу: огр, гоблин и другие
-    public BattleResult fightRound(PlayableHeroes hero, Fighter enemy, int choice) {
+    public BattleResult fightRound(PlayableHeroes hero, Enemy enemy, int choice) {
         Inventory inventory = hero.getHeroInventory();
         Inventory potions = inventory.createOneTypeInventory(ItemType.POTION);
 
@@ -22,6 +22,7 @@ public class Battle {
                 case 1 -> {
                     hero.attack(enemy);
                     if (enemy.getHp() <= 0) {
+                        pickUpDrop(hero, enemy);
                         getMoneyForEnemyKill(hero, enemy);
                         return BattleResult.WIN;
                     }
@@ -43,7 +44,9 @@ public class Battle {
                         return BattleResult.DRINK_POTION;
                     }
 
-                    if (hero.getHp() <= 0) return BattleResult.LOSE;
+                    if (hero.getHp() <= 0) {
+                        return BattleResult.LOSE;
+                    }
                     return BattleResult.CONTINUE;
                 }
 
@@ -53,6 +56,12 @@ public class Battle {
 
     public void getMoneyForEnemyKill(PlayableHeroes hero, Fighter enemy) {
         hero.incMoney(enemy.getMoney());
+    }
+    public void pickUpDrop(PlayableHeroes hero, Enemy enemy) {
+        if (enemy.isDropped()) {
+            System.out.println("\nВам выпал " + enemy.getDrop().getName());
+            hero.pickUp(enemy.getDrop());
+        }
     }
 }
 
