@@ -3,9 +3,8 @@ package main.java.com.game.tests;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.item.Equipment;
 import main.java.com.game.item.Item;
-import main.java.com.game.model.Hero;
+import main.java.com.game.model.Heroes.Hero;
 import main.java.com.game.model.Inventory;
-import main.java.com.game.model.PlayableHeroes;
 import main.java.com.game.view.View;
 import org.junit.jupiter.api.Test;
 

@@ -2,8 +2,10 @@ package main.java.com.game.service;
 
 import main.java.com.game.enums.BattleResult;
 import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.Potion;
+import main.java.com.game.item.Potions.Potion;
 import main.java.com.game.model.*;
+import main.java.com.game.model.Enemies.Enemy;
+import main.java.com.game.model.Heroes.PlayableHeroes;
 import main.java.com.game.model.Inventory;
 import main.java.com.game.item.Item;
 
@@ -21,11 +23,7 @@ public class Battle {
         switch (choice) {
                 case 1 -> {
                     hero.attack(enemy);
-                    if (enemy.getHp() <= 0) {
-                        pickUpDrop(hero, enemy);
-                        getMoneyForEnemyKill(hero, enemy);
-                        return BattleResult.WIN;
-                    }
+                    ifkillEnemy(hero, enemy);
                     enemy.attack(hero);
                     if (hero.getHp() <= 0) return BattleResult.LOSE;
                     return BattleResult.CONTINUE;
@@ -54,13 +52,25 @@ public class Battle {
             }
     }
 
+    // Увеличивает деньги за победу над врагом
     public void getMoneyForEnemyKill(PlayableHeroes hero, Fighter enemy) {
         hero.incMoney(enemy.getMoney());
     }
-    public void pickUpDrop(PlayableHeroes hero, Enemy enemy) {
+
+    // Проверяет выпало ли что-то при убийстве врага, и если да - отдельный исход
+    public BattleResult pickUpDrop(PlayableHeroes hero, Enemy enemy) {
         if (enemy.isDropped()) {
-            System.out.println("\nВам выпал " + enemy.getDrop().getName());
             hero.pickUp(enemy.getDrop());
+            return BattleResult.WIN_WITH_DROP;
+        }
+        return BattleResult.WIN;
+    }
+
+    // Проверка на победу над врагом и переход к вопросы а выпало ли что-то
+    public void ifkillEnemy(PlayableHeroes hero, Enemy enemy) {
+        if (enemy.getHp() <= 0) {
+            getMoneyForEnemyKill(hero, enemy);
+            pickUpDrop(hero, enemy);
         }
     }
 }

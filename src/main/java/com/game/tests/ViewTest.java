@@ -1,10 +1,8 @@
-package main.java.com.game.view;
+package main.java.com.game.tests;
 
 import main.java.com.game.item.Equipment;
-import main.java.com.game.item.IronChest;
+import main.java.com.game.item.Chests.IronChest;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ViewTest {
 

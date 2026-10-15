@@ -1,5 +1,10 @@
 package main.java.com.game.controller;
 
+import main.java.com.game.model.Enemies.Enemy;
+import main.java.com.game.model.Enemies.Goblin;
+import main.java.com.game.model.Enemies.Ogre;
+import main.java.com.game.model.Heroes.Hero;
+import main.java.com.game.model.Heroes.PlayableHeroes;
 import main.java.com.game.view.*;
 import main.java.com.game.item.*;
 import main.java.com.game.model.*;
@@ -202,10 +207,8 @@ public class Controller {
                     view.showDrinkPotion(hero);
                     view.showEnemyAttackResult(hero, enemy);
                 }
-                case WIN -> {
-
-                    view.heroWinInFight();
-                }
+                case WIN -> view.heroWinInFight();
+                case WIN_WITH_DROP -> view.droppingOut(enemy);
                 case LOSE -> view.heroLoseInFight();
             }
         }

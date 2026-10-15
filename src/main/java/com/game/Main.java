@@ -1,8 +1,7 @@
 package main.java.com.game;
 
 import main.java.com.game.controller.Controller;
-import main.java.com.game.model.Hero;
-import main.java.com.game.model.Inventory;
+import main.java.com.game.model.Heroes.Hero;
 import main.java.com.game.service.Battle;
 import main.java.com.game.service.Shop;
 import main.java.com.game.view.View;

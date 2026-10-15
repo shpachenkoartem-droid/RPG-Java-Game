@@ -1,6 +1,7 @@
-package main.java.com.game.model;
+package main.java.com.game.model.Heroes;
 
-import main.java.com.game.item.*;
+import main.java.com.game.item.Chests.Skin;
+import main.java.com.game.item.Weapons.Fist;
 
 public class Hero extends PlayableHeroes {
     Fist fist = new Fist();

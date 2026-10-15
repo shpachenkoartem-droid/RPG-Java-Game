@@ -1,4 +1,4 @@
-package main.java.com.game.item;
+package main.java.com.game.item.Potions;
 
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.model.*;

@@ -1,4 +1,4 @@
-package main.java.com.game.item;
+package main.java.com.game.item.Dice;
 import java.util.Random;
 
 

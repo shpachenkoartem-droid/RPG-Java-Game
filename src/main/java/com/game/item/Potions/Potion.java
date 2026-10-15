@@ -1,5 +1,6 @@
-package main.java.com.game.item;
+package main.java.com.game.item.Potions;
 
+import main.java.com.game.item.Item;
 import main.java.com.game.model.Fighter;
 
 public abstract class Potion extends Item {

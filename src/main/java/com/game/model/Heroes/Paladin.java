@@ -1,4 +1,4 @@
-package main.java.com.game.model;
+package main.java.com.game.model.Heroes;
 
 public class Paladin extends PlayableHeroes {
     public Paladin() {

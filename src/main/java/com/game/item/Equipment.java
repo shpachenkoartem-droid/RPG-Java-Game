@@ -1,6 +1,8 @@
 package main.java.com.game.item;
 
 
+import main.java.com.game.item.Dice.DamageDice;
+
 // Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
 public abstract class Equipment extends Item  {
 
@@ -8,7 +10,7 @@ public abstract class Equipment extends Item  {
     private int armorCount;
 
     // Метод даёт набор из 3х значений, по которым считается урон
-    // Для вывода не подходит, даёт вид main.java.com.game.item.DamageDice@4802796d
+    // Для вывода не подходит, даёт вид main.java.com.game.item.Dice.DamageDice@4802796d
     public DamageDice getDamage() {
         return damage;
     }

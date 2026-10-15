@@ -3,7 +3,12 @@ package main.java.com.game.view;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.enums.PurchaseResult;
 import main.java.com.game.item.*;
+import main.java.com.game.item.Potions.HealPotion;
+import main.java.com.game.item.Potions.Poison;
+import main.java.com.game.item.Potions.Potion;
 import main.java.com.game.model.*;
+import main.java.com.game.model.Enemies.Enemy;
+import main.java.com.game.model.Heroes.PlayableHeroes;
 import main.java.com.game.service.Shop;
 
 import java.util.Objects;
@@ -74,6 +79,7 @@ public class View {
 
     public void heroWinInFight() {System.out.println("\nВы победили в бою!");}
     public void heroLoseInFight() {System.out.println("\nВы проиграли в бою!");}
+    public void droppingOut(Enemy enemy) {System.out.println("\nВам выпал " + enemy.getDrop().getName());}
 
     public void showBothAttackResult(PlayableHeroes hero, Fighter target) {
         System.out.println("\n" + hero.getName() + " Получает " + target.getLastDamage() + " урона!");

@@ -1,6 +1,8 @@
-package main.java.com.game.item;
+package main.java.com.game.item.Weapons;
 
 import main.java.com.game.enums.ItemType;
+import main.java.com.game.item.Dice.DamageDice;
+import main.java.com.game.item.Equipment;
 
 public class Fist extends Equipment {
     public Fist() {

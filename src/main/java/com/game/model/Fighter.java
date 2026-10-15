@@ -2,6 +2,7 @@ package main.java.com.game.model;
 
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.item.*;
+import main.java.com.game.item.Potions.Potion;
 
 import java.util.Objects;
 

@@ -1,6 +1,6 @@
-package main.java.com.game.model;
+package main.java.com.game.model.Enemies;
 
-import main.java.com.game.item.GoblinDagger;
+import main.java.com.game.item.Weapons.GoblinDagger;
 
 // Дочерний класс от бойца
 public class Goblin extends Enemy {
