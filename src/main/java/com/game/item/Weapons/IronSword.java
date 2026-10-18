@@ -6,7 +6,7 @@ import main.java.com.game.item.Equipment;
 
 public class IronSword extends Equipment {
     public IronSword() {
-        setName("Iron sword");
+        setName("Железный меч");
         setCost(50);
         setDamage(new DamageDice(1, 6, 1));
         setItemType(ItemType.SWORD);

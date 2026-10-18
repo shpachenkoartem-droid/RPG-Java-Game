@@ -31,7 +31,11 @@ public abstract class Item {
         setCount(getCount() + 1);
     }
 
-    public boolean decCount() {
+    public void increaseCountWithNumber(int number) {
+        setCount(getCount() + number);
+    }
+
+    public boolean checkCountMoreZero() {
         if (getCount() > 0) {
             setCount(getCount() - 1);
             return true;

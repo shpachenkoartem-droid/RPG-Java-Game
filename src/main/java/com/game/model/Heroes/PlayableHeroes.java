@@ -41,25 +41,27 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     }
 
     public boolean isForest() {
-        if (getLocation() == Locations.FOREST) {
-            return true;
-        } else {
-            return false;
-        }
+        if (getLocation() == Locations.FOREST) { return true; } else { return false; }
     }
+
     public boolean isShop() {
-        if (getLocation() == Locations.SHOP) {
-            return true;
-        } else {
-            return false;
-        }
+        if (getLocation() == Locations.SHOP) { return true; } else { return false; }
     }
+
+    public boolean isCliff() {
+        if (getLocation() == Locations.CLIFF) { return true;} else { return false; }
+    }
+
     public void goForest() {
         location = Locations.FOREST;
     }
 
     public void goShop() {
         location = Locations.SHOP;
+    }
+
+    public void goCliff() {
+        location = Locations.CLIFF;
     }
 
     @Override

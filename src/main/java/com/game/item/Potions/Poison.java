@@ -15,7 +15,7 @@ public class Poison extends Potion {
     }
 
     public Poison() {
-        setName("Poison");
+        setName("Яд");
         setDmgAmount(5);
         setCost(40);
         setItemType(ItemType.POTION);

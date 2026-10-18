@@ -5,7 +5,7 @@ import main.java.com.game.item.Equipment;
 
 public class Skin extends Equipment {
     public Skin() {
-        setName("Skin");
+        setName("Кожа");
         setArmorCount(0);
         setItemType(ItemType.ARMOR);
         incCount();

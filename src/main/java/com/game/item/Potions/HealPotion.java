@@ -15,7 +15,7 @@ public class HealPotion extends Potion {
     }
     // Что за зелье и что оно делает
     public HealPotion() {
-        setName("Heal potion");
+        setName("Зелье лечения");
         setHealAmount(8);
         setCost(30);
         setItemType(ItemType.POTION);

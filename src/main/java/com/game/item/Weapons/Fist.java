@@ -6,7 +6,7 @@ import main.java.com.game.item.Equipment;
 
 public class Fist extends Equipment {
     public Fist() {
-        setName("Fist");
+        setName("Кулак");
         setDamage(new DamageDice(1, 4, 0));
         setItemType(ItemType.SWORD);
         incCount();

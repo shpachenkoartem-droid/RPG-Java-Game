@@ -33,15 +33,18 @@ public class View {
         return readIntInRange(0,6);
     }
 
+    public void Introduction() {System.out.println("Приветствую, герои! Ваше великое приключение начинается здесь. \nПройдите путь от драки на кулаках до оружия рассекающего небеса и получите звезду!");}
 
 
     // Локации
 
 
-    public void inForest() {System.out.println("\nВы в лесу");}
-    public void notInForest() {System.out.println("\nВы должны быть в лесу");}
-    public void inShop() {System.out.println("\nВы в магазине");}
+    public void inShop() {System.out.println("\nВы в магазине. Мирное место, где можно закупиться.");}
+    public void inForest() {System.out.println("\nВы в лесу. Место, в котором живут мифические создания.");}
+    public void inCliff() {System.out.println("\nВы в скалах. Обрывистое место, где существа не брезгуют вас уронить.");}
     public void notInShop() {System.out.println("\nВы должны быть в магазине");}
+    public void notInForest() {System.out.println("\nВы должны быть в лесу");}
+    public void notInCliff() {System.out.println("\nВы должны быть в скалах");}
     public void heroCurrentLocation(PlayableHeroes hero) {System.out.println("\nВы сейчас в локации: " + hero.getLocation());}
     public int showChooseLocation() {
         System.out.println("\n1. Магазин");
@@ -117,10 +120,17 @@ public class View {
         System.out.println("Здоровья после зелья: " + hero.getHp());
     }
 
-    public int showChooseFighters() {
+    public int showChooseFightersForest() {
         System.out.println("\nВыберите с кем создать битву: ");
         System.out.println("1. Огр");
         System.out.println("2. Гоблин");
+        return readIntInRange(1,2);
+    }
+
+    public int showChooseFightersCliff() {
+        System.out.println("\nВыберите с кем создать битву: ");
+        System.out.println("1. Гарпия");
+        System.out.println("2. Циклоп");
         return readIntInRange(1,2);
     }
 
@@ -128,7 +138,7 @@ public class View {
     public void wrong() {System.out.println("\nВведите правильное значение.");}
 
     // Снаряжение
-    public void showHeroDnDDamage(PlayableHeroes hero) {System.out.println(hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus() + "\n");}
+    public void showHeroDnDDamage(PlayableHeroes hero) {System.out.print(hero.getSword().getDamage().getCount() + "d" + hero.getSword().getDamage().getSides() + " + " + hero.getSword().getDamage().getBonus() + "\n");}
     public void showEquipmentDnDDamage(Equipment equipment) {System.out.print(equipment.getDamage().getCount() + "d" + equipment.getDamage().getSides() + " + " + equipment.getDamage().getBonus() + "\n");}
     public void showItemName(Item item) {System.out.println("\nИмя предмета: " + item.getName());}
     public void showCost(Item item) {System.out.println("\nСтоимость предмета: " + item.getCost());}
@@ -167,11 +177,12 @@ public class View {
     public void successBuying() {System.out.println("\nДзынь! Успешная покупка!");}
     public void notEnoughMoney() {System.out.println("\nНе хватает денег!");}
     public void deniedBuying() {System.out.println("\nОтложим покупку на следующий раз");}
+    public void notInShopStock() {System.out.println("Предмета нет в магазине");}
 
     public void showShopStock(Shop shop) {
         for (int i = 0; i < shop.getShopSize(); i++) {
             // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
-            System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost());
+            System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost() + " Осталось " + shop.getShopItems().get(i).getCount());
         }
     }
 

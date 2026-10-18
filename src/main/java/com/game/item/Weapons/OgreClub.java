@@ -6,7 +6,7 @@ import main.java.com.game.item.Equipment;
 
 public class OgreClub extends Equipment {
     public OgreClub() {
-        setName("Ogre Club");
+        setName("Дубина огра");
         setCost(0);
         setDamage(new DamageDice(1,8,0));
         setItemType(ItemType.SWORD);

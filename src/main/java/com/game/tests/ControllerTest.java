@@ -43,7 +43,7 @@ class ControllerTest {
             // После того как выбрали что будем экипировать, выбрасываем это
             hero.drop(newEquip);
             hero.equip(newEquip);
-            boolean decreased = newEquip.decCount();
+            boolean decreased = newEquip.checkCountMoreZero();
             if (!decreased) {
                 view.zeroCount();
             }

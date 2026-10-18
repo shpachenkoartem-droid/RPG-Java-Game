@@ -15,8 +15,18 @@ import java.util.List;
 public class Shop {
 
     private final List<Item> shopItems = new ArrayList<>();
-    public void addShopItems(Item item) {
+
+    public void addShopItems(Item item, int number) {
+        // Добавляем предмет в магазин
         shopItems.add(item);
+        // Увеличиваем его число на 1 при добавлении
+        item.increaseCountWithNumber(number);
+    }
+
+    public void removeShopItem(Item item) {
+        if (item.getCount() == 0) {
+            shopItems.remove(item);
+        }
     }
 
     // Для всех предметов магазина
@@ -29,11 +39,11 @@ public class Shop {
     }
 
     public void initializeShop() {
-        addShopItems(sword1);
-        addShopItems(sword2);
-        addShopItems(iron_chest);
-        addShopItems(healPotion);
-        addShopItems(poison);
+        addShopItems(sword1, 1);
+        addShopItems(sword2, 1);
+        addShopItems(iron_chest, 1);
+        addShopItems(healPotion, 3);
+        addShopItems(poison, 3);
     }
 
     // Наполняем магазин товарами
@@ -50,28 +60,18 @@ public class Shop {
     // Сам процесс покупки когда уже выбрали предмет
     // Здесь он добавляется в инвентарь
     public PurchaseResult buySoloItem(PlayableHeroes hero, Item item, int agree) {
-        if (agree == 2) { return PurchaseResult.DENIED;}
-        if (hero.getMoney() > item.getCost()) {
-            item.incCount();
-            hero.decMoney(item.getCost());
-            hero.pickUp(item);
-            return PurchaseResult.SUCCESS;
+        if (agree == 2) {
+            return PurchaseResult.DENIED;
+        }
+        // Если у героя хватает денег и предмет есть в магазине
+        if (hero.getMoney() > item.getCost() && item.checkCountMoreZero()) {
+            // При покупке уменьшаем количество в магазине
+                hero.decMoney(item.getCost());
+                hero.pickUp(item);
+                removeShopItem(item);
+                return PurchaseResult.SUCCESS;
         } else {
             return PurchaseResult.NOT_ENOUGH_MONEY;
         }
     }
 }
-
-    /*
-    // Создание списка покупок и возможности выбора одного предмета
-    public void buyItems(PlayableHeroes hero) {
-        int choice_items =
-        switch (choice_items) {
-            case 1 -> buySoloItem(hero, getShopItem(0));
-            case 2 -> buySoloItem(hero, getShopItem(1));
-            case 3 -> buySoloItem(hero, getShopItem(2));
-            case 4 -> buySoloItem(hero, getShopItem(3));
-            case 5 -> buySoloItem(hero, getShopItem(4));
-        }
-    }
-    */

@@ -5,7 +5,7 @@ import main.java.com.game.item.Equipment;
 
 public class IronChest extends Equipment {
     public IronChest() {
-        setName("IronChest");
+        setName("Железный нагрудник");
         setCost(200);
         setArmorCount(1);
         setItemType(ItemType.ARMOR);

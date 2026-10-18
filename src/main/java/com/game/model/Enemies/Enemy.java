@@ -6,7 +6,7 @@ import main.java.com.game.model.Fighter;
 import java.util.Random;
 
 
-public class Enemy extends Fighter {
+public abstract class Enemy extends Fighter {
     // Предмет, который выпадает
     private Item drop;
     // Шанс с которым предмет выпадает

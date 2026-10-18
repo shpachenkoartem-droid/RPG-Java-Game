@@ -4,8 +4,6 @@ import main.java.com.game.item.Chests.Skin;
 import main.java.com.game.item.Weapons.Fist;
 
 public class Hero extends PlayableHeroes {
-    Fist fist = new Fist();
-    Skin skin = new Skin();
     // Создаём инвентарь только для одного героя
     // Все методы для воздействия реализуем в main.java.com.game.PlayableHeroes
     public Hero() {
@@ -14,7 +12,7 @@ public class Hero extends PlayableHeroes {
         setName("Герой");
         setMoney(1000);
         setHeal(2);
-        equip(fist);
-        equip(skin);
+        equip(new Fist());
+        equip(new Skin());
     }
 }

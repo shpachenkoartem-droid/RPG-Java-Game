@@ -29,13 +29,14 @@ public class Controller {
     }
 
     public void run() {
+        view.Introduction();
         while (true) {
             // Весь ввод в View, Controller соединяет ввод и реализацию Model
             int choice_main = view.maimMenu();
             if (choice_main == 0) break;
 
             switch (choice_main) {
-                case 1 -> fullChooseFighters();
+                case 1 -> fullChooseFightersForest();
                 case 2 -> chooseLocation();
                 case 3 -> buyItems(hero);
                 case 4 -> fullEquip();
@@ -47,13 +48,13 @@ public class Controller {
     }
 
     // Выбор врага - кто он такой
-    public void fullChooseFighters() {
+    public void fullChooseFightersForest() {
         if (!hero.isForest()) {
             view.notInForest();
             view.heroCurrentLocation(hero);
             return;
         }
-        int choice = view.showChooseFighters();
+        int choice = view.showChooseFightersForest();
         Enemy enemy = switch (choice) {
             case 1 -> new Ogre();
             case 2 -> new Goblin();
@@ -64,6 +65,22 @@ public class Controller {
         }
     }
 
+    public void fullChooseFightersCliff() {
+        if (!hero.isCliff()) {
+            view.notInCliff();
+            view.heroCurrentLocation(hero);
+            return;
+        }
+        int choice = view.showChooseFightersCliff();
+        Enemy enemy = switch (choice) {
+            case 1 -> new Ogre();
+            case 2 -> new Goblin();
+            default -> null;
+        };
+        if (enemy != null) {
+            battleControl(hero, enemy);
+        }
+    }
 
     public void chooseLocation() {
         int choice_location = view.showChooseLocation();
@@ -122,7 +139,7 @@ public class Controller {
             // После того как выбрали что будем экипировать, выбрасываем это
             hero.drop(newEquip);
             hero.equip(newEquip);
-            boolean decreased = newEquip.decCount();
+            boolean decreased = newEquip.checkCountMoreZero();
             if (!decreased) {
                 view.zeroCount();
             }
@@ -151,6 +168,7 @@ public class Controller {
                 case NOT_ENOUGH_MONEY -> view.notEnoughMoney();
                 case NOT_IN_SHOP -> view.notInShop();
                 case DENIED -> view.deniedBuying();
+                case NOT_IN_SHOP_STOCK -> view.notInShopStock();
             }
         } else view.notInShop();
     }
