@@ -1,10 +1,10 @@
-package main.java.com.game;
+package com.game;
 
-import main.java.com.game.controller.Controller;
-import main.java.com.game.model.heroes.Hero;
-import main.java.com.game.service.Battle;
-import main.java.com.game.service.Shop;
-import main.java.com.game.view.View;
+import com.game.controller.Controller;
+import com.game.model.heroes.Hero;
+import com.game.service.Battle;
+import com.game.service.Shop;
+import com.game.view.View;
 
 public class Main {
     public static void main (String[] args) {

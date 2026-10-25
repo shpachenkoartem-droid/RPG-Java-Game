@@ -1,11 +1,11 @@
-package test.java.com.game.controller;
+package com.game.controller;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.Equipment;
-import main.java.com.game.item.Item;
-import main.java.com.game.model.heroes.Hero;
-import main.java.com.game.model.Inventory;
-import main.java.com.game.view.View;
+import com.game.enums.ItemType;
+import com.game.item.Equipment;
+import com.game.item.Item;
+import com.game.model.heroes.Hero;
+import com.game.model.Inventory;
+import com.game.view.View;
 import org.junit.jupiter.api.Test;
 
 class ControllerTest {

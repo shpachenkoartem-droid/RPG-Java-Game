@@ -1,7 +1,7 @@
-package main.java.com.game.item.chests;
+package com.game.item.chests;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.Equipment;
+import com.game.enums.ItemType;
+import com.game.item.Equipment;
 
 public class Skin extends Equipment {
     public Skin() {

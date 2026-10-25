@@ -1,7 +1,7 @@
-package main.java.com.game.item.potions;
+package com.game.item.potions;
 
-import main.java.com.game.item.Item;
-import main.java.com.game.model.Fighter;
+import com.game.item.Item;
+import com.game.model.Fighter;
 
 public abstract class Potion extends Item {
     // Абстрактный метод - каждое зелье реализуется по-своему

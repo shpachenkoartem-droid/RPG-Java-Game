@@ -1,15 +1,15 @@
-package main.java.com.game.controller;
+package com.game.controller;
 
-import main.java.com.game.model.enemies.Enemy;
-import main.java.com.game.model.enemies.Goblin;
-import main.java.com.game.model.enemies.Ogre;
-import main.java.com.game.model.heroes.Hero;
-import main.java.com.game.model.heroes.PlayableHeroes;
-import main.java.com.game.view.*;
-import main.java.com.game.item.*;
-import main.java.com.game.model.*;
-import main.java.com.game.service.*;
-import main.java.com.game.enums.*;
+import com.game.model.enemies.Enemy;
+import com.game.model.enemies.Goblin;
+import com.game.model.enemies.Ogre;
+import com.game.model.heroes.Hero;
+import com.game.model.heroes.PlayableHeroes;
+import com.game.view.*;
+import com.game.item.*;
+import com.game.model.*;
+import com.game.service.*;
+import com.game.enums.*;
 
 import java.util.List;
 

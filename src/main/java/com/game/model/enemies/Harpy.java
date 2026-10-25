@@ -1,6 +1,6 @@
-package main.java.com.game.model.enemies;
+package com.game.model.enemies;
 
-import main.java.com.game.item.weapons.HarpyClaw;
+import com.game.item.weapons.HarpyClaw;
 
 public class Harpy extends Enemy {
     public Harpy() {

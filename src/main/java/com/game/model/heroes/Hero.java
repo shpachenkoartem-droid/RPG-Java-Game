@@ -1,11 +1,11 @@
-package main.java.com.game.model.heroes;
+package com.game.model.heroes;
 
-import main.java.com.game.item.chests.Skin;
-import main.java.com.game.item.weapons.Fist;
+import com.game.item.chests.Skin;
+import com.game.item.weapons.Fist;
 
 public class Hero extends PlayableHeroes {
     // Создаём инвентарь только для одного героя
-    // Все методы для воздействия реализуем в main.java.com.game.PlayableHeroes
+    // Все методы для воздействия реализуем в com.game.PlayableHeroes
     public Hero() {
         setMaxHp(50);
         setHp(50);

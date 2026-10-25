@@ -1,6 +1,6 @@
-package main.java.com.game.model.enemies;
+package com.game.model.enemies;
 
-import main.java.com.game.item.weapons.OgreClub;
+import com.game.item.weapons.OgreClub;
 
 public class Ogre extends Enemy {
     public Ogre() {

@@ -1,8 +1,8 @@
-package test.java.com.game.model;
+package com.game.model;
 
-import main.java.com.game.model.enemies.Goblin;
+import com.game.model.enemies.Goblin;
 
-import main.java.com.game.model.heroes.Hero;
+import com.game.model.heroes.Hero;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

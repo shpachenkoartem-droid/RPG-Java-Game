@@ -1,24 +1,24 @@
-package main.java.com.game.view;
+package com.game.view;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.enums.PurchaseResult;
-import main.java.com.game.item.*;
-import main.java.com.game.item.potions.HealPotion;
-import main.java.com.game.item.potions.Poison;
-import main.java.com.game.item.potions.Potion;
-import main.java.com.game.model.*;
-import main.java.com.game.model.enemies.Enemy;
-import main.java.com.game.model.heroes.PlayableHeroes;
-import main.java.com.game.service.Shop;
+import com.game.enums.ItemType;
+import com.game.enums.PurchaseResult;
+import com.game.item.*;
+import com.game.item.potions.HealPotion;
+import com.game.item.potions.Poison;
+import com.game.item.potions.Potion;
+import com.game.model.*;
+import com.game.model.enemies.Enemy;
+import com.game.model.heroes.PlayableHeroes;
+import com.game.service.Shop;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 
-// Начинаю реализацию MVC - Model main.java.com.game.Controller main.java.com.game.View
-// Класс main.java.com.game.View отвечает за все выводимые данные, то есть каждые print будет тут
+// Начинаю реализацию MVC - Model com.game.Controller com.game.View
+// Класс com.game.View отвечает за все выводимые данные, то есть каждые print будет тут
 // Класс Model не будет знать как выводить, он лишь будет передавать данные
-// Все вызовы будет производить main.java.com.game.Controller, Model лишь будет выполнять техническую часть
+// Все вызовы будет производить com.game.Controller, Model лишь будет выполнять техническую часть
 public class View {
     private final Scanner scanner = new Scanner(System.in);
     public int mainMenu() {

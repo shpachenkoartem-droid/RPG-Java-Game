@@ -1,4 +1,4 @@
-package main.java.com.game.dice;
+package com.game.dice;
 
 public class DamageDice {
     Dice dice = new Dice();

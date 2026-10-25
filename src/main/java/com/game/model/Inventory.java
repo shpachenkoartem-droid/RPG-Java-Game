@@ -1,8 +1,8 @@
-package main.java.com.game.model;
+package com.game.model;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.Equipment;
-import main.java.com.game.item.Item;
+import com.game.enums.ItemType;
+import com.game.item.Equipment;
+import com.game.item.Item;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

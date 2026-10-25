@@ -1,7 +1,7 @@
-package main.java.com.game.model.enemies;
+package com.game.model.enemies;
 
-import main.java.com.game.item.Item;
-import main.java.com.game.model.Fighter;
+import com.game.item.Item;
+import com.game.model.Fighter;
 
 import java.util.Random;
 

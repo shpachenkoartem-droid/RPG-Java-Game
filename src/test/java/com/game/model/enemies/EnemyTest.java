@@ -1,7 +1,7 @@
-package test.java.com.game.model.enemies;
+package com.game.model.enemies;
 
-import main.java.com.game.model.enemies.Goblin;
-import main.java.com.game.model.heroes.Hero;
+import com.game.model.enemies.Goblin;
+import com.game.model.heroes.Hero;
 import org.junit.jupiter.api.Test;
 
 class EnemyTest {

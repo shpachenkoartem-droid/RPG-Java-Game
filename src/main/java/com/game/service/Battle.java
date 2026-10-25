@@ -1,13 +1,13 @@
-package main.java.com.game.service;
+package com.game.service;
 
-import main.java.com.game.enums.BattleResult;
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.potions.Potion;
-import main.java.com.game.model.*;
-import main.java.com.game.model.enemies.Enemy;
-import main.java.com.game.model.heroes.PlayableHeroes;
-import main.java.com.game.model.Inventory;
-import main.java.com.game.item.Item;
+import com.game.enums.BattleResult;
+import com.game.enums.ItemType;
+import com.game.item.potions.Potion;
+import com.game.model.*;
+import com.game.model.enemies.Enemy;
+import com.game.model.heroes.PlayableHeroes;
+import com.game.model.Inventory;
+import com.game.item.Item;
 
 
 public class Battle {

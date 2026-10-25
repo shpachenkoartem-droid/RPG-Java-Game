@@ -1,6 +1,6 @@
-package test.java.com.game.dice;
+package com.game.dice;
 
-import main.java.com.game.dice.Dice;
+import com.game.dice.Dice;
 import org.junit.jupiter.api.Test;
 
 class DiceTest {

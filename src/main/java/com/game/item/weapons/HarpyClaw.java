@@ -1,8 +1,8 @@
-package main.java.com.game.item.weapons;
+package com.game.item.weapons;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.dice.DamageDice;
-import main.java.com.game.item.Equipment;
+import com.game.enums.ItemType;
+import com.game.dice.DamageDice;
+import com.game.item.Equipment;
 
 public class HarpyClaw extends Equipment {
     public HarpyClaw() {

@@ -1,8 +1,8 @@
-package main.java.com.game.model;
+package com.game.model;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.*;
-import main.java.com.game.item.potions.Potion;
+import com.game.enums.ItemType;
+import com.game.item.*;
+import com.game.item.potions.Potion;
 
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ public abstract class Fighter {
 
     // Как работает экипировка мечей
     // С помощью конструкторов мы создаём каждый меч
-    // main.java.com.game.Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов main.java.com.game.Equipment, а значит и в частности наш меч
+    // com.game.Fighter получает метод equipSword где в параметрах указывается абстрактный класс всех предметов com.game.Equipment, а значит и в частности наш меч
     // Поставили урон с помощью set, "протащили" значение от нашего конструктора меча, подход вроде правильный, но не уверен
 
     public void equip(Equipment equipment) {
@@ -74,7 +74,7 @@ public abstract class Fighter {
 
 // Геттеры и сеттеры нужны чтобы получать и изменять значения хп, атаки и так далее для моих бойцов из любого места
 // Благодаря ним код следует принципам ИНКАПСУЛЯЦИИ
-// Так как в main.java.com.game.Fighter поля private, то их нельзя изменить с помощью простого hero.hp = hero.hp + 5
+// Так как в com.game.Fighter поля private, то их нельзя изменить с помощью простого hero.hp = hero.hp + 5
 // Теперь поля можно изменять с помощью hero.setHp(hero.getHp() + 5)
 // К ним можно добавить защиту от отрицательного хп, слишком большого урона и бессмыслицы
 

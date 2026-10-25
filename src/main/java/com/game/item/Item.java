@@ -1,6 +1,6 @@
-package main.java.com.game.item;
+package com.game.item;
 
-import main.java.com.game.enums.ItemType;
+import com.game.enums.ItemType;
 
 // Абстрактный метод для всех предметов вообще
 public abstract class Item {

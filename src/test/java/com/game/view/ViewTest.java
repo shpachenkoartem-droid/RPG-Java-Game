@@ -1,7 +1,7 @@
-package test.java.com.game.view;
+package com.game.view;
 
-import main.java.com.game.item.Equipment;
-import main.java.com.game.item.chests.IronChest;
+import com.game.item.Equipment;
+import com.game.item.chests.IronChest;
 import org.junit.jupiter.api.Test;
 
 class ViewTest {

@@ -1,9 +1,9 @@
-package main.java.com.game.model.heroes;
+package com.game.model.heroes;
 
-import main.java.com.game.item.Item;
-import main.java.com.game.enums.Locations;
-import main.java.com.game.model.Fighter;
-import main.java.com.game.model.Inventory;
+import com.game.item.Item;
+import com.game.enums.Locations;
+import com.game.model.Fighter;
+import com.game.model.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;

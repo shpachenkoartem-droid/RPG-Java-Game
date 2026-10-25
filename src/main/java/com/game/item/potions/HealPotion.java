@@ -1,7 +1,7 @@
-package main.java.com.game.item.potions;
+package com.game.item.potions;
 
-import main.java.com.game.enums.ItemType;
-import main.java.com.game.model.*;
+import com.game.enums.ItemType;
+import com.game.model.*;
 
 
 public class HealPotion extends Potion {
