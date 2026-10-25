@@ -21,7 +21,7 @@ import java.util.Scanner;
 // Все вызовы будет производить main.java.com.game.Controller, Model лишь будет выполнять техническую часть
 public class View {
     private final Scanner scanner = new Scanner(System.in);
-    public int maimMenu() {
+    public int mainMenu() {
         System.out.println("\nВыберите действие:");
         System.out.println("1. Создать битву");
         System.out.println("2. Сменить локацию");
@@ -33,7 +33,7 @@ public class View {
         return readIntInRange(0,6);
     }
 
-    public void Introduction() {System.out.println("Приветствую, герои! Ваше великое приключение начинается здесь. \nПройдите путь от драки на кулаках до оружия рассекающего небеса и получите звезду!");}
+    public void introduction() {System.out.println("Приветствую, герои! Ваше великое приключение начинается здесь. \nПройдите путь от драки на кулаках до оружия рассекающего небеса и получите звезду!");}
 
 
     // Локации
@@ -59,7 +59,7 @@ public class View {
     public void showStats(PlayableHeroes hero) {
         System.out.println("\n1. Имя: " + hero.getName());
         System.out.println("2. HP: " + hero.getHp());
-        System.out.println("3. Max_HP: " + hero.getMax_hp());
+        System.out.println("3. MaxHP: " + hero.getMaxHp());
         System.out.print("4. Урон: ");
         showHeroDnDDamage(hero);
         System.out.println("5. Деньги: " + hero.getMoney());
@@ -70,7 +70,7 @@ public class View {
 
     public void showFighterName(Fighter fighter) {System.out.println("\nИмя: " + fighter.getHp());}
     public void showHP(Fighter fighter) {System.out.println("\nHP: " + fighter.getHp());}
-    public void showMaxHP(Fighter fighter) {System.out.println("\nMax_HP: " + fighter.getMax_hp());}
+    public void showMaxHP(Fighter fighter) {System.out.println("\nMaxHP: " + fighter.getMaxHp());}
     public void showDmg(Fighter fighter) {System.out.println("\nУрон: " + fighter.getSword().getDamage());}
     public void showMoney(Fighter fighter) {System.out.println("\nДеньги: " + fighter.getMoney());}
     public void showSword(Fighter fighter) {System.out.println("\nМеч: " + fighter.getSword());}
@@ -101,7 +101,7 @@ public class View {
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
     }
 
-    public void NoPotions() {System.out.println("\nУ вас нет зелий!");}
+    public void noPotions() {System.out.println("\nУ вас нет зелий!");}
 
     public void showFightersHP(PlayableHeroes hero, Fighter fighter) {
         System.out.println("\nИзначальное здоровье " + hero.getName() + ": " + hero.getHp());
@@ -134,7 +134,6 @@ public class View {
         return readIntInRange(1,2);
     }
 
-    public void here() {System.out.println("\nВот тут! Прямо здесь! Прямо в этой части кода!");}
     public void wrong() {System.out.println("\nВведите правильное значение.");}
 
     // Снаряжение
@@ -202,6 +201,14 @@ public class View {
     public void showItemData(Item item) {
         System.out.println("\n" + item.getName());
         System.out.println(item.getDescription());
+
+
+
+        //Надо попробовать тут сделать интерфейсом по принципу Open closed principle
+
+
+
+
         if (Objects.equals(item.getItemType(), ItemType.SWORD)) {
             showSwordData( (Equipment) item);
         } else if (Objects.equals(item.getItemType(), ItemType.ARMOR)) {

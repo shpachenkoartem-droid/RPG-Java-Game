@@ -3,7 +3,6 @@ package main.java.com.game.item;
 
 import main.java.com.game.item.Dice.DamageDice;
 
-// Сделать чтобы снаряжение складывалось в инвентарь и оттуда доставалось. Потому что хз как по-другому сделать проверки в isPurchased
 public abstract class Equipment extends Item  {
 
     DamageDice damage = new DamageDice(0, 0, 0);

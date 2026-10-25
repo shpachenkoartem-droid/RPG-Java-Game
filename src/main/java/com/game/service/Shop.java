@@ -41,7 +41,7 @@ public class Shop {
     public void initializeShop() {
         addShopItems(sword1, 1);
         addShopItems(sword2, 1);
-        addShopItems(iron_chest, 1);
+        addShopItems(ironChest, 1);
         addShopItems(healPotion, 3);
         addShopItems(poison, 3);
     }
@@ -49,7 +49,7 @@ public class Shop {
     // Наполняем магазин товарами
     private final IronSword sword1 = new IronSword();
     private final GoldSword sword2 = new GoldSword();
-    private final IronChest iron_chest = new IronChest();
+    private final IronChest ironChest = new IronChest();
     private final HealPotion healPotion = new HealPotion();
     private final Poison poison = new Poison();
 

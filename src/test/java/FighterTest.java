@@ -1,4 +1,4 @@
-package main.java.com.game.tests;
+package test.java;
 
 import main.java.com.game.model.Enemies.Goblin;
 
@@ -29,7 +29,7 @@ class FighterTest {
     }
 
     @Test
-    void newGoblin_hasFiveHp() {
+    void newGoblinHasFiveHp() {
         Goblin goblin = new Goblin();
         assertEquals(5, goblin.getHp());
     }

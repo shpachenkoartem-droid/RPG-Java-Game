@@ -5,7 +5,7 @@ import main.java.com.game.item.Weapons.GoblinDagger;
 // Дочерний класс от бойца
 public class Goblin extends Enemy {
     public Goblin() {
-        setMax_hp(5);
+        setMaxHp(5);
         setHp(5);
         setSword(new GoblinDagger());
         setName("Гоблин");

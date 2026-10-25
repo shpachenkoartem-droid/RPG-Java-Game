@@ -29,13 +29,13 @@ public class Controller {
     }
 
     public void run() {
-        view.Introduction();
+        view.introduction();
         while (true) {
             // Весь ввод в View, Controller соединяет ввод и реализацию Model
-            int choice_main = view.maimMenu();
-            if (choice_main == 0) break;
+            int choiceMain = view.mainMenu();
+            if (choiceMain == 0) break;
 
-            switch (choice_main) {
+            switch (choiceMain) {
                 case 1 -> fullChooseFightersForest();
                 case 2 -> chooseLocation();
                 case 3 -> buyItems(hero);
@@ -83,8 +83,8 @@ public class Controller {
     }
 
     public void chooseLocation() {
-        int choice_location = view.showChooseLocation();
-        switch (choice_location) {
+        int choiceLocation = view.showChooseLocation();
+        switch (choiceLocation) {
             case 1 -> {
                 hero.goShop();
                 view.inShop();
@@ -107,8 +107,8 @@ public class Controller {
             return false;
         }
 
-        int choice_swap_equip = view.showChooseEquip(hero);
-        switch (choice_swap_equip) {
+        int choiceSwapEquip = view.showChooseEquip(hero);
+        switch (choiceSwapEquip) {
             case 1 -> chooseOneTypeEquipment(hero, ItemType.SWORD);
             case 2 -> chooseOneTypeEquipment(hero, ItemType.ARMOR);
             default -> fullEquip();
@@ -220,7 +220,7 @@ public class Controller {
 
             switch (result) {
                 case ATTACK, CONTINUE -> view.showBothAttackResult(hero, enemy);
-                case NO_POTIONS -> view.NoPotions();
+                case NO_POTIONS -> view.noPotions();
                 case DRINK_POTION -> {
                     view.showDrinkPotion(hero);
                     view.showEnemyAttackResult(hero, enemy);

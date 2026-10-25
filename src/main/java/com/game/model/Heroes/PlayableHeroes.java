@@ -8,7 +8,7 @@ import main.java.com.game.model.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-// Дал возможность героям ходить в локации. Долго думал как сделать, но по итогу вышло достаточно просто. Надо на бумаге рисовать примерные схемки.
+// Дал возможность героям ходить в локации. Долго думал как сделать, но по итогу вышло достаточно просто.
 public abstract class PlayableHeroes extends Fighter implements Healer {
     private int heal;
     private Locations location = Locations.SHOP;
@@ -19,7 +19,6 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
         return inventory;
     }
 
-    // Просто легендарно. Сам всё создал и понял. И сработало идеально. Создаём отдельный массив только для вывода названий
     public List<String> getInventoryWithName() {
         List<String> arrayWithNames = new ArrayList<>();
         for (Item i : inventory.getItems()) {

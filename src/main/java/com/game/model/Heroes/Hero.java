@@ -7,7 +7,7 @@ public class Hero extends PlayableHeroes {
     // Создаём инвентарь только для одного героя
     // Все методы для воздействия реализуем в main.java.com.game.PlayableHeroes
     public Hero() {
-        setMax_hp(50);
+        setMaxHp(50);
         setHp(50);
         setName("Герой");
         setMoney(1000);

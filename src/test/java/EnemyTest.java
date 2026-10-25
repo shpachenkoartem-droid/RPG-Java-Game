@@ -1,4 +1,4 @@
-package main.java.com.game.tests;
+package test.java;
 
 import main.java.com.game.model.Enemies.Goblin;
 import main.java.com.game.model.Heroes.Hero;

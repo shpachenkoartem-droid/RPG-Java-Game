@@ -9,14 +9,14 @@ import java.util.Objects;
 
 public class Inventory {
     private final List<Item> items = new ArrayList<>();
-    private int max_size = 20;
+    private int maxSize = 20;
 
     public Item get(int index) {
         return items.get(index);
     }
 
     public void addItem(Item item) {
-        if (items.size() < max_size) {
+        if (items.size() < maxSize) {
             items.add(item);
         } else { System.out.println("Инвентарь забит, места нет!"); }
 
@@ -33,12 +33,12 @@ public class Inventory {
         return items;
     }
 
-    public int getMax_size() {
-        return max_size;
+    public int getMaxSize() {
+        return maxSize;
     }
 
-    public void setMax_size(int max_size) {
-        this.max_size = max_size;
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 
     public boolean isEmpty() {

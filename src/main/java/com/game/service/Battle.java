@@ -23,7 +23,7 @@ public class Battle {
         switch (choice) {
                 case 1 -> {
                     hero.attack(enemy);
-                    ifkillEnemy(hero, enemy);
+                    ifKillEnemy(hero, enemy);
                     enemy.attack(hero);
                     if (hero.getHp() <= 0) return BattleResult.LOSE;
                     return BattleResult.CONTINUE;
@@ -67,7 +67,7 @@ public class Battle {
     }
 
     // Проверка на победу над врагом и переход к вопросы а выпало ли что-то
-    public void ifkillEnemy(PlayableHeroes hero, Enemy enemy) {
+    public void ifKillEnemy(PlayableHeroes hero, Enemy enemy) {
         if (enemy.getHp() <= 0) {
             getMoneyForEnemyKill(hero, enemy);
             pickUpDrop(hero, enemy);

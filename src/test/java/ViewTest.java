@@ -1,4 +1,4 @@
-package main.java.com.game.tests;
+package test.java;
 
 import main.java.com.game.item.Equipment;
 import main.java.com.game.item.Chests.IronChest;

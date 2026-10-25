@@ -9,12 +9,12 @@ import java.util.Objects;
 // абстрактный класс бойца - "образ" всех кто должен сражаться
 public abstract class Fighter {
     private int hp;
-    private int max_hp;
+    private int maxHp;
     private String name;
     private int money;
     // Чтобы не нарушать принцип подстановки Барбары Лисков (LSP) надо сделать класс наследника, который может реализовывать лечение (герой, враг-жрец и тп)
     // Потому что не каждый боец может лечить
-    private int reduce_damage;
+    private int reduceDamage;
     private int damage;
     private Equipment sword;
     private Equipment armor;
@@ -96,8 +96,8 @@ public abstract class Fighter {
     public void incHp(int hp) {
         setHp(this.getHp() + hp);
         // Защита от превышения максимального здоровья
-        if (getHp() > getMax_hp()) {
-            setHp(getMax_hp());
+        if (getHp() > getMaxHp()) {
+            setHp(getMaxHp());
         }
     }
 
@@ -109,12 +109,12 @@ public abstract class Fighter {
         }
     }
 
-    public int getMax_hp() {
-        return max_hp;
+    public int getMaxHp() {
+        return maxHp;
     }
 
-    public void setMax_hp(int max_hp) {
-        this.max_hp = max_hp;
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
     }
 
     public String getName() {
@@ -164,7 +164,7 @@ public abstract class Fighter {
     }
 
     public int getReduceDamage() {
-        return reduce_damage;
+        return reduceDamage;
     }
 
 }

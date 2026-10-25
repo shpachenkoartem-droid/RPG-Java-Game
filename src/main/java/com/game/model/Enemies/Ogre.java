@@ -4,7 +4,7 @@ import main.java.com.game.item.Weapons.OgreClub;
 
 public class Ogre extends Enemy {
     public Ogre() {
-        setMax_hp(10);
+        setMaxHp(10);
         setHp(10);
         setSword(new OgreClub());
         setName("Огр");
