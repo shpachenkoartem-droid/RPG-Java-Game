@@ -2,10 +2,10 @@ package main.java.com.game.service;
 
 import main.java.com.game.enums.BattleResult;
 import main.java.com.game.enums.ItemType;
-import main.java.com.game.item.Potions.Potion;
+import main.java.com.game.item.potions.Potion;
 import main.java.com.game.model.*;
-import main.java.com.game.model.Enemies.Enemy;
-import main.java.com.game.model.Heroes.PlayableHeroes;
+import main.java.com.game.model.enemies.Enemy;
+import main.java.com.game.model.heroes.PlayableHeroes;
 import main.java.com.game.model.Inventory;
 import main.java.com.game.item.Item;
 

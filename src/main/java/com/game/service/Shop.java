@@ -2,12 +2,12 @@ package main.java.com.game.service;
 
 import main.java.com.game.enums.PurchaseResult;
 import main.java.com.game.item.*;
-import main.java.com.game.item.Chests.IronChest;
-import main.java.com.game.item.Potions.HealPotion;
-import main.java.com.game.item.Potions.Poison;
-import main.java.com.game.item.Weapons.GoldSword;
-import main.java.com.game.item.Weapons.IronSword;
-import main.java.com.game.model.Heroes.PlayableHeroes;
+import main.java.com.game.item.chests.IronChest;
+import main.java.com.game.item.potions.HealPotion;
+import main.java.com.game.item.potions.Poison;
+import main.java.com.game.item.weapons.GoldSword;
+import main.java.com.game.item.weapons.IronSword;
+import main.java.com.game.model.heroes.PlayableHeroes;
 
 import java.util.ArrayList;
 import java.util.List;

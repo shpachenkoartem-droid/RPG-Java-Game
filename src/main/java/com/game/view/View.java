@@ -3,12 +3,12 @@ package main.java.com.game.view;
 import main.java.com.game.enums.ItemType;
 import main.java.com.game.enums.PurchaseResult;
 import main.java.com.game.item.*;
-import main.java.com.game.item.Potions.HealPotion;
-import main.java.com.game.item.Potions.Poison;
-import main.java.com.game.item.Potions.Potion;
+import main.java.com.game.item.potions.HealPotion;
+import main.java.com.game.item.potions.Poison;
+import main.java.com.game.item.potions.Potion;
 import main.java.com.game.model.*;
-import main.java.com.game.model.Enemies.Enemy;
-import main.java.com.game.model.Heroes.PlayableHeroes;
+import main.java.com.game.model.enemies.Enemy;
+import main.java.com.game.model.heroes.PlayableHeroes;
 import main.java.com.game.service.Shop;
 
 import java.util.Objects;

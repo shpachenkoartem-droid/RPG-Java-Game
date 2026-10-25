@@ -1,10 +1,10 @@
 package main.java.com.game.controller;
 
-import main.java.com.game.model.Enemies.Enemy;
-import main.java.com.game.model.Enemies.Goblin;
-import main.java.com.game.model.Enemies.Ogre;
-import main.java.com.game.model.Heroes.Hero;
-import main.java.com.game.model.Heroes.PlayableHeroes;
+import main.java.com.game.model.enemies.Enemy;
+import main.java.com.game.model.enemies.Goblin;
+import main.java.com.game.model.enemies.Ogre;
+import main.java.com.game.model.heroes.Hero;
+import main.java.com.game.model.heroes.PlayableHeroes;
 import main.java.com.game.view.*;
 import main.java.com.game.item.*;
 import main.java.com.game.model.*;
