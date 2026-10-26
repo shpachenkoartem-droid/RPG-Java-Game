@@ -139,7 +139,7 @@ public class Controller {
             // После того как выбрали что будем экипировать, выбрасываем это
             hero.drop(newEquip);
             hero.equip(newEquip);
-            boolean decreased = newEquip.checkCountMoreZero();
+            boolean decreased = newEquip.checkCountMoreZeroAndDec();
             if (!decreased) {
                 view.zeroCount();
             }
@@ -148,29 +148,30 @@ public class Controller {
 
 
     public void buyItems(PlayableHeroes hero) {
-        if (hero.isShop()) {
-            List<Item> itemsInShop = shop.getShopItems();
-            view.showMoney(hero);
-            view.whatYouWantBuy();
-            view.showShopStock(shop);
-            int choice = view.readIntInRange(1, itemsInShop.size());
-            if (choice == 0) return;
+        if (!hero.isShop()) {
+            view.notInShop();
+            return;
+        }
+        List<Item> itemsInShop = shop.getShopItems();
+        view.showMoney(hero);
+        view.whatYouWantBuy();
+        view.showShopStock(shop);
+        int choice = view.readIntInRange(0, itemsInShop.size());
+        if (choice == 0) return;
 
-            Item selectedItem = itemsInShop.get(choice - 1);
-            view.showItemData(selectedItem);
-            int agree = view.showBuyMenu();
+        Item selectedItem = itemsInShop.get(choice - 1);
+        view.showItemData(selectedItem);
+        int agree = view.showBuyMenu();
 
-            // butResult получит один из четырёх состояний и передаст данные в Controller
-            // А buySoloItem повзаимодействует с hero
-            PurchaseResult buyResult = shop.buySoloItem(hero, selectedItem, agree);
-            switch (buyResult) {
-                case SUCCESS -> view.successBuying();
-                case NOT_ENOUGH_MONEY -> view.notEnoughMoney();
-                case NOT_IN_SHOP -> view.notInShop();
-                case DENIED -> view.deniedBuying();
-                case NOT_IN_SHOP_STOCK -> view.notInShopStock();
-            }
-        } else view.notInShop();
+        // butResult получит один из четырёх состояний и передаст данные в Controller
+        // А buySoloItem повзаимодействует с hero
+        PurchaseResult buyResult = shop.buySoloItem(hero, selectedItem, agree);
+        switch (buyResult) {
+            case SUCCESS -> view.successBuying();
+            case NOT_ENOUGH_MONEY -> view.notEnoughMoney();
+            case DENIED -> view.deniedBuying();
+            case NOT_IN_SHOP_STOCK -> view.notInShopStock();
+        }
     }
 
     public void openInventory() {

@@ -24,6 +24,7 @@ public class Shop {
     }
 
     public void removeShopItem(Item item) {
+        item.decCount();
         if (item.getCount() == 0) {
             shopItems.remove(item);
         }
@@ -39,16 +40,16 @@ public class Shop {
     }
 
     public void initializeShop() {
-        addShopItems(sword1, 1);
-        addShopItems(sword2, 1);
+        addShopItems(ironSword, 1);
+        addShopItems(goldSword, 1);
         addShopItems(ironChest, 1);
         addShopItems(healPotion, 3);
         addShopItems(poison, 3);
     }
 
     // Наполняем магазин товарами
-    private final IronSword sword1 = new IronSword();
-    private final GoldSword sword2 = new GoldSword();
+    private final IronSword ironSword = new IronSword();
+    private final GoldSword goldSword = new GoldSword();
     private final IronChest ironChest = new IronChest();
     private final HealPotion healPotion = new HealPotion();
     private final Poison poison = new Poison();
@@ -63,15 +64,23 @@ public class Shop {
         if (agree == 2) {
             return PurchaseResult.DENIED;
         }
-        // Если у героя хватает денег и предмет есть в магазине
-        if (hero.getMoney() > item.getCost() && item.checkCountMoreZero()) {
-            // При покупке уменьшаем количество в магазине
-                hero.decMoney(item.getCost());
-                hero.pickUp(item);
-                removeShopItem(item);
-                return PurchaseResult.SUCCESS;
-        } else {
+
+        // Если у героя не хватает денег
+        if (hero.getMoney() < item.getCost()) {
             return PurchaseResult.NOT_ENOUGH_MONEY;
         }
+
+        // Если предмета нет в магазине
+        if (!item.checkCountMoreZero()) {
+            return PurchaseResult.NOT_IN_SHOP_STOCK;
+        }
+
+        // Если прошёл все проверки и готов закупиться
+        hero.decMoney(item.getCost());
+        hero.pickUp(item);
+
+        // Убираем 1 предмет, и, если предметов не осталось, убираем строчку в магазине
+        removeShopItem(item);
+        return PurchaseResult.SUCCESS;
     }
 }

@@ -164,7 +164,7 @@ public class View {
         System.out.println("\nКупить предмет?");
         System.out.println("1. Купить");
         System.out.println("2. Отказаться");
-        return  readIntInRange(1,2);
+        return readIntInRange(1,2);
     }
 
     public void noEquip() { System.out.println("\nУ вас нет снаряжения!");}
@@ -183,6 +183,7 @@ public class View {
             // Этапы обращения: магазин - всё снаряжение магазина - конкретный предмет - его стоимость
             System.out.println(i+1 + "." + "Купить " + shop.getShopItems().get(i).getName() + " за " + shop.getShopItems().get(i).getCost() + " Осталось " + shop.getShopItems().get(i).getCount());
         }
+        System.out.println("0.Вернуться обратно");
     }
 
     // Вывод 1 типа предметов как инвентарь
