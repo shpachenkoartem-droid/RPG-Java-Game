@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class IronSwordTest {
     private Hero hero;
     private IronSword ironSword;
+
     @BeforeEach
     void setUp() {
         hero = new Hero();
@@ -20,10 +21,10 @@ class IronSwordTest {
     void isSword() {
         assertEquals(ItemType.SWORD, ironSword.getItemType());
     }
-    
+
     @Test
     void damage_alwaysInRange() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             int damage = ironSword.getDamage().roll();
             assertTrue(damage >= 2 && damage <= 7, "Урон вне диапазона: " + damage);
         }

@@ -240,14 +240,12 @@ public class View {
     // Проверяет ли является число целыми число ли вообще. Если не является - заставляет вводить заново
     // Если является - возвращает true
     private boolean isIntInput() {
-        do {
-            if (scanner.hasNextInt()) return true;
-            else {
-                System.out.println("\nЭто не число. Попробуйте снова.");
-                scanner.next();
-                return false;
-            }
-        } while (false);
+        if (scanner.hasNextInt()) return true;
+        else {
+            System.out.println("\nЭто не число. Попробуйте снова.");
+            scanner.next();
+            return false;
+        }
     }
 
 

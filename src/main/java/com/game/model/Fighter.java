@@ -20,21 +20,20 @@ public abstract class Fighter {
     private Equipment armor;
 
     // Возвращаем урон, который наносится
-    public int attack(Fighter target) {
-        if (sword == null) {
-            return 0;
-        }
+    public void attack(Fighter target) {
+        if (sword == null) return;
+
         // Вот здесь высчитывается и хранится цифра урона
         int damage = rollDamageDiceWeapon();
+
         // Получаем кость урона при атаке
         // От оружия должны получить всю информацию при атаке
         // Надо сделать так чтобы после каждой атаки урон менялся
         target.decHp(damage);
-        return damage;
     }
 
     // Записываем в поле damage наше выпавшее значение
-    public int rollDamageDiceWeapon() {
+    private int rollDamageDiceWeapon() {
         damage = sword.getDamage().roll();
         return damage;
     }
@@ -53,13 +52,16 @@ public abstract class Fighter {
 
     public void equip(Equipment equipment) {
         if (equipment.isNotNull()) {
+
             if (Objects.equals(equipment.getItemType(), ItemType.SWORD)) {
                 this.sword = equipment;
             }
+
             if (Objects.equals(equipment.getItemType(), ItemType.ARMOR)) {
                 this.armor = equipment;
                 setArmor(equipment);
             }
+
         }
         else { System.out.println("У вас нет такого " + equipment.getItemType()); }
     }
@@ -87,26 +89,24 @@ public abstract class Fighter {
     }
 
     public void setHp(int hp) {
-        if (hp < 0) {
-            System.out.print("Здоровье должно быть больше 0");
-        } else { this.hp = hp; }
+        if (hp < 0) System.out.print("Здоровье должно быть больше 0");
+        else this.hp = hp;
 
     }
 
     public void incHp(int hp) {
-        setHp(this.getHp() + hp);
         // Защита от превышения максимального здоровья
         if (getHp() > getMaxHp()) {
             setHp(getMaxHp());
+            return;
         }
+        setHp(this.getHp() + hp);
     }
 
+    // Уменьшаем здоровье
+    // Защита от падения ниже 0 включена сюда
     public void decHp(int hp) {
-        if (getHp() - hp >= 0) {
-            setHp(this.getHp() - hp);
-        } else {
-            setHp(0);
-        }
+        setHp(Math.max(getHp() - hp, 0));
     }
 
     public int getMaxHp() {
@@ -130,21 +130,20 @@ public abstract class Fighter {
     }
 
     public void setMoney(int money) {
-        if (money >= 0) {
-            this.money = money;
-        }
+        if (money >= 0) this.money = money;
     }
 
     // Хочу чтобы getMoney вызывалась "под капотом", и вместо fighter1.setMoney(fighter1.getMoney() + 10) было fighter1.incMoney(10)
     // this обозначает вызвавшего
     public void incMoney(int money) {
-        setMoney(this.getMoney() + money);
+        setMoney(getMoney() + money);
     }
 
     // Если хочется списать больше чем возможно, то не спишется
     public void decMoney(int money) {
-        if (getMoney() - money >= 0) {
-            setMoney(this.getMoney() - money);
+        int cost = getMoney() - money;
+        if (cost >= 0) {
+            setMoney(cost);
         } else {
             System.out.print("Недостаточно денег");
         }

@@ -5,7 +5,8 @@ import com.game.model.*;
 
 
 public class HealPotion extends Potion {
-    private int healAmount = 0;
+    private int healAmount;
+
     public int getHealAmount() {
         return healAmount;
     }
@@ -13,6 +14,7 @@ public class HealPotion extends Potion {
     public void setHealAmount(int healAmount) {
         this.healAmount = healAmount;
     }
+
     // Что за зелье и что оно делает
     public HealPotion() {
         setName("Зелье лечения");
@@ -23,6 +25,7 @@ public class HealPotion extends Potion {
         setDescription("Зелье лечения, способное вытащить из самой непростой передряги");
         incCount();
     }
+
     // Его непосредственное применение
     @Override
     public void apply(Fighter target) {

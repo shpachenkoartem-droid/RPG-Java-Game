@@ -58,6 +58,7 @@ public class Battle {
     }
 
     // Проверяет выпало ли что-то при убийстве врага, и если да - отдельный исход
+    // Должны получать исход отсюда и публиковать сообщение выпало ли что-то или нет
     public BattleResult pickUpDrop(PlayableHeroes hero, Enemy enemy) {
         if (enemy.isDropped()) {
             hero.pickUp(enemy.getDrop());
@@ -66,7 +67,7 @@ public class Battle {
         return BattleResult.WIN;
     }
 
-    // Проверка на победу над врагом и переход к вопросы а выпало ли что-то
+    // Проверка на победу над врагом и переход к вопросу а выпало ли что-то
     public void ifKillEnemy(PlayableHeroes hero, Enemy enemy) {
         if (enemy.getHp() <= 0) {
             getMoneyForEnemyKill(hero, enemy);
