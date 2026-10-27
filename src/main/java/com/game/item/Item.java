@@ -11,9 +11,9 @@ public abstract class Item {
     private int cost;
     private int count;
     private String description;
+
     public String getName() {
         return name;
-
     }
 
     public void setName(String name) {
@@ -60,7 +60,9 @@ public abstract class Item {
     }
 
     public void setCost(int cost) {
-        this.cost = cost;
+        if (cost > 0) {
+            this.cost = cost;
+        }
     }
 
     public boolean isNotNull() {

@@ -11,5 +11,6 @@ public class IronSword extends Equipment {
         setDamage(new DamageDice(1, 6, 1));
         setItemType(ItemType.SWORD);
         setDescription("Железный меч, готовый на всё.");
+        incCount();
     }
 }

@@ -10,7 +10,7 @@ public class OgreClub extends Equipment {
         setCost(0);
         setDamage(new DamageDice(1,8,0));
         setItemType(ItemType.SWORD);
-        incCount();
         setDescription("Большая деревянная коряга, неравномерно толстая палка, но может хорошо ударить");
+        incCount();
     }
 }

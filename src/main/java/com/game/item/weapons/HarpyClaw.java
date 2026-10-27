@@ -13,5 +13,6 @@ public class HarpyClaw extends Equipment {
         setCost(0);
         setItemType(ItemType.SWORD);
         setDescription("Острые как бритва когти.");
+        incCount();
     }
 }

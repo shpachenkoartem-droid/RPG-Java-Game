@@ -13,5 +13,6 @@ public class GoldSword extends Equipment {
         setCost(120);
         setItemType(ItemType.SWORD);
         setDescription("Золотой меч, слабо блестящий на свету.");
+        incCount();
     }
 }

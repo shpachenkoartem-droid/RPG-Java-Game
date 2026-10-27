@@ -21,6 +21,7 @@ public class Poison extends Potion {
         setItemType(ItemType.POTION);
         setSubType(ItemType.POISON);
         setDescription("Смертельная отрава для неугодных");
+        incCount();
     }
 
     @Override

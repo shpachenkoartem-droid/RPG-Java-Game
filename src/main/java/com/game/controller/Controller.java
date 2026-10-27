@@ -97,14 +97,14 @@ public class Controller {
         }
     }
 
-    public boolean fullEquip() {
+    public void fullEquip() {
 
         // Сам heroInventory это объект в памяти, его надо доставать разными методами из Inventory
         Inventory heroInventory = hero.getHeroInventory();
 
         if (heroInventory.isEmpty()) {
             view.noEquip();
-            return false;
+            return;
         }
 
         int choiceSwapEquip = view.showChooseEquip(hero);
@@ -113,7 +113,6 @@ public class Controller {
             case 2 -> chooseOneTypeEquipment(hero, ItemType.ARMOR);
             default -> fullEquip();
         }
-        return true;
     }
 
 

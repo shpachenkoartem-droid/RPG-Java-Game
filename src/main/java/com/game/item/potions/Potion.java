@@ -12,7 +12,8 @@ public abstract class Potion extends Item {
     // Создаём возможность пить зелья
     public boolean drink() {
         if (isNotNull()) {
-            setCount(getCount() - 1);
+            // Выпиваем
+            decCount();
             return true;
         } else {
             return false;

@@ -21,6 +21,7 @@ public class HealPotion extends Potion {
         setItemType(ItemType.POTION);
         setSubType(ItemType.HEAL_POTION);
         setDescription("Зелье лечения, способное вытащить из самой непростой передряги");
+        incCount();
     }
     // Его непосредственное применение
     @Override

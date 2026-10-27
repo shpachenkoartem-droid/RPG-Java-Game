@@ -29,6 +29,9 @@ public class Inventory {
     public void removeItemByIndex(int index) {
         items.remove(index);
     }
+
+    // Возвращает набор объектов
+    // Например, [IronSword@3c130745, GoldSword@cd3fee8]
     public List<Item> getItems() {
         return items;
     }

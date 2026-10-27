@@ -15,10 +15,13 @@ public abstract class PlayableHeroes extends Fighter implements Healer {
     private final Inventory inventory = new Inventory();
 
     // Возвращает инвентарь как объект
+    // Например, Inventory@3c130745
     public Inventory getHeroInventory() {
         return inventory;
     }
 
+    // Возвращает инвентарь со списком имён
+    // Например, [Железный меч, Золотой меч]
     public List<String> getInventoryWithName() {
         List<String> arrayWithNames = new ArrayList<>();
         for (Item i : inventory.getItems()) {

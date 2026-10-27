@@ -10,6 +10,7 @@ public class IronChest extends Equipment {
         setArmorCount(1);
         setItemType(ItemType.ARMOR);
         setDescription("Крепко выглядящий железный нагрудник, опускающийся чуть ниже пояса. Такой может спасти жизнь.");
+        incCount();
     }
 }
 

@@ -61,7 +61,7 @@ public abstract class Fighter {
                 setArmor(equipment);
             }
         }
-        else { System.out.println("У вас нет такого" + equipment.getItemType()); }
+        else { System.out.println("У вас нет такого " + equipment.getItemType()); }
     }
 
 

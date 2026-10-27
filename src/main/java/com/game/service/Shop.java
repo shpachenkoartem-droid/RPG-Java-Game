@@ -23,6 +23,11 @@ public class Shop {
         item.increaseCountWithNumber(number);
     }
 
+    // Использую перегрузку метода
+    public void addShopItems(Item item) {
+        addShopItems(item, 0);
+    }
+
     public void removeShopItem(Item item) {
         item.decCount();
         if (item.getCount() == 0) {
@@ -40,11 +45,11 @@ public class Shop {
     }
 
     public void initializeShop() {
-        addShopItems(ironSword, 1);
-        addShopItems(goldSword, 1);
-        addShopItems(ironChest, 1);
-        addShopItems(healPotion, 3);
-        addShopItems(poison, 3);
+        addShopItems(ironSword);
+        addShopItems(goldSword);
+        addShopItems(ironChest);
+        addShopItems(healPotion, 2);
+        addShopItems(poison, 2);
     }
 
     // Наполняем магазин товарами
