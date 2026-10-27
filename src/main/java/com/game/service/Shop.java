@@ -54,7 +54,6 @@ public class Shop {
     private final HealPotion healPotion = new HealPotion();
     private final Poison poison = new Poison();
 
-
     // Главная идея - создавать методы в Model, которые возвращают значения (можно enum),
     // а Controller эти значения обрабатывает и что-то выводит, он создаёт связь между выводимым из Model и из View
 

@@ -40,7 +40,7 @@ public abstract class Fighter {
     }
 
     // Получаем последнее значение урона
-    public int getLastDamage() {
+    public int getIntDamage() {
         return damage;
     }
 
@@ -130,7 +130,9 @@ public abstract class Fighter {
     }
 
     public void setMoney(int money) {
-        this.money = money;
+        if (money >= 0) {
+            this.money = money;
+        }
     }
 
     // Хочу чтобы getMoney вызывалась "под капотом", и вместо fighter1.setMoney(fighter1.getMoney() + 10) было fighter1.incMoney(10)
@@ -139,6 +141,7 @@ public abstract class Fighter {
         setMoney(this.getMoney() + money);
     }
 
+    // Если хочется списать больше чем возможно, то не спишется
     public void decMoney(int money) {
         if (getMoney() - money >= 0) {
             setMoney(this.getMoney() - money);

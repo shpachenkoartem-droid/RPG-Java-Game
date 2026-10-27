@@ -1,6 +1,8 @@
 package com.game.service;
 
 import com.game.enums.PurchaseResult;
+import com.game.item.Equipment;
+import com.game.item.Item;
 import com.game.item.chests.IronChest;
 import com.game.item.potions.HealPotion;
 import com.game.item.potions.Poison;
@@ -15,25 +17,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShopTest {
     private Hero hero;
     private Shop shop;
-
-    private final IronSword ironSword = new IronSword();
-    private final GoldSword goldSword = new GoldSword();
-    private final IronChest ironChest = new IronChest();
-    private final HealPotion healPotion = new HealPotion();
-    private final Poison poison = new Poison();
+    private IronSword ironSword;
 
     @BeforeEach
     void setUp() {
         hero = new Hero();
         shop = new Shop();
-        shop.initializeShop();
-        // Достать тут каждый предмет снаряжения, а не использовать новые
+        ironSword = new IronSword();
+        // В магазин из основного кода кладём предмет, чтобы не создавать какой-то новый, а пользоваться старым
+        shop.addShopItems(ironSword, 1);
     }
 
     @Test
     void buyIronSword() {
         PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
-        assertEquals(PurchaseResult.NOT_IN_SHOP_STOCK, purchaseResult);
+        assertEquals(PurchaseResult.SUCCESS, purchaseResult);
     }
 
     @Test

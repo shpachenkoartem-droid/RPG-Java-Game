@@ -85,19 +85,19 @@ public class View {
     public void droppingOut(Enemy enemy) {System.out.println("\nВам выпал " + enemy.getDrop().getName());}
 
     public void showBothAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + hero.getName() + " Получает " + target.getLastDamage() + " урона!");
+        System.out.println("\n" + hero.getName() + " Получает " + target.getIntDamage() + " урона!");
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
-        System.out.println("\n" + target.getName() + " Получает " + hero.getLastDamage() + " урона!");
+        System.out.println("\n" + target.getName() + " Получает " + hero.getIntDamage() + " урона!");
         System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
     }
 
     public void showHeroAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + target.getName() + " Получает " + hero.getLastDamage() + " урона!");
+        System.out.println("\n" + target.getName() + " Получает " + hero.getIntDamage() + " урона!");
         System.out.println("Здоровье " + target.getName() + ": " + target.getHp());
     }
 
     public void showEnemyAttackResult(PlayableHeroes hero, Fighter target) {
-        System.out.println("\n" + hero.getName() + " Получает " + target.getLastDamage() + " урона!");
+        System.out.println("\n" + hero.getName() + " Получает " + target.getIntDamage() + " урона!");
         System.out.println("Здоровье " + hero.getName() + ": " + hero.getHp());
     }
 
@@ -206,8 +206,6 @@ public class View {
 
 
         //Надо попробовать тут сделать интерфейсом по принципу Open closed principle
-
-
 
 
         if (Objects.equals(item.getItemType(), ItemType.SWORD)) {

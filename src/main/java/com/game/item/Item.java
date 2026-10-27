@@ -4,15 +4,16 @@ import com.game.enums.ItemType;
 
 // Абстрактный метод для всех предметов вообще
 public abstract class Item {
+
     private ItemType itemType;
     private ItemType subType;
     private String name;
     private int cost;
     private int count;
     private String description;
-
     public String getName() {
         return name;
+
     }
 
     public void setName(String name) {
@@ -89,4 +90,5 @@ public abstract class Item {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }
