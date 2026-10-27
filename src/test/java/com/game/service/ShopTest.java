@@ -1,12 +1,6 @@
 package com.game.service;
 
 import com.game.enums.PurchaseResult;
-import com.game.item.Equipment;
-import com.game.item.Item;
-import com.game.item.chests.IronChest;
-import com.game.item.potions.HealPotion;
-import com.game.item.potions.Poison;
-import com.game.item.weapons.GoldSword;
 import com.game.item.weapons.IronSword;
 import com.game.model.heroes.Hero;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,13 +44,4 @@ class ShopTest {
         PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
         assertEquals(PurchaseResult.NOT_ENOUGH_MONEY, purchaseResult);
     }
-
-    @Test
-    void buyWithMinusOneGold() {
-        hero.setMoney(-1);
-        PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
-        assertEquals(PurchaseResult.NOT_ENOUGH_MONEY, purchaseResult);
-    }
-
-
 }

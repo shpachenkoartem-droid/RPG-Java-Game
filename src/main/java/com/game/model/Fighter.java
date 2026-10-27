@@ -96,7 +96,7 @@ public abstract class Fighter {
 
     public void incHp(int hp) {
         // Защита от превышения максимального здоровья
-        if (getHp() > getMaxHp()) {
+        if (getHp() >= getMaxHp()) {
             setHp(getMaxHp());
             return;
         }
