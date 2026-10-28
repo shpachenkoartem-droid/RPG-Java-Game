@@ -10,7 +10,7 @@ public class Hero extends PlayableHeroes {
         setMaxHp(50);
         setHp(50);
         setName("Герой");
-        setMoney(1000);
+        setMoney(10);
         setHeal(2);
         equip(new Fist());
         equip(new Skin());

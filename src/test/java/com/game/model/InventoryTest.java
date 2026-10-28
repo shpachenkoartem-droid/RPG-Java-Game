@@ -6,6 +6,7 @@ import com.game.item.weapons.IronSword;
 import com.game.model.heroes.Hero;
 import com.game.model.heroes.PlayableHeroes;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ class InventoryTest {
     private IronSword ironSword;
     private GoldSword goldSword;
     private Hero hero;
+
     @BeforeEach
     void setUp() {
         inventory = new Inventory();
@@ -26,7 +28,8 @@ class InventoryTest {
         hero = new Hero();
     }
 
-    /*@Test
+    @Disabled ("Непонятно как сравнивать")
+    @Test
     void addItems() {
         hero.getHeroInventory().addItem(ironSword);
         hero.getHeroInventory().addItem(goldSword);
@@ -34,14 +37,15 @@ class InventoryTest {
         test.add(ironSword);
         test.add(goldSword);
         assertEquals(1, hero.getInventoryWithName());
-    }*/
+    }
 
-    /*@Test
+    @Disabled
+    @Test
     void getItems() {
         List<Item> test = inventory.getItems();
         test.add(ironSword);
         test.add(goldSword);
         assertEquals(1, test);
-    }*/
+    }
 
 }
