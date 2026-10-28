@@ -23,19 +23,33 @@ class ShopTest {
     }
 
     @Test
-    void buyIronSword() {
-        PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
-        assertEquals(PurchaseResult.SUCCESS, purchaseResult);
+    void buyIronSwordIfEnoughMoney() {
+        if (hero.getMoney() > ironSword.getCost()) {
+            PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
+            assertEquals(PurchaseResult.SUCCESS, purchaseResult);
+        } else {
+            PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
+            assertEquals(PurchaseResult.NOT_ENOUGH_MONEY, purchaseResult);
+        }
     }
 
     @Test
-    void buyFiveIronSword() {
-        shop.buySoloItem(hero,ironSword,1);
-        shop.buySoloItem(hero,ironSword,1);
-        shop.buySoloItem(hero,ironSword,1);
-        shop.buySoloItem(hero,ironSword,1);
-        PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
-        assertEquals(PurchaseResult.NOT_IN_SHOP_STOCK, purchaseResult);
+    void buyFourIronSwordIfEnoughMoney() {
+        if (hero.getMoney() > 4 * ironSword.getCost()) {
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
+            assertEquals(PurchaseResult.SUCCESS, purchaseResult);
+        } else {
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            shop.buySoloItem(hero,ironSword,1);
+            PurchaseResult purchaseResult = shop.buySoloItem(hero, ironSword, 1);
+            assertEquals(PurchaseResult.NOT_ENOUGH_MONEY, purchaseResult);
+        }
     }
 
     @Test

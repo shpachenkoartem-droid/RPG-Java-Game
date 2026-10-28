@@ -35,14 +35,16 @@ class HeroTest {
 
     @Test
     void incMoney() {
+        int current = hero.getMoney();
         hero.incMoney(1000);
-        assertEquals(2000, hero.getMoney());
+        assertEquals(current + 1000, hero.getMoney());
     }
 
     @Test
     void decManyMoney() {
+        int current = hero.getMoney();
         hero.decMoney(10000);
-        assertEquals(1000, hero.getMoney());
+        assertEquals(current, hero.getMoney());
     }
 
     @Test
