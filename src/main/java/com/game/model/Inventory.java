@@ -6,7 +6,7 @@ import com.game.item.Item;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+// test
 public class Inventory {
     private final List<Item> items = new ArrayList<>();
     private int maxSize = 20;

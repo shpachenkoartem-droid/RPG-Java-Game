@@ -3,11 +3,19 @@ package com.game.model;
 import com.game.enums.ItemType;
 import com.game.item.*;
 import com.game.item.potions.Potion;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
 // абстрактный класс бойца - "образ" всех кто должен сражаться
+@Entity
 public abstract class Fighter {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int hp;
     private int maxHp;
     private String name;
@@ -83,6 +91,15 @@ public abstract class Fighter {
 // У нас есть класс в котором мы определили поля для него самого и всех дочерних классов.
 // Дочерние классы более индивидуальны, для них уже выбираем конкретные значения.
 // В других классах создав объект этих дочерних можно менять каждый объект отдельно
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getHp() {
         return hp;

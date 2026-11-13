@@ -1,0 +1,14 @@
+name: Postman sync
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: postman-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  postman-sync:
