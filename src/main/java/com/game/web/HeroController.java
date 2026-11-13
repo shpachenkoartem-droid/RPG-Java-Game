@@ -4,6 +4,7 @@ import com.game.model.heroes.Hero;
 import com.game.service.HeroService;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -16,6 +17,8 @@ public class HeroController {
         this.heroService = heroService;
     }
 
+    /*
+    Пока что уберу чтобы вернуть работоспособность
     @GetMapping
     public List<Hero> getAllHeroes() {
         return heroService.getAllHeroes();
@@ -25,4 +28,6 @@ public class HeroController {
     public Hero createHero(@RequestBody Hero hero) {
         return heroService.createHero(hero);
     }
+
+     */
 }
