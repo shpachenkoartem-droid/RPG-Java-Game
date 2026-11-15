@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+// Читается так же как и @Component
+// То есть Spring при старте создаёт его экземпляр
 @Service
 public class HeroService {
 

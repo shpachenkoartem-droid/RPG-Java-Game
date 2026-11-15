@@ -1,9 +1,10 @@
 package com.game;
 
-import com.game.controller.Controller;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+// При старте Spring создаёт экземпляр класса GameRunner
+// И кладёт его в контейнер
 @Component
 public class GameRunner implements CommandLineRunner {
 

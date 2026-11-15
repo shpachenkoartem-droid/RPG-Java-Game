@@ -1,9 +1,8 @@
 package com.game.dice;
 
 public class DamageDice {
+
     Dice dice = new Dice();
-
-
     private int count;
     private int sides;
     private int bonus;

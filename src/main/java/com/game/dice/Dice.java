@@ -20,5 +20,4 @@ public class Dice {
         result+=bonus;
         return result;
     }
-
 }
