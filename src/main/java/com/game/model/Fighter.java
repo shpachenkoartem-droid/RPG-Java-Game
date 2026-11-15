@@ -11,10 +11,10 @@ import jakarta.persistence.Id;
 import java.util.Objects;
 
 // абстрактный класс бойца - "образ" всех кто должен сражаться
-@Entity
+//@Entity
 public abstract class Fighter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int hp;
     private int maxHp;

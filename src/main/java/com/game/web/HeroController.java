@@ -1,9 +1,9 @@
 package com.game.web;
 
-import com.game.model.heroes.Hero;
+import com.game.model.heroes.HeroCreateRequest;
+import com.game.model.heroes.HeroResponse;
 import com.game.service.HeroService;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -17,17 +17,13 @@ public class HeroController {
         this.heroService = heroService;
     }
 
-    /*
-    Пока что уберу чтобы вернуть работоспособность
-    @GetMapping
-    public List<Hero> getAllHeroes() {
-        return heroService.getAllHeroes();
-    }
-
     @PostMapping
-    public Hero createHero(@RequestBody Hero hero) {
-        return heroService.createHero(hero);
+    public HeroResponse create(@RequestBody HeroCreateRequest request) {
+        return heroService.create(request);
     }
 
-     */
+    @GetMapping
+    public List<HeroResponse> findAll() {
+        return heroService.findAll();
+    }
 }
