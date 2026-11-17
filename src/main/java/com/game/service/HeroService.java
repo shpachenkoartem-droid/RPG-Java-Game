@@ -2,8 +2,8 @@ package com.game.service;
 
 import com.game.model.entity.HeroEntity;
 import com.game.model.heroes.Hero;
-import com.game.model.heroes.HeroCreateRequest;
-import com.game.model.heroes.HeroResponse;
+import com.game.model.createrequest.HeroCreateRequest;
+import com.game.model.response.HeroResponse;
 import com.game.model.mapper.HeroMapper;
 import com.game.repository.HeroRepository;
 import org.springframework.stereotype.Service;
@@ -22,12 +22,12 @@ public class HeroService {
         this.heroRepository = heroRepository;
     }
 
-    // Соединяет Hero и HeroResponse
-    // Берёт Hero, читает его поля и передаёт их в HeroResponse
-    // Это происходит на сервере
+    // Превращает HeroEntity (строку таблицы в БД) в
+    // HeroResponse (DTO для клиента, класс, описывающий какие данные передаются между клиентом и сервером)
+    // Создаёт record-класс с разрешёнными полями
     private HeroResponse toResponse(HeroEntity entity) {
         return new HeroResponse(
-            entity.getId(),
+                entity.getId(),
                 entity.getMaxHp(),
                 entity.getHp(),
                 entity.getName(),
@@ -36,6 +36,9 @@ public class HeroService {
         );
     }
 
+    // Реализует POST
+    // Принимает данные от клиента
+    // Создаёт нового героя и сохраняет в БД
     public HeroResponse create(HeroCreateRequest request) {
         // DTO
         Hero hero = new Hero();
@@ -55,6 +58,8 @@ public class HeroService {
         return toResponse(saved);
     }
 
+    // Реализует READ
+    // Читает всех героев из БД и возвращает список
     public List<HeroResponse> findAll() {
         return heroRepository.findAll().stream()
                 .map(this::toResponse)

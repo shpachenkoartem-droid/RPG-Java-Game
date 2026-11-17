@@ -3,8 +3,13 @@ package com.game.model.mapper;
 import com.game.model.entity.HeroEntity;
 import com.game.model.heroes.Hero;
 
+// Маппер - "переводчик" между двумя моделями
 public class HeroMapper {
+
+    // Берёт Hero и создаёт из него HeroEntity, копируя все поля.
+    // ID потом генерирует база данных
     public static HeroEntity toEntity(Hero hero) {
+        // Создаёт новую сущность и заполняет её информацией из домена
         HeroEntity e = new HeroEntity();
         e.setName(hero.getName());
         e.setMaxHp(hero.getMaxHp());
@@ -14,7 +19,9 @@ public class HeroMapper {
         return e;
     }
 
+    // Из HeroEntity создаёт Hero
     public static Hero toDomain(HeroEntity e) {
+        // Создаёт новый домен и заполняет его информацией из сущности
         Hero hero = new Hero();
         hero.setName(e.getName());
         hero.setMaxHp(e.getMaxHp());

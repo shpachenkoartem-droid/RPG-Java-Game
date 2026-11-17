@@ -1,4 +1,4 @@
-package com.game.model.heroes;
+package com.game.model.response;
 
 // Это то, что сервер отправляет клиенту в ответ на запрос
 // Это DTO
