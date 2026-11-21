@@ -1,8 +1,9 @@
 package com.game.model.createrequest;
 
-import com.game.model.entity.DamageDiceEntity;
+import com.game.enums.EquipmentType;
 
+// Клиент будет говорить серверу "создай железный меч"
 public record EquipmentCreateRequest(
         int armorCount,
-        DamageDiceEntity damage
+        EquipmentType type
 ) {}

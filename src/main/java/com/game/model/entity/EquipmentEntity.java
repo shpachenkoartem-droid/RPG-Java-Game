@@ -1,5 +1,6 @@
 package com.game.model.entity;
 
+import com.game.enums.EquipmentType;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,8 @@ public class EquipmentEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int armorCount;
+    @Enumerated(EnumType.STRING)
+    private EquipmentType type;
 
     @ManyToOne
     // Внешний ключ - damage_dice_id
@@ -38,5 +41,13 @@ public class EquipmentEntity {
 
     public void setArmorCount(int armorCount) {
         this.armorCount = armorCount;
+    }
+
+    public EquipmentType getType() {
+        return type;
+    }
+
+    public void setType(EquipmentType type) {
+        this.type = type;
     }
 }

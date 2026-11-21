@@ -13,9 +13,14 @@ import java.util.List;
 
 // Читается так же как и @Component
 // То есть Spring при старте создаёт его экземпляр
+// Обрабатывает запросы и создаёт героев
 @Service
 public class HeroService {
 
+    // Здесь не создаётся новое heroRepository
+    // Spring сам находит объект heroRepository
+    // И передаёт его в конструктор
+    // Это Dependency Injection — внедрение зависимостей
     private final HeroRepository heroRepository;
 
     public HeroService(HeroRepository heroRepository) {
@@ -37,11 +42,14 @@ public class HeroService {
     }
 
     // Реализует POST
-    // Принимает данные от клиента
+    // Принимает данные от HeroCreateRequest
+    // Именно те, которые присылает клиент
     // Создаёт нового героя и сохраняет в БД
     public HeroResponse create(HeroCreateRequest request) {
         // DTO
+        // Создаём базового героя
         Hero hero = new Hero();
+        // Затем заменяем часть этих данных информацией, присланной клиентом
         hero.setMaxHp(request.maxHp());
         hero.setHp(request.hp());
         hero.setName(request.name());
@@ -51,7 +59,7 @@ public class HeroService {
         // От домена к сущности через маппер
         HeroEntity entity = HeroMapper.toEntity(hero);
 
-        // Сохранить
+        // Сохранить в виде JPA-сущности
         HeroEntity saved = heroRepository.save(entity);
 
         // От сущности к DTO
@@ -59,7 +67,8 @@ public class HeroService {
     }
 
     // Реализует READ
-    // Читает всех героев из БД и возвращает список
+    // Java -> JSON
+    // Читает всех героев из БД и возвращает JSON список
     public List<HeroResponse> findAll() {
         return heroRepository.findAll().stream()
                 .map(this::toResponse)

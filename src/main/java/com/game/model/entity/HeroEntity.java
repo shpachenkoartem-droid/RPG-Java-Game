@@ -2,6 +2,10 @@ package com.game.model.entity;
 
 import jakarta.persistence.*;
 
+
+// Это JPA-сущность
+// Набор правил, который описывает
+// Как связать Java-объекты с таблицами базы данных
 @Entity // Пометили класс как таблицу в БД
 @Table(name = "heroes") // Кладём его в общую таблицу для всех героев - heroes
 public class HeroEntity {
