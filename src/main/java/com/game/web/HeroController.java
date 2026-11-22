@@ -30,6 +30,7 @@ public class HeroController {
     // Создаём нового героя и отправляем его в БД
     @PostMapping
     // RequestBody преобразует тело HTTP-запроса в Java-объект
+    // После использования POST должен появиться объект HeroResponse
     public HeroResponse create(@RequestBody HeroCreateRequest request) {
         return heroService.create(request);
     }

@@ -1,10 +1,9 @@
 package com.game.web;
 
+import com.game.model.createrequest.EquipmentCreateRequest;
 import com.game.model.response.EquipmentResponse;
 import com.game.service.EquipmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +14,11 @@ public class EquipmentController {
 
     public EquipmentController(EquipmentService equipmentService) {
         this.equipmentService = equipmentService;
+    }
+
+    @PostMapping
+    public EquipmentResponse create(@RequestBody EquipmentCreateRequest request) {
+        return equipmentService.create(request);
     }
 
     @GetMapping

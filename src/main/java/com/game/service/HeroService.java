@@ -56,7 +56,7 @@ public class HeroService {
         hero.setMoney(request.money());
         hero.setHeal(request.heal());
 
-        // От домена к сущности через маппер
+        // От домена (игровой модели) к сущности через маппер
         HeroEntity entity = HeroMapper.toEntity(hero);
 
         // Сохранить в виде JPA-сущности
