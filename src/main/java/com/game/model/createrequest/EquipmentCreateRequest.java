@@ -5,5 +5,6 @@ import com.game.enums.EquipmentType;
 // Клиент будет говорить серверу "создай железный меч"
 public record EquipmentCreateRequest(
         int armorCount,
-        EquipmentType type
+        EquipmentType type,
+        Long damageDiceId
 ) {}

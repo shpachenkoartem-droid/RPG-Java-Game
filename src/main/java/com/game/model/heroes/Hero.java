@@ -1,5 +1,6 @@
 package com.game.model.heroes;
 
+import com.game.coordinates.Coordinates;
 import com.game.item.chests.Skin;
 import com.game.item.weapons.Fist;
 
@@ -12,6 +13,7 @@ public class Hero extends PlayableHeroes {
         setName("Герой");
         setMoney(10);
         setHeal(2);
+        setCoordinates(new Coordinates(3,4));
         equip(new Fist());
         equip(new Skin());
     }

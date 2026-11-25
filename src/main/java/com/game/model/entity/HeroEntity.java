@@ -1,5 +1,7 @@
 package com.game.model.entity;
 
+import com.game.coordinates.Coordinates;
+import com.game.coordinates.CoordinatesEmbeddable;
 import jakarta.persistence.*;
 
 
@@ -17,6 +19,12 @@ public class HeroEntity {
     private int hp;
     private int money;
     private int heal;
+
+    // Встраиваю координаты в эту таблицу в БД
+    @Embedded
+    private CoordinatesEmbeddable coordinatesEmb;
+
+    // Нужно передать конструктор без аргументов чтобы Hibernate создал экземпляр класса
     public HeroEntity() {}
 
     public Long getId() {
@@ -65,5 +73,13 @@ public class HeroEntity {
 
     public void setHeal(int heal) {
         this.heal = heal;
+    }
+
+    public CoordinatesEmbeddable getCoordinatesEmb() {
+        return coordinatesEmb;
+    }
+
+    public void setCoordinatesEmb(CoordinatesEmbeddable coordinatesEmb) {
+        this.coordinatesEmb = coordinatesEmb;
     }
 }

@@ -1,5 +1,7 @@
 package com.game.service;
 
+import com.game.coordinates.Coordinates;
+import com.game.coordinates.CoordinatesEmbeddable;
 import com.game.model.entity.HeroEntity;
 import com.game.model.heroes.Hero;
 import com.game.model.createrequest.HeroCreateRequest;
@@ -31,13 +33,16 @@ public class HeroService {
     // HeroResponse (DTO для клиента, класс, описывающий какие данные передаются между клиентом и сервером)
     // Создаёт record-класс с разрешёнными полями
     private HeroResponse toResponse(HeroEntity entity) {
+        CoordinatesEmbeddable embedded = entity.getCoordinatesEmb();
+        Coordinates coordinates = new Coordinates(embedded.getX(), embedded.getY());
         return new HeroResponse(
                 entity.getId(),
                 entity.getMaxHp(),
                 entity.getHp(),
                 entity.getName(),
                 entity.getMoney(),
-                entity.getHeal()
+                entity.getHeal(),
+                coordinates
         );
     }
 
@@ -55,6 +60,7 @@ public class HeroService {
         hero.setName(request.name());
         hero.setMoney(request.money());
         hero.setHeal(request.heal());
+        hero.setCoordinates(request.coordinates());
 
         // От домена (игровой модели) к сущности через маппер
         HeroEntity entity = HeroMapper.toEntity(hero);
