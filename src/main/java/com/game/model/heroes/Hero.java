@@ -13,7 +13,6 @@ public class Hero extends PlayableHeroes {
         setName("Герой");
         setMoney(10);
         setHeal(2);
-        setCoordinates(new Coordinates(3,4));
         equip(new Fist());
         equip(new Skin());
     }

@@ -10,6 +10,11 @@ public class CoordinatesEmbeddable {
 
     public CoordinatesEmbeddable() {}
 
+    public CoordinatesEmbeddable(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }

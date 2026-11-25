@@ -1,6 +1,5 @@
 package com.game.model.entity;
 
-import com.game.coordinates.Coordinates;
 import com.game.coordinates.CoordinatesEmbeddable;
 import jakarta.persistence.*;
 

@@ -33,8 +33,6 @@ public class HeroService {
     // HeroResponse (DTO для клиента, класс, описывающий какие данные передаются между клиентом и сервером)
     // Создаёт record-класс с разрешёнными полями
     private HeroResponse toResponse(HeroEntity entity) {
-        CoordinatesEmbeddable embedded = entity.getCoordinatesEmb();
-        Coordinates coordinates = new Coordinates(embedded.getX(), embedded.getY());
         return new HeroResponse(
                 entity.getId(),
                 entity.getMaxHp(),
@@ -42,7 +40,7 @@ public class HeroService {
                 entity.getName(),
                 entity.getMoney(),
                 entity.getHeal(),
-                coordinates
+                HeroMapper.toCoordinates(entity.getCoordinatesEmb())
         );
     }
 

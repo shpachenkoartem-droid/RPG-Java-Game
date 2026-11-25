@@ -20,15 +20,9 @@ public class HeroMapper {
         e.setMoney(hero.getMoney());
         e.setHeal(hero.getHeal());
 
-        // Берём объект как часть доменной модели и преобразуем в игровой
         // Получаем координаты, хранящиеся в Hero
         // В e надо передать координаты в виде столцов БД, то есть CoordinatesEmbeddable
-        Coordinates coordinates = hero.getCoordinates();
-        CoordinatesEmbeddable coordinatesEmbeddable = new CoordinatesEmbeddable();
-        coordinatesEmbeddable.setX(coordinates.getX());
-        coordinatesEmbeddable.setY(coordinates.getY());
-
-        e.setCoordinatesEmb(coordinatesEmbeddable);
+        e.setCoordinatesEmb(toEmbedded(hero.getCoordinates()));
 
         return e;
     }
@@ -44,12 +38,24 @@ public class HeroMapper {
         hero.setMoney(e.getMoney());
         hero.setHeal(e.getHeal());
 
-        // Берём объект как часть БД и преобразуем в игровой
-        CoordinatesEmbeddable embedded = e.getCoordinatesEmb();
-        Coordinates coordinates = new Coordinates(embedded.getX(), embedded.getY());
-
-        hero.setCoordinates(coordinates);
+        hero.setCoordinates(toCoordinates(e.getCoordinatesEmb()));
 
         return hero;
+    }
+
+    // Берём объект как часть доменной модели и преобразуем в игровой
+    private static CoordinatesEmbeddable toEmbedded(Coordinates coordinates) {
+        return new CoordinatesEmbeddable (
+                coordinates.getX(),
+                coordinates.getY()
+        );
+    }
+
+    // Берём объект как часть БД и преобразуем в игровой
+    public static Coordinates toCoordinates(CoordinatesEmbeddable embedded) {
+        return new Coordinates (
+                embedded.getX(),
+                embedded.getY()
+        );
     }
 }
